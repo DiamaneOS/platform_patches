@@ -1,0 +1,40 @@
+diff --git a/PermissionController/src/com/android/permissioncontroller/safetycenter/ui/SafetyCenterActivity.java b/PermissionController/src/com/android/permissioncontroller/safetycenter/ui/SafetyCenterActivity.java
+index 9ef54c17360247c3c0fa2a1086b201cc3ce6ebec..8bc5565ce5f22e2f646c2028a81df94026d8787d 100644
+--- a/PermissionController/src/com/android/permissioncontroller/safetycenter/ui/SafetyCenterActivity.java
++++ b/PermissionController/src/com/android/permissioncontroller/safetycenter/ui/SafetyCenterActivity.java
+@@ -255,13 +255,15 @@ public final class SafetyCenterActivity extends CollapsingToolbarBaseActivity
+         switch (action) {
+             case ACTION_SAFETY_CENTER:
+             case PRIVACY_CONTROLS_ACTION:
+-                if (!isHandledByThisActivity(action)) {
++                ComponentName destination = new Intent(action).resolveActivity(getPackageManager());
++                if (destination != null && !destination.equals(getComponentName())) {
+                     Log.i(
+                             TAG,
+                             "Redirecting away from SafetyCenterActivity in PermissionController"
+                                     + " for: "
+                                     + action);
+-                    startActivity(makeIntentImplicitWithResultForwarding(intent));
++                    startActivity(new Intent(action).setComponent(destination).putExtras(intent)
++                            .addFlags(FLAG_ACTIVITY_FORWARD_RESULT | FLAG_ACTIVITY_NEW_TASK));
+                     finishAndRemoveTask();
+                     return true;
+                 }
+@@ -288,17 +290,6 @@ public final class SafetyCenterActivity extends CollapsingToolbarBaseActivity
+         return false;
+     }
+ 
+-    private static Intent makeIntentImplicitWithResultForwarding(Intent intent) {
+-        Intent newIntent = new Intent(intent);
+-
+-        newIntent.setComponent(null);
+-        newIntent.setPackage(null);
+-        newIntent.addFlags(FLAG_ACTIVITY_FORWARD_RESULT);
+-        newIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+-
+-        return newIntent;
+-    }
+-
+     private boolean isHandledByThisActivity(String action) {
+         PackageManager pm = getPackageManager();
+         ComponentName pcScActivity = getComponentName();

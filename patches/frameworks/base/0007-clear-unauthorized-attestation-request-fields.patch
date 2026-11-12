@@ -1,0 +1,28 @@
+diff --git a/services/devicepolicy/java/com/android/server/devicepolicy/DevicePolicyManagerService.java b/services/devicepolicy/java/com/android/server/devicepolicy/DevicePolicyManagerService.java
+index 4dd03aa1cec83aa9eb0eadaa27d529c42a157941..f60c967c0444a86f6521432ee65f40279a02a95e 100644
+--- a/services/devicepolicy/java/com/android/server/devicepolicy/DevicePolicyManagerService.java
++++ b/services/devicepolicy/java/com/android/server/devicepolicy/DevicePolicyManagerService.java
+@@ -6278,6 +6278,11 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub
+             specBuilder.setAttestationIds(attestationUtilsFlags);
+             specBuilder.setDevicePropertiesAttestationIncluded(true);
+             keySpec = specBuilder.build();
++        } else {
++            keySpec = new KeyGenParameterSpec.Builder(keySpec)
++                    .setAttestationIds(new int[0])
++                    .setDevicePropertiesAttestationIncluded(false)
++                    .build();
+         }
+ 
+         final long id = mInjector.binderClearCallingIdentity();
+@@ -6414,6 +6419,11 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub
+             specBuilder.setAttestationIds(attestationUtilsFlags);
+             specBuilder.setDevicePropertiesAttestationIncluded(true);
+             keySpec = specBuilder.build();
++        } else {
++            keySpec = new KeyGenParameterSpec.Builder(keySpec)
++                    .setAttestationIds(new int[0])
++                    .setDevicePropertiesAttestationIncluded(false)
++                    .build();
+         }
+ 
+         final long id = mInjector.binderClearCallingIdentity();

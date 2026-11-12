@@ -1,0 +1,435 @@
+{
+ "schema": 1,
+ "patches": [
+  {
+   "id": "0001",
+   "project": "external/rust/crabbyavif",
+   "file": "patches/external/rust/crabbyavif/0001-skip-empty-hevc-configuration-units.patch",
+   "sha256": "24beaa84c7df767784dc258853500704f278429897927544509cddb3dd18c19b",
+   "title": "Skip empty HEVC configuration units",
+   "kind": "fix",
+   "files": {
+    "src/parser/mp4box.rs": [
+     "100644 11131bce9b90cf580091cf245056b02cae094cb8",
+     "100644 31069f7e59bb6187aea9b8dd7041c692f80b2789"
+    ]
+   },
+   "upstream": "CrabbyAvif upstream has an equivalent fix"
+  },
+  {
+   "id": "0002",
+   "project": "external/rust/crabbyavif",
+   "file": "patches/external/rust/crabbyavif/0002-make-grid-payload-copies-fallible-at-every-allocation.patch",
+   "sha256": "4172aba53ffca10619a38c30b6fd0fffbdabe28c06348dfd2fd12054fe17197a",
+   "title": "Make grid payload copies fallible at every allocation",
+   "kind": "fix",
+   "files": {
+    "src/codecs/android_mediacodec.rs": [
+     "100644 fa7271f8bcf20a8991692ce76d2e7e77b8cf89a7",
+     "100644 2bce7ec9772e9cb36f2e654a1d175d62b9fafbc5"
+    ],
+    "src/decoder/mod.rs": [
+     "100644 973623c4838d66557f845a867386a0e737cabdd7",
+     "100644 8bd43763c38b29d5de9fbf4e5066db56cea5b93e"
+    ]
+   },
+   "upstream": "CrabbyAvif upstream has an equivalent fix"
+  },
+  {
+   "id": "0003",
+   "project": "frameworks/av",
+   "file": "patches/frameworks/av/0003-allocate-complete-codec2-parameter-headers.patch",
+   "sha256": "32d49e0d1e4dff54416784df796957f15144f16534aa0c172f633aa9c4541a31",
+   "title": "Allocate complete Codec2 parameter headers",
+   "kind": "fix",
+   "files": {
+    "media/codec2/core/include/C2Param.h": [
+     "100644 c3133f7c409bba3b196a0defdbe89fddb46152af",
+     "100644 290eda13930b7a112a1b8e8e20ce152e918bef5f"
+    ]
+   }
+  },
+  {
+   "id": "0004",
+   "project": "frameworks/av",
+   "file": "patches/frameworks/av/0004-check-codec2-reflected-field-extents-before-access.patch",
+   "sha256": "ef6563a03378f309ac666211e711449c8d0db05add063468dc8499b19adac7cd",
+   "title": "Check Codec2 reflected field extents before access",
+   "kind": "fix",
+   "files": {
+    "media/codec2/sfplugin/ReflectedParamUpdater.cpp": [
+     "100644 d14b9b0a60f473049a3d4714c8dbbe0948abf3f7",
+     "100644 341accd80e87b81f1a31d4bfbd569ba197f2e745"
+    ]
+   }
+  },
+  {
+   "id": "0005",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0005-restrict-spellchecker-sessions-to-user-selection.patch",
+   "sha256": "03c2733d0a75de1e81df5eb6c871518862f892c1c113901f502137841fe1221d",
+   "title": "Restrict spellchecker sessions to user selection",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/textservices/TextServicesManagerService.java": [
+     "100644 9fed098eff7b75484922038e3dd1081fc19e850a",
+     "100644 9306d8c64421a2d373805fc356a129445efb91af"
+    ]
+   }
+  },
+  {
+   "id": "0006",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0006-cap-rollback-retention-at-one-year.patch",
+   "sha256": "145fd3ded52ec2236a612b747c9f2acf5cd40836d12ba9d88313252ab3930ac3",
+   "title": "Cap rollback retention at one year",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/rollback/RollbackManagerServiceImpl.java": [
+     "100644 f0dd0a7cf41231b20d715c0b1d68873e04829276",
+     "100644 0d5613d7574c2069d0b9924e1e2536301df59f0b"
+    ]
+   }
+  },
+  {
+   "id": "0007",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0007-clear-unauthorized-attestation-request-fields.patch",
+   "sha256": "6e9e1700242cf0d69f41e1b65828ffa61cd5ebd86c60ab323eac4572b82dca33",
+   "title": "Clear unauthorized attestation request fields",
+   "kind": "fix",
+   "files": {
+    "services/devicepolicy/java/com/android/server/devicepolicy/DevicePolicyManagerService.java": [
+     "100644 4dd03aa1cec83aa9eb0eadaa27d529c42a157941",
+     "100644 f60c967c0444a86f6521432ee65f40279a02a95e"
+    ]
+   }
+  },
+  {
+   "id": "0008",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0008-keep-static-library-names-bound-to-declaring-packages.patch",
+   "sha256": "0cdd25cd9e3f62000ec6d78f40bdd83216a0b033d420518d79bdb28a17f76d7a",
+   "title": "Keep static library names bound to declaring packages",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/pm/InstallPackageHelper.java": [
+     "100644 3269be8ded9f55db5819f4da4456baf354a560c7",
+     "100644 39e6c75386f07604cbd298dea39a4dd063e27270"
+    ]
+   }
+  },
+  {
+   "id": "0009",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0009-complete-companion-revocations-after-user-unlock.patch",
+   "sha256": "b24a43d5ccfc1240c476eacc77420a2f09b160666fae0e8de9f38c78b3363880",
+   "title": "Complete companion revocations after user unlock",
+   "kind": "fix",
+   "files": {
+    "services/companion/java/com/android/server/companion/CompanionDeviceManagerService.java": [
+     "100644 2eb29040c590ac96a5a1cd9e5901c1c9f262203b",
+     "100644 34efbf75b24f2d5dbf94d4019aff89be82da1b5d"
+    ]
+   }
+  },
+  {
+   "id": "0010",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0010-keep-proxied-job-counts-consistent-with-stored-jobs.patch",
+   "sha256": "92f675ac7fc166b91a6b7915c474bd6e053943626f3f63c8fa844e690437872f",
+   "title": "Keep proxied job counts consistent with stored jobs",
+   "kind": "fix",
+   "files": {
+    "apex/jobscheduler/service/java/com/android/server/job/JobSchedulerService.java": [
+     "100644 e389ebb30e28c1c2034e3b1cdeaa250dc2ca7c26",
+     "100644 13e839be9081c748b6a0d4710a17f679d5d62a6b"
+    ]
+   }
+  },
+  {
+   "id": "0011",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0011-bound-vector-drawable-group-nesting.patch",
+   "sha256": "8e3dbd1cc34d6d29dd3543b6099ac0549570d98bae0093f84f46a9e719f70555",
+   "title": "Bound vector drawable group nesting",
+   "kind": "fix",
+   "files": {
+    "graphics/java/android/graphics/drawable/VectorDrawable.java": [
+     "100644 f94fb1220b9c8cce32867fef09a542c032c3db61",
+     "100644 15ee35ef335f231d9129683c7c82c752cebf4b66"
+    ]
+   }
+  },
+  {
+   "id": "0012",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0012-remove-private-binder-tokens-from-parent-window-updates.patch",
+   "sha256": "3cb256d89f9d78e2adb00c73297d2d9aed7083384ec5bd855a4195e24d28101c",
+   "title": "Remove private Binder tokens from parent window updates",
+   "kind": "fix",
+   "files": {
+    "core/java/android/view/WindowlessWindowManager.java": [
+     "100644 b199e6dfb9deabe75caada4d658d2f7aab300588",
+     "100644 04620352c984812fff5f9a4f502447113ae9db42"
+    ]
+   }
+  },
+  {
+   "id": "0013",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0013-authorize-window-capture-and-dump-callbacks.patch",
+   "sha256": "d78cef6727574e67af63b65972b76e04503c4b6f290de64b845193466d1b34ed",
+   "title": "Authorize window capture and dump callbacks",
+   "kind": "fix",
+   "files": {
+    "core/java/android/view/ViewRootImpl.java": [
+     "100644 62bd3e12bc39197486d7bbe9a37c432980a04b6f",
+     "100644 8edb4b7eb820a6895182e984b7dfdc8ae2b4d9f6"
+    ]
+   }
+  },
+  {
+   "id": "0014",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0014-authorize-privileged-autofill-binder-operations.patch",
+   "sha256": "7ac9aed3efa1a4ed283a4f6ef36e162ccb711b680196cf9ea62a1c3c8a2ef1af",
+   "title": "Authorize privileged Autofill Binder operations",
+   "kind": "fix",
+   "files": {
+    "core/java/android/view/autofill/IAutoFillManager.aidl": [
+     "100644 040d1123cd434f62afc88f9915e7712cde9f12c7",
+     "100644 1e95d0a585dcd4a3a7807e7a9a52b26b72528704"
+    ],
+    "services/autofill/java/com/android/server/autofill/AutofillManagerService.java": [
+     "100644 a408fcb7e6124fddbf090cc93e06b4a0e0a9675e",
+     "100644 6eaf11c334e827f3490d82437ad49b6a11c97478"
+    ]
+   }
+  },
+  {
+   "id": "0015",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0015-restrict-autofill-presentation-uri-schemes.patch",
+   "sha256": "2667bf048b33b7cd42e406aaf4a3991e67f6c0a9674c1bb7f8e7fde55cdfa486",
+   "title": "Restrict Autofill presentation URI schemes",
+   "kind": "fix",
+   "files": {
+    "services/autofill/java/com/android/server/autofill/Helper.java": [
+     "100644 5d16be653a17cc282e681d389a8a964bb6e2391a",
+     "100644 f395e26a087596ec8747452522df35dda694e4e4"
+    ]
+   }
+  },
+  {
+   "id": "0016",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0016-sanitize-autofill-presentation-window-parameters.patch",
+   "sha256": "dcc72957c86677ee3b1c44b2b38287231b6f692f33b133cd1e4143967a865feb",
+   "title": "Sanitize Autofill presentation window parameters",
+   "kind": "fix",
+   "files": {
+    "core/java/android/view/autofill/AutofillPopupWindow.java": [
+     "100644 3161c3c498cfd1d27238b4cea4c10bedf48d4b0d",
+     "100644 135dbd1bc4acbb0209dd67e5746da8c8edb68f0c"
+    ],
+    "core/java/android/view/autofill/Helper.java": [
+     "100644 2f12bb28e7d64f3926521658048b30be48d6cbab",
+     "100644 f97d0630843f8fc2a9b0bbbb453a78c5af9be024"
+    ],
+    "services/autofill/java/com/android/server/autofill/ui/FillUi.java": [
+     "100644 781babab6e36cb9a3a92000619fb049664808092",
+     "100644 8d8fba92e7a81673d1ac8a4c67f1e0ecd6aaca25"
+    ]
+   }
+  },
+  {
+   "id": "0017",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0017-bound-recursive-bundle-traversal.patch",
+   "sha256": "3cd36de765a25de4bf495e3d0192be8f6df634860a519369ffe91adcc10a4b33",
+   "title": "Bound recursive bundle traversal",
+   "kind": "fix",
+   "files": {
+    "core/java/android/os/BaseBundle.java": [
+     "100644 ab670c016efe88637b01d5b370e18f84789d8afa",
+     "100644 05949adcf7ceee06da245713552ebc4c92719e00"
+    ],
+    "core/java/android/os/Bundle.java": [
+     "100644 db27dd5f41fa46236c661bf57382954a32f05543",
+     "100644 d2c42624adb5e598acb4199dca246a03ece60c65"
+    ],
+    "core/java/android/os/PersistableBundle.java": [
+     "100644 3d76934f09b9d8798183e4089c3ea5b9fbefc4b8",
+     "100644 9dc387944a9d556297ec65396c71b4ee466b0787"
+    ]
+   }
+  },
+  {
+   "id": "0018",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0018-suppress-control-callbacks-during-remote-state-updates.patch",
+   "sha256": "227f6e0fee8f960d36ade9f141ea236e39e942f59eb60d51caf583aafd825a86",
+   "title": "Suppress control callbacks during remote state updates",
+   "kind": "fix",
+   "files": {
+    "core/java/android/widget/RemoteViews.java": [
+     "100644 1318f4c85d78bf4f6e7827ef99c4faa11c285aff",
+     "100644 9d4ce992a2e4c0cb6621a2d9b60c6b6278fce029"
+    ]
+   }
+  },
+  {
+   "id": "0019",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0019-bind-ringtone-uri-users-to-the-binder-caller.patch",
+   "sha256": "bb3398c43d560e3674b0595c97a835d1ced3978fa22b1b0efaaf38378c81c48b",
+   "title": "Bind ringtone URI users to the Binder caller",
+   "kind": "fix",
+   "files": {
+    "packages/SystemUI/src/com/android/systemui/media/RingtonePlayer.java": [
+     "100644 a7ae95c8edb6e148d455a9cec44b49b479614f09",
+     "100644 fd2fd5cc6bed92e15e464004d52091261eab66fb"
+    ]
+   }
+  },
+  {
+   "id": "0020",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0020-require-warning-acceptance-before-shortcut-assignment.patch",
+   "sha256": "1c02b4df2d87e18a347333e21c264521509094e4da5d3207c81e4021a966f902",
+   "title": "Require warning acceptance before shortcut assignment",
+   "kind": "fix",
+   "files": {
+    "packages/SystemUI/src/com/android/systemui/accessibility/shortcutchooser/ui/startable/ShortcutChooserDialogStartable.kt": [
+     "100644 f31fb6e375fd68705cf767d18c3f3bee8879e54b",
+     "100644 82cc3b2ad7f3fbe877ae00e85aa1441c74ac3099"
+    ]
+   }
+  },
+  {
+   "id": "0021",
+   "project": "frameworks/native",
+   "file": "patches/frameworks/native/0021-emit-one-wallpaper-transfer-pointer-down.patch",
+   "sha256": "b00fb473fffdc3ec93dade451cbb59f16c96bddd00c218da635a3231a23413ca",
+   "title": "Emit one wallpaper transfer pointer-down",
+   "kind": "fix",
+   "files": {
+    "services/inputflinger/dispatcher/InputDispatcher.cpp": [
+     "100644 f7dc6ec7fc36fadb8409bfd3d2acdfbf860aad69",
+     "100644 e430568907ca7022f11298525716a6e8608ca73a"
+    ]
+   }
+  },
+  {
+   "id": "0022",
+   "project": "frameworks/opt/telephony",
+   "file": "patches/frameworks/opt/telephony/0022-check-wap-header-extent-before-narrowing.patch",
+   "sha256": "0ea14f82d3a3324f742a3555bd3a56bdee046c47c203295223e5803148cf0c89",
+   "title": "Check WAP header extent before narrowing",
+   "kind": "fix",
+   "files": {
+    "src/java/com/android/internal/telephony/WapPushOverSms.java": [
+     "100644 ef692a9dc610d0eccefb8b488e8af45404f4b1f9",
+     "100644 f30508d7353428acb20a6822c6ebdc4d7b6ac638"
+    ]
+   }
+  },
+  {
+   "id": "0023",
+   "project": "packages/apps/Contacts",
+   "file": "patches/packages/apps/Contacts/0023-truncate-contact-export-destinations.patch",
+   "sha256": "e994d11f287eb0b81136b1d90f3083615277e224a461593454ce29147120bec6",
+   "title": "Truncate contact export destinations",
+   "kind": "fix",
+   "files": {
+    "src/com/android/contacts/vcard/ExportProcessor.java": [
+     "100755 fd5134c389ebe7215a6f3a181db6ccdf1dec8401",
+     "100755 a23015bafcabf7671517f0a86a7167eeace42ae8"
+    ]
+   }
+  },
+  {
+   "id": "0024",
+   "project": "packages/modules/Nfc",
+   "file": "patches/packages/modules/Nfc/0024-bound-mifare-ndef-payload-length.patch",
+   "sha256": "560b9ad548f631fa4ebeafb69024bc5f7ac5ee6bb8fa8d0d6de9db93af1694a7",
+   "title": "Bound MIFARE NDEF payload length",
+   "kind": "fix",
+   "files": {
+    "libnfc-nci/src/nfc/tags/rw_mfc.cc": [
+     "100644 536f5a4ede3ae5c7452088b5df92534db18acf83",
+     "100644 8f0dcb2a3f76fd1518da47eda00d84a1b17efaa7"
+    ]
+   }
+  },
+  {
+   "id": "0025",
+   "project": "packages/modules/Nfc",
+   "file": "patches/packages/modules/Nfc/0025-limit-pairing-auto-confirmation-to-active-handover-bonding.patch",
+   "sha256": "5336802739930325f065f7d869f663eae3b8a00f71c8f7ab719175b692ca7ef5",
+   "title": "Limit pairing auto-confirmation to active handover bonding",
+   "kind": "fix",
+   "files": {
+    "NfcNci/src/com/android/nfc/handover/BluetoothPeripheralHandover.java": [
+     "100644 495001ef90206d43fe35a56fe048ed169aaa190c",
+     "100644 81992587269dc16e45435c25ca228efcb3b0bbd0"
+    ]
+   }
+  },
+  {
+   "id": "0026",
+   "project": "packages/modules/Permission",
+   "file": "patches/packages/modules/Permission/0026-pin-safety-center-redirection-destination.patch",
+   "sha256": "931c4de6c3389aceeefb88c8380e931c8835a8f2b6aa80f8a359b69176faebea",
+   "title": "Pin Safety Center redirection destination",
+   "kind": "fix",
+   "files": {
+    "PermissionController/src/com/android/permissioncontroller/safetycenter/ui/SafetyCenterActivity.java": [
+     "100644 9ef54c17360247c3c0fa2a1086b201cc3ce6ebec",
+     "100644 8bc5565ce5f22e2f646c2028a81df94026d8787d"
+    ]
+   }
+  },
+  {
+   "id": "0027",
+   "project": "packages/modules/Permission",
+   "file": "patches/packages/modules/Permission/0027-hide-untrusted-overlays-on-sensitive-permission-prompts.patch",
+   "sha256": "f10f75bd8fc76f6d5f2aaeb48816db16279b48db48cb1c9202d9c341c593e707",
+   "title": "Hide untrusted overlays on sensitive permission prompts",
+   "kind": "fix",
+   "files": {
+    "PermissionController/src/com/android/permissioncontroller/permission/ui/handheld/v37/RequestLocationButtonPermissionsFragment.kt": [
+     "100644 33de3ddb6ffcf69bc6efc154a65d238b31b7a427",
+     "100644 2104937d4b4fa2427ee98a8576d9a8dbec38fc95"
+    ],
+    "PermissionController/src/com/android/permissioncontroller/permission/ui/v37/RequestLocationButtonPermissionsActivity.kt": [
+     "100644 31b94b7cb0607116dc149b8ea0dd4953f59013a0",
+     "100644 576abda4ed2b18b0f63a0e39b56a47ac88644f8c"
+    ],
+    "PermissionController/src/com/android/permissioncontroller/role/ui/v37/RequestReadScreenContextActivity.kt": [
+     "100644 fe5d88bdf6aa672b7c1856c3b214e28ad901530c",
+     "100644 1507bae72e3a5581b8878e08217f4562f8d55ef3"
+    ],
+    "PermissionController/src/com/android/permissioncontroller/role/ui/v37/RequestReadScreenContextFragment.kt": [
+     "100644 f3c0d32d9c0f4669e6d0d0bf622f765d9557abef",
+     "100644 8a219446d6a2783b752a9c7253978ad6dcd61e74"
+    ]
+   }
+  },
+  {
+   "id": "0028",
+   "project": "packages/modules/Wifi",
+   "file": "patches/packages/modules/Wifi/0028-validate-p2p-package-against-effective-caller-uid.patch",
+   "sha256": "bc7dc71390508e98dc2971fb4d7e06325b6a60ce7218cfb3aeffacafd0ae13a7",
+   "title": "Validate P2P package against effective caller UID",
+   "kind": "fix",
+   "files": {
+    "service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java": [
+     "100644 c780154864e8d5be57d99a42643092bffd308886",
+     "100644 5eb14a26e763063d6472ffeb565a5296d55bb01b"
+    ]
+   }
+  }
+ ]
+}

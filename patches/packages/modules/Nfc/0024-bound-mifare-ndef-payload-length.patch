@@ -1,0 +1,16 @@
+diff --git a/libnfc-nci/src/nfc/tags/rw_mfc.cc b/libnfc-nci/src/nfc/tags/rw_mfc.cc
+index 536f5a4ede3ae5c7452088b5df92534db18acf83..8f0dcb2a3f76fd1518da47eda00d84a1b17efaa7 100644
+--- a/libnfc-nci/src/nfc/tags/rw_mfc.cc
++++ b/libnfc-nci/src/nfc/tags/rw_mfc.cc
+@@ -1492,6 +1492,11 @@ static bool rw_nfc_decodeTlv(uint8_t* data) {
+       return true;
+     } else if ((i + 3) < mfc_data->len) {
+       p_mfc->ndef_length = (((uint16_t)p[i + 2]) << 8) | ((uint16_t)(p[i + 3]));
++      const uint16_t capacity = (p_mfc->selres & RW_MFC_4K_Support) ? 3360 : 716;
++      if (p_mfc->ndef_length > capacity) {
++        LOG(ERROR) << "NDEF payload exceeds tag capacity";
++        return false;
++      }
+       p_mfc->ndef_start_pos = i + RW_MFC_LONG_TLV_SIZE;
+       LOG(VERBOSE) << __func__ << ": long NDEF SIZE=" << p_mfc->ndef_length;
+       return true;

@@ -1,0 +1,83 @@
+diff --git a/media/codec2/sfplugin/ReflectedParamUpdater.cpp b/media/codec2/sfplugin/ReflectedParamUpdater.cpp
+index d14b9b0a60f473049a3d4714c8dbbe0948abf3f7..341accd80e87b81f1a31d4bfbd569ba197f2e745 100644
+--- a/media/codec2/sfplugin/ReflectedParamUpdater.cpp
++++ b/media/codec2/sfplugin/ReflectedParamUpdater.cpp
+@@ -19,6 +19,7 @@
+ #include <utils/Log.h>
+ 
+ #include <iostream>
++#include <limits>
+ #include <set>
+ #include <sstream>
+ 
+@@ -146,8 +147,9 @@ void ReflectedParamUpdater::addParamStructDesc(
+                 ALOGD("Could not describe structure of %s", fieldName.c_str());
+                 continue;
+             }
+-            addParamStructDesc(desc, fieldName, offset + _C2ParamInspector::GetOffset(*it),
+-                               *structDesc_, reflector);
++            const size_t fieldOffset = _C2ParamInspector::GetOffset(*it);
++            if (fieldOffset > std::numeric_limits<size_t>::max() - offset) continue;
++            addParamStructDesc(desc, fieldName, offset + fieldOffset, *structDesc_, reflector);
+             continue;
+         }
+ 
+@@ -340,19 +342,21 @@ void ReflectedParamUpdater::updateParamsFromMessage(
+                 // is not part of the header
+                 if (desc.fieldDesc) {
+                     minOffset = sizeof(C2Param);
+-                    offset = sizeof(C2Param) + desc.offset
+-                            + _C2ParamInspector::GetOffset(*desc.fieldDesc);
++                    size_t fieldOffset = _C2ParamInspector::GetOffset(*desc.fieldDesc);
++                    if (desc.offset > std::numeric_limits<size_t>::max() - sizeof(C2Param)
++                            || fieldOffset > std::numeric_limits<size_t>::max()
++                                    - sizeof(C2Param) - desc.offset) return;
++                    offset = sizeof(C2Param) + desc.offset + fieldOffset;
+                 }
+ 
+                 // reallocate or trim flexible param (or whole param) as necessary
+                 if (!desc.fieldDesc /* whole param */ || desc.fieldDesc->extent() == 0) {
++                    if (offset < minOffset || offset > param->get()->size()
++                            || size > UINT32_MAX - offset) return;
+                     // reallocate param if more space is needed
+                     if (param->get()->size() < offset + size) {
+-                        if (size > INT32_MAX - offset || offset < minOffset) {
+-                            // size too long or offset too early - abandon
+-                            return;
+-                        }
+-                        C2Param *newParam = (C2Param *)::operator new(offset + size);
++                        C2Param *newParam = (C2Param *)::operator new(
++                                std::max(sizeof(C2Param), offset + size));
+                         new (newParam) _C2Param(offset + size, param->get()->index());
+                         if (offset > sizeof(C2Param)) {
+                             memcpy(newParam + 1, param->get() + 1, offset - sizeof(C2Param));
+@@ -365,11 +369,14 @@ void ReflectedParamUpdater::updateParamsFromMessage(
+                 } else if (desc.fieldDesc->type() == C2FieldDescriptor::BLOB) {
+                     // zero fill blobs if updating with smaller blob
+                     if (desc.fieldDesc->extent() > size) {
++                        if (offset > param->get()->size()
++                                || desc.fieldDesc->extent() > param->get()->size() - offset) return;
+                         memset((uint8_t *)(param->get()) + offset + size, 0,
+                                desc.fieldDesc->extent() - size);
+                     }
+                 }
+ 
++                if (offset > param->get()->size() || size > param->get()->size() - offset) return;
+                 memcpy((uint8_t *)(param->get()) + offset, ptr, size);
+             });
+ }
+@@ -525,8 +532,12 @@ ReflectedParamUpdater::getParams(const std::vector<C2Param*> &params) const {
+             continue;
+         }
+ 
+-        size_t offset = sizeof(C2Param) + desc.offset
+-                + _C2ParamInspector::GetOffset(*desc.fieldDesc);
++        const size_t fieldOffset = _C2ParamInspector::GetOffset(*desc.fieldDesc);
++        if (desc.offset > std::numeric_limits<size_t>::max() - sizeof(C2Param)
++                || fieldOffset > std::numeric_limits<size_t>::max()
++                        - sizeof(C2Param) - desc.offset) continue;
++        size_t offset = sizeof(C2Param) + desc.offset + fieldOffset;
++        if (offset > param->size()) continue;
+         uint8_t *data = (uint8_t *)param + offset;
+         C2FieldDescriptor::type_t fieldType = desc.fieldDesc->type();
+         switch (fieldType) {

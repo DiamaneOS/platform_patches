@@ -1,0 +1,47 @@
+diff --git a/packages/SystemUI/src/com/android/systemui/media/RingtonePlayer.java b/packages/SystemUI/src/com/android/systemui/media/RingtonePlayer.java
+index a7ae95c8edb6e148d455a9cec44b49b479614f09..fd2fd5cc6bed92e15e464004d52091261eab66fb 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/RingtonePlayer.java
++++ b/packages/SystemUI/src/com/android/systemui/media/RingtonePlayer.java
+@@ -17,6 +17,7 @@
+ package com.android.systemui.media;
+ 
+ import android.annotation.Nullable;
++import android.app.ActivityManager;
+ import android.content.ContentProvider;
+ import android.content.ContentResolver;
+ import android.content.Context;
+@@ -259,25 +260,16 @@ public class RingtonePlayer implements CoreStartable {
+          */
+         private void enforceUriUserId(Uri uri, @Nullable IBinder clientToken)
+                 throws SecurityException {
+-            final int uriUserId = ContentProvider.getUserIdFromUri(uri, UserHandle.myUserId());
+-            // for a non-system call, verify the URI to play belongs to the same user as the caller
+             final int uid = Binder.getCallingUid();
+-            final int pid = Binder.getCallingPid();
+-            if (UserHandle.isApp(uid) && (UserHandle.myUserId() != uriUserId)) {
+-                final String errorMessage = "Illegal access by uid:" + uid + " pid:" + pid
+-                        + " to uri=" + uri
+-                        + " content associated with user=" + uriUserId
+-                        + ", current userID=" + UserHandle.myUserId();
+-                if (android.media.audio.Flags.ringtoneUserUriCheck()) {
+-                    if (clientToken != null) {
+-                        // this client is accessing URIs it shouldn't access, stop it (which also
+-                        // removes it from mClients in the outer class)
+-                        stop(clientToken);
+-                    }
+-                    throw new SecurityException(errorMessage);
+-                } else {
+-                    Log.e(TAG, errorMessage, new Exception());
+-                }
++            final int callerUser = UserHandle.getUserId(uid);
++            int uriUser = ContentProvider.getUserIdFromUri(uri, callerUser);
++            if (uriUser == UserHandle.USER_CURRENT || uriUser == UserHandle.USER_CURRENT_OR_SELF) {
++                uriUser = ActivityManager.getCurrentUser();
++            }
++            if (UserHandle.isApp(uid) && callerUser != uriUser) {
++                if (clientToken != null) stop(clientToken);
++                throw new SecurityException("Ringtone URI user " + uriUser
++                        + " does not match caller user " + callerUser);
+             }
+         }
+     };

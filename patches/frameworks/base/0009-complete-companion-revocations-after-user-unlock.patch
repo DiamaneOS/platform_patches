@@ -1,0 +1,29 @@
+diff --git a/services/companion/java/com/android/server/companion/CompanionDeviceManagerService.java b/services/companion/java/com/android/server/companion/CompanionDeviceManagerService.java
+index 2eb29040c590ac96a5a1cd9e5901c1c9f262203b..34efbf75b24f2d5dbf94d4019aff89be82da1b5d 100644
+--- a/services/companion/java/com/android/server/companion/CompanionDeviceManagerService.java
++++ b/services/companion/java/com/android/server/companion/CompanionDeviceManagerService.java
+@@ -245,11 +245,6 @@ public class CompanionDeviceManagerService extends SystemService {
+         // Init association stores
+         mAssociationStore.refreshCache();
+ 
+-        // Remove any revoked associations after reboot.
+-        for (AssociationInfo ai : mAssociationStore.getRevokedAssociations()) {
+-            mDisassociationProcessor.disassociate(ai.getId(), REASON_REVOKED);
+-        }
+-
+         // Init UUID store
+         mObservableUuidStore.readObservableUuids(getContext().getUserId());
+ 
+@@ -294,6 +289,12 @@ public class CompanionDeviceManagerService extends SystemService {
+         Slog.i(TAG, "onUserUnlocked() user=" + user);
+         final int userId = user.getUserIdentifier();
+ 
++        for (AssociationInfo association : mAssociationStore.getRevokedAssociations()) {
++            if (association.getUserId() == userId) {
++                mDisassociationProcessor.disassociate(association.getId(), REASON_REVOKED);
++            }
++        }
++
+         // Notify and bind the app after the phone is unlocked.
+         mDevicePresenceProcessor.sendDevicePresenceEventOnUnlocked(userId);
+ 

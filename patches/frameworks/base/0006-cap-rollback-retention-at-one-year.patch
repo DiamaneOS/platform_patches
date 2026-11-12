@@ -1,0 +1,30 @@
+diff --git a/services/core/java/com/android/server/rollback/RollbackManagerServiceImpl.java b/services/core/java/com/android/server/rollback/RollbackManagerServiceImpl.java
+index f0dd0a7cf41231b20d715c0b1d68873e04829276..0d5613d7574c2069d0b9924e1e2536301df59f0b 100644
+--- a/services/core/java/com/android/server/rollback/RollbackManagerServiceImpl.java
++++ b/services/core/java/com/android/server/rollback/RollbackManagerServiceImpl.java
+@@ -137,6 +137,8 @@ class RollbackManagerServiceImpl extends IRollbackManager.Stub implements Rollba
+     private static final long DEFAULT_ROLLBACK_LIFETIME_DURATION_MILLIS =
+             TimeUnit.DAYS.toMillis(60);
+ 
++    private static final long MAX_ROLLBACK_LIFETIME_MILLIS = TimeUnit.DAYS.toMillis(365);
++
+     // Accessed on the handler thread only.
+     private long mRollbackLifetimeDurationInMillis = DEFAULT_ROLLBACK_LIFETIME_DURATION_MILLIS;
+ 
+@@ -610,6 +612,8 @@ class RollbackManagerServiceImpl extends IRollbackManager.Stub implements Rollba
+         if (mRollbackLifetimeDurationInMillis < 0) {
+             mRollbackLifetimeDurationInMillis = DEFAULT_ROLLBACK_LIFETIME_DURATION_MILLIS;
+         }
++        mRollbackLifetimeDurationInMillis = Math.min(
++                mRollbackLifetimeDurationInMillis, MAX_ROLLBACK_LIFETIME_MILLIS);
+         Slog.d(TAG, "mRollbackLifetimeDurationInMillis=" + mRollbackLifetimeDurationInMillis);
+         runExpiration();
+     }
+@@ -787,6 +791,7 @@ class RollbackManagerServiceImpl extends IRollbackManager.Stub implements Rollba
+                 rollbackLifetimeMillis = mRollbackLifetimeDurationInMillis;
+             }
+ 
++            rollbackLifetimeMillis = Math.min(rollbackLifetimeMillis, MAX_ROLLBACK_LIFETIME_MILLIS);
+             Instant rollbackExpiryTimestamp = rollback.getTimestamp()
+                     .plusMillis(rollbackLifetimeMillis);
+             if (!now.isBefore(rollbackExpiryTimestamp)) {

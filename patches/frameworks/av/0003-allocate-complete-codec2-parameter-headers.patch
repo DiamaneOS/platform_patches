@@ -1,0 +1,13 @@
+diff --git a/media/codec2/core/include/C2Param.h b/media/codec2/core/include/C2Param.h
+index c3133f7c409bba3b196a0defdbe89fddb46152af..290eda13930b7a112a1b8e8e20ce152e918bef5f 100644
+--- a/media/codec2/core/include/C2Param.h
++++ b/media/codec2/core/include/C2Param.h
+@@ -450,7 +450,7 @@ public:
+         if (orig.size() == 0) {
+             return nullptr;
+         }
+-        void *mem = ::operator new (orig.size());
++        void *mem = ::operator new (std::max<size_t>(sizeof(C2Param), orig.size()));
+         C2Param *param = new (mem) C2Param(orig.size(), orig._mIndex);
+         param->updateFrom(orig);
+         return std::unique_ptr<C2Param>(param);

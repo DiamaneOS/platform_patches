@@ -1,0 +1,47 @@
+diff --git a/services/autofill/java/com/android/server/autofill/Helper.java b/services/autofill/java/com/android/server/autofill/Helper.java
+index 5d16be653a17cc282e681d389a8a964bb6e2391a..f395e26a087596ec8747452522df35dda694e4e4 100644
+--- a/services/autofill/java/com/android/server/autofill/Helper.java
++++ b/services/autofill/java/com/android/server/autofill/Helper.java
+@@ -36,6 +36,7 @@ import android.graphics.drawable.Icon;
+ import android.hardware.display.DisplayManager;
+ import android.metrics.LogMaker;
+ import android.os.UserHandle;
++import android.net.Uri;
+ import android.service.autofill.Dataset;
+ import android.service.autofill.FillResponse;
+ import android.service.autofill.InternalSanitizer;
+@@ -95,14 +96,21 @@ public final class Helper {
+         throw new UnsupportedOperationException("contains static members only");
+     }
+ 
++    private static boolean isSafePresentationUri(int userId, Uri uri) {
++        if (uri == null) return true;
++        String scheme = uri.getScheme();
++        return "android.resource".equalsIgnoreCase(scheme)
++                || ("content".equalsIgnoreCase(scheme)
++                        && android.content.ContentProvider.getUserIdFromUri(uri, userId) == userId);
++    }
++
+     private static boolean checkRemoteViewUriPermissions(
+             @UserIdInt int userId, @NonNull RemoteViews rView) {
+         final AtomicBoolean permissionsOk = new AtomicBoolean(true);
+ 
+         rView.visitUris(
+                 uri -> {
+-                    int uriOwnerId = android.content.ContentProvider.getUserIdFromUri(uri, userId);
+-                    boolean allowed = uriOwnerId == userId;
++                    boolean allowed = isSafePresentationUri(userId, uri);
+                     permissionsOk.set(allowed & permissionsOk.get());
+                 });
+ 
+@@ -186,9 +194,7 @@ public final class Helper {
+                 continue;
+             }
+ 
+-            int iconUriId = android.content.ContentProvider.getUserIdFromUri(icon.getUri(), userId);
+-
+-            if (iconUriId != userId) {
++            if (!isSafePresentationUri(userId, icon.getUri())) {
+                 Slog.w(TAG, "sanitizeSlice() user: " + userId + " cannot access icons in Slice");
+                 return null;
+             }

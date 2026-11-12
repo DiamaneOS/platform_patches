@@ -1,0 +1,28 @@
+diff --git a/core/java/android/view/ViewRootImpl.java b/core/java/android/view/ViewRootImpl.java
+index 62bd3e12bc39197486d7bbe9a37c432980a04b6f..8edb4b7eb820a6895182e984b7dfdc8ae2b4d9f6 100644
+--- a/core/java/android/view/ViewRootImpl.java
++++ b/core/java/android/view/ViewRootImpl.java
+@@ -12885,6 +12885,8 @@ public final class ViewRootImpl implements ViewParent,
+ 
+         @Override
+         public void requestScrollCapture(IScrollCaptureResponseListener listener) {
++            final int uid = Binder.getCallingUid();
++            if (uid != Process.SYSTEM_UID && uid != Process.myUid()) return;
+             final ViewRootImpl viewAncestor = mViewAncestor.get();
+             if (viewAncestor != null) {
+                 viewAncestor.dispatchScrollCaptureRequest(listener);
+@@ -12893,8 +12895,14 @@ public final class ViewRootImpl implements ViewParent,
+ 
+         @Override
+         public void dumpWindow(ParcelFileDescriptor pfd) {
++            final int uid = Binder.getCallingUid();
++            if (uid != Process.SYSTEM_UID && uid != Process.myUid()) {
++                IoUtils.closeQuietly(pfd);
++                return;
++            }
+             final ViewRootImpl viewAncestor = mViewAncestor.get();
+             if (viewAncestor == null) {
++                IoUtils.closeQuietly(pfd);
+                 return;
+             }
+             viewAncestor.mHandler.postAtFrontOfQueue(() -> {

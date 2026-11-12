@@ -1,0 +1,26 @@
+diff --git a/services/core/java/com/android/server/pm/InstallPackageHelper.java b/services/core/java/com/android/server/pm/InstallPackageHelper.java
+index 3269be8ded9f55db5819f4da4456baf354a560c7..39e6c75386f07604cbd298dea39a4dd063e27270 100644
+--- a/services/core/java/com/android/server/pm/InstallPackageHelper.java
++++ b/services/core/java/com/android/server/pm/InstallPackageHelper.java
+@@ -1861,6 +1861,21 @@ final class InstallPackageHelper {
+                 }
+             }
+ 
++            if (parsedPackage.isStaticSharedLibrary()) {
++                final WatchedLongSparseArray<SharedLibraryInfo> libraries =
++                        mSharedLibraries.getSharedLibraryInfos(parsedPackage.getStaticSharedLibraryName());
++                if (libraries != null) {
++                    for (int i = 0; i < libraries.size(); i++) {
++                        SharedLibraryInfo library = libraries.valueAt(i);
++                        if (library.isStatic() && !parsedPackage.getManifestPackageName().equals(
++                                library.getDeclaringPackage().getPackageName())) {
++                            throw new PrepareFailure(INSTALL_FAILED_DUPLICATE_PACKAGE,
++                                    "Static library belongs to a different declaring package");
++                        }
++                    }
++                }
++            }
++
+             // To prevent a new package from being installed if its package name is
+             // already in use by an existing static library on the system.
+             final WatchedLongSparseArray<SharedLibraryInfo> staticLibInfos =

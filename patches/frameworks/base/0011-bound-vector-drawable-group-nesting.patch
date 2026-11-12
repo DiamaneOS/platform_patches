@@ -1,0 +1,15 @@
+diff --git a/graphics/java/android/graphics/drawable/VectorDrawable.java b/graphics/java/android/graphics/drawable/VectorDrawable.java
+index f94fb1220b9c8cce32867fef09a542c032c3db61..15ee35ef335f231d9129683c7c82c752cebf4b66 100644
+--- a/graphics/java/android/graphics/drawable/VectorDrawable.java
++++ b/graphics/java/android/graphics/drawable/VectorDrawable.java
+@@ -854,6 +854,10 @@ public class VectorDrawable extends Drawable {
+                     }
+                     state.mChangingConfigurations |= path.mChangingConfigurations;
+                 } else if (SHAPE_GROUP.equals(tagName)) {
++                    if (groupStack.size() > 100) {
++                        throw new XmlPullParserException(parser.getPositionDescription()
++                                + ": Vector group nesting exceeds 100");
++                    }
+                     VGroup newChildGroup = new VGroup();
+                     newChildGroup.inflate(res, attrs, theme);
+                     currentGroup.addChild(newChildGroup);

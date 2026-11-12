@@ -1,0 +1,65 @@
+diff --git a/core/java/android/view/autofill/IAutoFillManager.aidl b/core/java/android/view/autofill/IAutoFillManager.aidl
+index 040d1123cd434f62afc88f9915e7712cde9f12c7..1e95d0a585dcd4a3a7807e7a9a52b26b72528704 100644
+--- a/core/java/android/view/autofill/IAutoFillManager.aidl
++++ b/core/java/android/view/autofill/IAutoFillManager.aidl
+@@ -74,9 +74,12 @@ oneway interface IAutoFillManager {
+     void notifyImeAnimationStart(int sessionId, long startTimeMs, int userId);
+     void notifyImeAnimationEnd(int sessionId, long endTimeMs, int userId);
+     // For SystemUI to notify AutofillManager of a suggestion result from personal context.
++    @EnforcePermission("STATUS_BAR_SERVICE")
+     void notifySystemInlineSuggestions(int sessionId, in List<Dataset> inlineSuggestionsData, int userId);
+     // For SystemUI to notify AutofillManager that a remote fill has occurred.
++    @EnforcePermission("STATUS_BAR_SERVICE")
+     void autofillRemoteApp(IBinder activityToken, int taskId, in AutofillId id,
+         in AutofillValue value, int userId);
++    @EnforcePermission("MANAGE_AUTO_FILL")
+     void getNoiseInjectionMasterSeed(in IResultReceiver result);
+ }
+diff --git a/services/autofill/java/com/android/server/autofill/AutofillManagerService.java b/services/autofill/java/com/android/server/autofill/AutofillManagerService.java
+index a408fcb7e6124fddbf090cc93e06b4a0e0a9675e..6eaf11c334e827f3490d82437ad49b6a11c97478 100644
+--- a/services/autofill/java/com/android/server/autofill/AutofillManagerService.java
++++ b/services/autofill/java/com/android/server/autofill/AutofillManagerService.java
+@@ -50,6 +50,7 @@ import android.os.Bundle;
+ import android.os.Environment;
+ import android.os.IBinder;
+ import android.os.Parcelable;
++import android.os.PermissionEnforcer;
+ import android.os.RemoteCallback;
+ import android.os.RemoteException;
+ import android.os.ResultReceiver;
+@@ -1781,6 +1782,9 @@ public final class AutofillManagerService
+     }
+ 
+     final class AutoFillManagerServiceStub extends IAutoFillManager.Stub {
++        AutoFillManagerServiceStub() { this(PermissionEnforcer.fromContext(getContext())); }
++        AutoFillManagerServiceStub(PermissionEnforcer enforcer) { super(enforcer); }
++
+         @Override
+         public void addClient(IAutoFillManagerClient client, ComponentName componentName,
+                 int userId, IResultReceiver receiver, boolean credmanRequested) {
+@@ -2335,6 +2339,10 @@ public final class AutofillManagerService
+                 @NonNull AutofillId autofillId,
+                 @NonNull AutofillValue autofillValue,
+                 int userId) {
++            autofillRemoteApp_enforcePermission();
++            Objects.requireNonNull(shareableActivityToken);
++            Objects.requireNonNull(autofillId);
++            Objects.requireNonNull(autofillValue);
+             synchronized (mLock) {
+                 final AutofillManagerServiceImpl service =
+                         peekServiceForUserWithLocalBinderIdentityLocked(userId);
+@@ -2349,12 +2357,14 @@ public final class AutofillManagerService
+ 
+         @Override
+         public void getNoiseInjectionMasterSeed(IResultReceiver result) {
++            getNoiseInjectionMasterSeed_enforcePermission();
+             send(result, getNoiseInjectionMasterSeedValue());
+         }
+ 
+         @Override
+         public void notifySystemInlineSuggestions(
+                 int sessionId, List<Dataset> inlineSuggestionsData, int userId) {
++            notifySystemInlineSuggestions_enforcePermission();
+             synchronized (mLock) {
+                 final AutofillManagerServiceImpl service =
+                         peekServiceForUserWithLocalBinderIdentityLocked(userId);

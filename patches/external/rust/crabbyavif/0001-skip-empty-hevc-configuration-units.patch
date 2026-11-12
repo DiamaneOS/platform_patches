@@ -1,0 +1,14 @@
+diff --git a/src/parser/mp4box.rs b/src/parser/mp4box.rs
+index 11131bce9b90cf580091cf245056b02cae094cb8..31069f7e59bb6187aea9b8dd7041c692f80b2789 100644
+--- a/src/parser/mp4box.rs
++++ b/src/parser/mp4box.rs
+@@ -1087,6 +1087,9 @@ fn parse_hvcC(stream: &mut IStream) -> AvifResult<ItemProperty> {
+             // unsigned int(16) nalUnitLength;
+             let nal_unit_length = stream.read_u16()?;
+             let nal_unit = stream.get_slice(nal_unit_length as usize)?;
++            if nal_unit.is_empty() {
++                continue;
++            }
+             let nal_unit_type = (nal_unit[0] >> 1) & 0x3f;
+             match nal_unit_type {
+                 32 => vps = nal_unit.to_vec(),

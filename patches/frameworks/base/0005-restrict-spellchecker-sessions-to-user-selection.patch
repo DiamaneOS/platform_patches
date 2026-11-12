@@ -1,0 +1,18 @@
+diff --git a/services/core/java/com/android/server/textservices/TextServicesManagerService.java b/services/core/java/com/android/server/textservices/TextServicesManagerService.java
+index 9fed098eff7b75484922038e3dd1081fc19e850a..9306d8c64421a2d373805fc356a129445efb91af 100644
+--- a/services/core/java/com/android/server/textservices/TextServicesManagerService.java
++++ b/services/core/java/com/android/server/textservices/TextServicesManagerService.java
+@@ -610,10 +610,11 @@ public class TextServicesManagerService extends ITextServicesManager.Stub {
+             }
+             final SpellCheckerInfo sci = spellCheckerMap.get(sciId);
+             final int uid = Binder.getCallingUid();
+-            if (!canCallerAccessSpellChecker(sci, uid, userId)) {
++            final SpellCheckerInfo selected = getCurrentSpellCheckerForUser(userId);
++            if (selected == null || !selected.getId().equals(sci.getId())) {
+                 if (DBG) {
+                     Slog.d(TAG, "Spell checker " + sci.getId()
+-                            + " is not visible to the caller " + uid);
++                            + " is not selected for caller " + uid);
+                 }
+                 return;
+             }

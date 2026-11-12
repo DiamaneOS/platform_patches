@@ -1,0 +1,236 @@
+diff --git a/core/java/android/os/BaseBundle.java b/core/java/android/os/BaseBundle.java
+index ab670c016efe88637b01d5b370e18f84789d8afa..05949adcf7ceee06da245713552ebc4c92719e00 100644
+--- a/core/java/android/os/BaseBundle.java
++++ b/core/java/android/os/BaseBundle.java
+@@ -54,6 +54,7 @@ public class BaseBundle implements Parcel.ClassLoaderProvider {
+     /** @hide */
+     protected static final String TAG = "Bundle";
+     static final boolean DEBUG = false;
++    static final int MAX_NESTED_BUNDLE_DEPTH = 100;
+ 
+     /**
+      * Keep them in sync with frameworks/native/libs/binder/PersistableBundle.cpp.
+@@ -224,6 +225,10 @@ public class BaseBundle implements Parcel.ClassLoaderProvider {
+      * @hide
+      */
+     BaseBundle(BaseBundle from, boolean deep) {
++        this(from, deep, 0);
++    }
++
++    BaseBundle(BaseBundle from, boolean deep, int depth) {
+         synchronized (from) {
+             mClassLoader = from.mClassLoader;
+ 
+@@ -238,7 +243,7 @@ public class BaseBundle implements Parcel.ClassLoaderProvider {
+                     final int n = fromMap.size();
+                     mMap = new ArrayMap<>(n);
+                     for (int i = 0; i < n; i++) {
+-                        mMap.append(fromMap.keyAt(i), deepCopyValue(fromMap.valueAt(i)));
++                        mMap.append(fromMap.keyAt(i), deepCopyValue(fromMap.valueAt(i), depth));
+                     }
+                 }
+             } else {
+@@ -698,16 +703,16 @@ public class BaseBundle implements Parcel.ClassLoaderProvider {
+         mMap.clear();
+     }
+ 
+-    private Object deepCopyValue(Object value) {
+-        if (value == null) {
++    private Object deepCopyValue(Object value, int depth) {
++        if (depth > MAX_NESTED_BUNDLE_DEPTH || value == null) {
+             return null;
+         }
+         if (value instanceof Bundle) {
+-            return ((Bundle)value).deepCopy();
++            return ((Bundle)value).deepCopy(depth + 1);
+         } else if (value instanceof PersistableBundle) {
+-            return ((PersistableBundle)value).deepCopy();
++            return ((PersistableBundle)value).deepCopy(depth + 1);
+         } else if (value instanceof ArrayList) {
+-            return deepcopyArrayList((ArrayList) value);
++            return deepcopyArrayList((ArrayList) value, depth + 1);
+         } else if (value.getClass().isArray()) {
+             if (value instanceof int[]) {
+                 return ((int[])value).clone();
+@@ -730,11 +735,11 @@ public class BaseBundle implements Parcel.ClassLoaderProvider {
+         return value;
+     }
+ 
+-    private ArrayList deepcopyArrayList(ArrayList from) {
++    private ArrayList deepcopyArrayList(ArrayList from, int depth) {
+         final int N = from.size();
+         ArrayList out = new ArrayList(N);
+         for (int i=0; i<N; i++) {
+-            out.add(deepCopyValue(from.get(i)));
++            out.add(deepCopyValue(from.get(i), depth));
+         }
+         return out;
+     }
+diff --git a/core/java/android/os/Bundle.java b/core/java/android/os/Bundle.java
+index db27dd5f41fa46236c661bf57382954a32f05543..d2c42624adb5e598acb4199dca246a03ece60c65 100644
+--- a/core/java/android/os/Bundle.java
++++ b/core/java/android/os/Bundle.java
+@@ -190,6 +190,10 @@ public final class Bundle extends BaseBundle implements Cloneable, Parcelable {
+         super(from, deep);
+     }
+ 
++    Bundle(Bundle from, boolean deep, int depth) {
++        super(from, deep, depth);
++    }
++
+     /**
+      * If {@link #mParcelledData} is not null, copy the HAS FDS bit from it because it's fast.
+      * Otherwise (if {@link #mParcelledData} is already null), leave {@link #FLAG_HAS_FDS_KNOWN}
+@@ -347,7 +351,11 @@ public final class Bundle extends BaseBundle implements Cloneable, Parcelable {
+      * are referenced as-is and not copied in any way.
+      */
+     public Bundle deepCopy() {
+-        return new Bundle(this, /* deep */ true);
++        return deepCopy(0);
++    }
++
++    Bundle deepCopy(int depth) {
++        return new Bundle(this, /* deep */ true, depth);
+     }
+ 
+     /**
+diff --git a/core/java/android/os/PersistableBundle.java b/core/java/android/os/PersistableBundle.java
+index 3d76934f09b9d8798183e4089c3ea5b9fbefc4b8..9dc387944a9d556297ec65396c71b4ee466b0787 100644
+--- a/core/java/android/os/PersistableBundle.java
++++ b/core/java/android/os/PersistableBundle.java
+@@ -195,6 +195,10 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+         super(from, deep);
+     }
+ 
++    PersistableBundle(PersistableBundle from, boolean deep, int depth) {
++        super(from, deep, depth);
++    }
++
+     /**
+      * Make a PersistableBundle for a single key/value pair.
+      *
+@@ -223,7 +227,11 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+      * are referenced as-is and not copied in any way.
+      */
+     public PersistableBundle deepCopy() {
+-        return new PersistableBundle(this, /* deep */ true);
++        return deepCopy(0);
++    }
++
++    PersistableBundle deepCopy(int depth) {
++        return new PersistableBundle(this, /* deep */ true, depth);
+     }
+ 
+     /**
+@@ -278,10 +286,15 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+     @Override
+     public void writeUnknownObject(Object v, String name, TypedXmlSerializer out)
+             throws XmlPullParserException, IOException {
++        writeUnknownObject(v, name, out, 0);
++    }
++
++    private static void writeUnknownObject(Object v, String name, TypedXmlSerializer out,
++            int depth) throws XmlPullParserException, IOException {
+         if (v instanceof PersistableBundle) {
+             out.startTag(null, TAG_PERSISTABLEMAP);
+             out.attribute(null, "name", name);
+-            ((PersistableBundle) v).saveToXml(out);
++            ((PersistableBundle) v).saveToXml(out, depth + 1);
+             out.endTag(null, TAG_PERSISTABLEMAP);
+         } else {
+             throw new XmlPullParserException("Unknown Object o=" + v);
+@@ -295,6 +308,14 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+ 
+     /** @hide */
+     public void saveToXml(TypedXmlSerializer out) throws IOException, XmlPullParserException {
++        saveToXml(out, 0);
++    }
++
++    private void saveToXml(TypedXmlSerializer out, int depth)
++            throws IOException, XmlPullParserException {
++        if (depth > MAX_NESTED_BUNDLE_DEPTH) {
++            throw new XmlPullParserException("PersistableBundle nesting exceeds limit");
++        }
+         unparcel();
+         // Explicitly drop invalid types an attacker may have added before persisting.
+         for (int i = mMap.size() - 1; i >= 0; --i) {
+@@ -305,7 +326,8 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+                 mMap.removeAt(i);
+             }
+         }
+-        XmlUtils.writeMapXml(mMap, out, this);
++        XmlUtils.writeMapXml(mMap, out,
++                (value, name, serializer) -> writeUnknownObject(value, name, serializer, depth));
+     }
+ 
+     /**
+@@ -318,6 +340,11 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+      * @hide
+      */
+     public boolean isBundleContentsWithinLengthLimit(int limit) {
++        return isBundleContentsWithinLengthLimit(limit, 0);
++    }
++
++    private boolean isBundleContentsWithinLengthLimit(int limit, int depth) {
++        if (depth > MAX_NESTED_BUNDLE_DEPTH) return false;
+         unparcel();
+         if (mMap == null) {
+             return true;
+@@ -338,7 +365,7 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+                     }
+                 }
+             } else if (value instanceof PersistableBundle
+-                    && !((PersistableBundle) value).isBundleContentsWithinLengthLimit(limit)) {
++                    && !((PersistableBundle) value).isBundleContentsWithinLengthLimit(limit, depth + 1)) {
+                 return false;
+             }
+         }
+@@ -346,12 +373,22 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+     }
+ 
+     /** @hide */
+-    static class MyReadMapCallback implements  XmlUtils.ReadMapCallback {
++    static class MyReadMapCallback implements XmlUtils.ReadMapCallback {
++        private final int mDepth;
++
++        MyReadMapCallback() {
++            this(0);
++        }
++
++        MyReadMapCallback(int depth) {
++            mDepth = depth;
++        }
++
+         @Override
+         public Object readThisUnknownObjectXml(TypedXmlPullParser in, String tag)
+                 throws XmlPullParserException, IOException {
+             if (TAG_PERSISTABLEMAP.equals(tag)) {
+-                return restoreFromXml(in);
++                return restoreFromXml(in, mDepth + 1);
+             }
+             throw new XmlPullParserException("Unknown tag=" + tag);
+         }
+@@ -389,6 +426,14 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+     /** @hide */
+     public static PersistableBundle restoreFromXml(TypedXmlPullParser in) throws IOException,
+             XmlPullParserException {
++        return restoreFromXml(in, 0);
++    }
++
++    private static PersistableBundle restoreFromXml(TypedXmlPullParser in, int depth)
++            throws IOException, XmlPullParserException {
++        if (depth > MAX_NESTED_BUNDLE_DEPTH) {
++            throw new XmlPullParserException("PersistableBundle nesting exceeds limit");
++        }
+         final int outerDepth = in.getDepth();
+         final String startTag = in.getName();
+         final String[] tagName = new String[1];
+@@ -400,7 +445,7 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
+                 // input invalid data in the persisted file.
+                 return new PersistableBundle((ArrayMap<String, Object>)
+                         XmlUtils.readThisArrayMapXml(in, startTag, tagName,
+-                        new MyReadMapCallback()),
++                        new MyReadMapCallback(depth)),
+                         /* throwException */ false);
+             }
+         }

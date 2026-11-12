@@ -1,0 +1,68 @@
+diff --git a/apex/jobscheduler/service/java/com/android/server/job/JobSchedulerService.java b/apex/jobscheduler/service/java/com/android/server/job/JobSchedulerService.java
+index e389ebb30e28c1c2034e3b1cdeaa250dc2ca7c26..13e839be9081c748b6a0d4710a17f679d5d62a6b 100644
+--- a/apex/jobscheduler/service/java/com/android/server/job/JobSchedulerService.java
++++ b/apex/jobscheduler/service/java/com/android/server/job/JobSchedulerService.java
+@@ -219,6 +219,8 @@ public class JobSchedulerService extends com.android.server.SystemService
+     @GuardedBy("mLock")
+     private final ArrayMap<String, SparseIntArray> mProxiedJobsCounts =
+             new ArrayMap<>();
++    @GuardedBy("mLock")
++    private boolean mProxiedCountsReady;
+ 
+     /**
+      * Require the hosting job to specify a network constraint if the included
+@@ -3237,7 +3239,7 @@ public class JobSchedulerService extends com.android.server.SystemService
+ 
+         // Remove from store as well as controllers.
+         final boolean removed = mJobs.remove(jobStatus, removeFromPersisted);
+-        if (isSystemProxiedJob(jobStatus)) {
++        if (removed && isSystemProxiedJob(jobStatus)) {
+             decrementProxiedJobCountLocked(
+                 jobStatus.getSourceUid(), jobStatus.getSourcePackageName());
+         }
+@@ -6332,20 +6334,19 @@ public class JobSchedulerService extends com.android.server.SystemService
+ 
+     @GuardedBy("mLock")
+     private void decrementProxiedJobCountLocked(int sourceUid, String sourcePackageName) {
+-        if (!Flags.enforceProxiedJobsLimit()) {
++        if (!Flags.enforceProxiedJobsLimit()) return;
++        SparseIntArray counts = mProxiedJobsCounts.get(sourcePackageName);
++        int index = counts == null ? -1 : counts.indexOfKey(sourceUid);
++        if (index < 0) {
++            if (mProxiedCountsReady) Slog.w(TAG, "Missing proxied job count for " + sourcePackageName);
+             return;
+         }
+-        final SparseIntArray uidCounts = mProxiedJobsCounts.get(sourcePackageName);
+-        if (uidCounts != null) {
+-            final int uidIndex = uidCounts.indexOfKey(sourceUid);
+-            if (uidIndex >= 0) {
+-                uidCounts.setValueAt(uidIndex, Math.max(uidCounts.valueAt(uidIndex) - 1, 0));
+-            } else {
+-                Slog.w(TAG, "Decrementing count for non-tracked UID: " + sourceUid + " in package: "
+-                        + sourcePackageName);
+-            }
++        int remaining = counts.valueAt(index) - 1;
++        if (remaining > 0) {
++            counts.setValueAt(index, remaining);
+         } else {
+-            Slog.wtf(TAG, "Decrementing count for non-tracked package: " + sourcePackageName);
++            counts.removeAt(index);
++            if (counts.size() == 0) mProxiedJobsCounts.remove(sourcePackageName);
+         }
+     }
+ 
+@@ -6358,12 +6359,14 @@ public class JobSchedulerService extends com.android.server.SystemService
+         // We don't need to persist mProxiedJobsCounts to disk, because we can
+         // rebuild it on boot from the persisted jobs.
+         synchronized (mLock) {
++            mProxiedJobsCounts.clear();
+             mJobs.forEachJob((job) -> {
+                 if (isSystemProxiedJob(job)) {
+                     incrementProxiedJobCountLocked(
+                             job.getSourceUid(), job.getSourcePackageName());
+                 }
+             });
++            mProxiedCountsReady = true;
+         }
+     }
+ 

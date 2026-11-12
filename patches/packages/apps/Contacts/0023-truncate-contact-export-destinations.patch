@@ -1,0 +1,15 @@
+diff --git a/src/com/android/contacts/vcard/ExportProcessor.java b/src/com/android/contacts/vcard/ExportProcessor.java
+index fd5134c389ebe7215a6f3a181db6ccdf1dec8401..a23015bafcabf7671517f0a86a7167eeace42ae8 100755
+--- a/src/com/android/contacts/vcard/ExportProcessor.java
++++ b/src/com/android/contacts/vcard/ExportProcessor.java
+@@ -127,8 +127,8 @@ public class ExportProcessor extends ProcessorBase {
+             final Uri uri = request.destUri;
+             final OutputStream outputStream;
+             try {
+-                outputStream = mResolver.openOutputStream(uri);
+-            } catch (FileNotFoundException e) {
++                outputStream = mResolver.openOutputStream(uri, "wt");
++            } catch (FileNotFoundException | IllegalArgumentException e) {
+                 Log.w(LOG_TAG, "FileNotFoundException thrown", e);
+                 // Need concise title.
+ 

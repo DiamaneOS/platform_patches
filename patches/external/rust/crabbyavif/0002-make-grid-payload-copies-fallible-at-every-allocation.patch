@@ -1,0 +1,42 @@
+diff --git a/src/codecs/android_mediacodec.rs b/src/codecs/android_mediacodec.rs
+index fa7271f8bcf20a8991692ce76d2e7e77b8cf89a7..2bce7ec9772e9cb36f2e654a1d175d62b9fafbc5 100644
+--- a/src/codecs/android_mediacodec.rs
++++ b/src/codecs/android_mediacodec.rs
+@@ -865,7 +865,12 @@ impl MediaCodec {
+         // Create a thread to enqueue the input frames.
+         let codec_config = self.config.unwrap_ref().codec_config.clone();
+         let codec = MediaCodecThreadWrapper(self.codec.unwrap());
+-        let payloads_vec = payloads.to_vec();
++        let mut payloads_vec = create_vec_exact(payloads.len())?;
++        for payload in payloads {
++            let mut copied = create_vec_exact(payload.len())?;
++            copied.extend_from_slice(payload);
++            payloads_vec.push(copied);
++        }
+         let enqueue_payloads_thread = thread::spawn(|| {
+             Self::enqueue_payloads(
+                 codec,
+diff --git a/src/decoder/mod.rs b/src/decoder/mod.rs
+index 973623c4838d66557f845a867386a0e737cabdd7..8bd43763c38b29d5de9fbf4e5066db56cea5b93e 100644
+--- a/src/decoder/mod.rs
++++ b/src/decoder/mod.rs
+@@ -1903,7 +1903,7 @@ impl Decoder {
+         }
+         let previous_decoded_tile_count =
+             self.tile_info[decoding_item.usize()].decoded_tile_count as usize;
+-        let mut payloads = vec![];
++        let mut payloads = create_vec_exact(tile_count.saturating_sub(previous_decoded_tile_count))?;
+         let mut pending_read = false;
+         for tile_index in previous_decoded_tile_count..tile_count {
+             let tile = &self.tiles[decoding_item.usize()][tile_index];
+@@ -1932,7 +1932,9 @@ impl Decoder {
+                 }
+                 Err(err) => return Err(err),
+             };
+-            payloads.push(data.to_vec());
++            let mut payload = create_vec_exact(data.len())?;
++            payload.extend_from_slice(data);
++            payloads.push(payload);
+         }
+         let grid = &self.tile_info[decoding_item.usize()].grid;
+         // If we are not doing incremental decode, all the cells must have been read.

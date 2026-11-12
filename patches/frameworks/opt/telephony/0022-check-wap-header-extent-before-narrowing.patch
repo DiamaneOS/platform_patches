@@ -1,0 +1,20 @@
+diff --git a/src/java/com/android/internal/telephony/WapPushOverSms.java b/src/java/com/android/internal/telephony/WapPushOverSms.java
+index ef692a9dc610d0eccefb8b488e8af45404f4b1f9..f30508d7353428acb20a6822c6ebdc4d7b6ac638 100644
+--- a/src/java/com/android/internal/telephony/WapPushOverSms.java
++++ b/src/java/com/android/internal/telephony/WapPushOverSms.java
+@@ -214,8 +214,14 @@ public class WapPushOverSms implements ServiceConnection {
+                 result.statusCode = Intents.RESULT_SMS_GENERIC_ERROR;
+                 return result;
+             }
+-            int headerLength = (int) pduDecoder.getValue32();
++            final long decodedLength = pduDecoder.getValue32();
+             index += pduDecoder.getDecodedDataLength();
++            if (index < 0 || index > pdu.length || decodedLength < 0
++                    || decodedLength > pdu.length - index) {
++                result.statusCode = Intents.RESULT_SMS_GENERIC_ERROR;
++                return result;
++            }
++            final int headerLength = (int) decodedLength;
+ 
+             int headerStartIndex = index;
+ 

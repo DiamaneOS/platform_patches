@@ -1,0 +1,17 @@
+diff --git a/core/java/android/view/WindowlessWindowManager.java b/core/java/android/view/WindowlessWindowManager.java
+index b199e6dfb9deabe75caada4d658d2f7aab300588..04620352c984812fff5f9a4f502447113ae9db42 100644
+--- a/core/java/android/view/WindowlessWindowManager.java
++++ b/core/java/android/view/WindowlessWindowManager.java
+@@ -783,7 +783,11 @@ public class WindowlessWindowManager implements IWindowSession {
+         for (State windowInfo : mStateForWindow.values()) {
+             int changes = windowInfo.mLastReportedParams.copyFrom(windowInfo.mParams);
+             hasChanges |= (changes != 0);
+-            params[index++] = windowInfo.mParams;
++            WindowManager.LayoutParams update = new WindowManager.LayoutParams();
++            update.copyFrom(windowInfo.mParams);
++            update.token = null;
++            update.mWindowContextToken = null;
++            params[index++] = update;
+         }
+ 
+         if (hasChanges) {

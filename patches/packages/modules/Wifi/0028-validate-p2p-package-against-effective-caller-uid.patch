@@ -1,0 +1,18 @@
+diff --git a/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java b/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java
+index c780154864e8d5be57d99a42643092bffd308886..5eb14a26e763063d6472ffeb565a5296d55bb01b 100644
+--- a/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java
++++ b/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java
+@@ -1075,10 +1075,10 @@ public class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+             }
+         }
+ 
+-        // get the DisplayId of the caller (if available)
++        mWifiPermissionsUtil.checkPackage(uidToUse, packageNameToUse);
++        // get the DisplayId of the validated caller (if available)
+         int displayId = Display.DEFAULT_DISPLAY;
+-        if (mWifiPermissionsUtil.isSystem(packageName, callerUid)) {
+-            mWifiPermissionsUtil.checkPackage(callerUid, packageName);
++        if (extras != null && mWifiPermissionsUtil.isSystem(packageNameToUse, uidToUse)) {
+             displayId = extras.getInt(WifiP2pManager.EXTRA_PARAM_KEY_DISPLAY_ID,
+                     Display.DEFAULT_DISPLAY);
+         }

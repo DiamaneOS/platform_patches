@@ -1,0 +1,12 @@
+diff --git a/services/inputflinger/dispatcher/InputDispatcher.cpp b/services/inputflinger/dispatcher/InputDispatcher.cpp
+index f7dc6ec7fc36fadb8409bfd3d2acdfbf860aad69..e430568907ca7022f11298525716a6e8608ca73a 100644
+--- a/services/inputflinger/dispatcher/InputDispatcher.cpp
++++ b/services/inputflinger/dispatcher/InputDispatcher.cpp
+@@ -7544,7 +7544,6 @@ InputDispatcher::DispatcherTouchState::transferWallpaperTouch(
+             toConnection->inputState.mergePointerStateTo(wallpaperConnection->inputState);
+             pointerDowns.emplace_back(downTimeInTarget, wallpaperConnection, wallpaperFlags);
+         }
+-        pointerDowns.emplace_back(downTimeInTarget, wallpaperConnection, wallpaperFlags);
+     }
+     return {std::move(cancellations), pointerDowns};
+ }

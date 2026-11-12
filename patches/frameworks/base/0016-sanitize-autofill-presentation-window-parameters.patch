@@ -1,0 +1,50 @@
+diff --git a/core/java/android/view/autofill/AutofillPopupWindow.java b/core/java/android/view/autofill/AutofillPopupWindow.java
+index 3161c3c498cfd1d27238b4cea4c10bedf48d4b0d..135dbd1bc4acbb0209dd67e5746da8c8edb68f0c 100644
+--- a/core/java/android/view/autofill/AutofillPopupWindow.java
++++ b/core/java/android/view/autofill/AutofillPopupWindow.java
+@@ -114,8 +114,7 @@ public class AutofillPopupWindow extends PopupWindow {
+         // For fullscreen mode, autofill window is at the bottom of screen, it should not be
+         // clipped by app activity window. Fullscreen autofill window does not need to follow app
+         // anchor view position.
+-        setWindowLayoutType(mFullScreen ? WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG
+-                : WindowManager.LayoutParams.TYPE_APPLICATION_ABOVE_SUB_PANEL);
++        setWindowLayoutType(Helper.getLayoutType(mFullScreen));
+         // If we are showing the popup for a virtual view we use a fake view which
+         // delegates to the anchor but present itself with the same bounds as the
+         // virtual view. This ensures that the location logic in popup works
+diff --git a/core/java/android/view/autofill/Helper.java b/core/java/android/view/autofill/Helper.java
+index 2f12bb28e7d64f3926521658048b30be48d6cbab..f97d0630843f8fc2a9b0bbbb453a78c5af9be024 100644
+--- a/core/java/android/view/autofill/Helper.java
++++ b/core/java/android/view/autofill/Helper.java
+@@ -25,6 +25,11 @@ import java.util.Set;
+ 
+ /** @hide */
+ public final class Helper {
++    public static int getLayoutType(boolean fullScreen) {
++        return fullScreen ? android.view.WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG
++                : android.view.WindowManager.LayoutParams.TYPE_APPLICATION_ABOVE_SUB_PANEL;
++    }
++
+ 
+     // Debug-level flags are defined when service is bound.
+     public static boolean sDebug = false;
+diff --git a/services/autofill/java/com/android/server/autofill/ui/FillUi.java b/services/autofill/java/com/android/server/autofill/ui/FillUi.java
+index 781babab6e36cb9a3a92000619fb049664808092..8d8fba92e7a81673d1ac8a4c67f1e0ecd6aaca25 100644
+--- a/services/autofill/java/com/android/server/autofill/ui/FillUi.java
++++ b/services/autofill/java/com/android/server/autofill/ui/FillUi.java
+@@ -763,7 +763,14 @@ final class FillUi {
+             try {
+                 params.packageName = "android";
+                 params.setTitle("Autofill UI"); // Title is set for debugging purposes
+-                params.privateFlags |= SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS;
++                params.type = android.view.autofill.Helper.getLayoutType(mFullScreen);
++                params.alpha = 1.0f;
++                params.privateFlags = SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
++                        | WindowManager.LayoutParams.PRIVATE_FLAG_LAYOUT_CHILD_WINDOW_IN_PARENT_FRAME;
++                params.flags &= ~(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
++                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
++                params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
++                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                 if (!mShowing) {
+                     params.accessibilityTitle = mContentView.getContext()
+                             .getString(R.string.autofill_picker_accessibility_title);
