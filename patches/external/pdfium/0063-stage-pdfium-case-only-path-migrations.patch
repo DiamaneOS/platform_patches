@@ -1,0 +1,36 @@
+diff --git a/core/fxcodec/jbig2/JBig2_Context.cpp b/core/fxcodec/jbig2/JBig2_Context.cpp.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Context.cpp
+rename to core/fxcodec/jbig2/JBig2_Context.cpp.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Context.h b/core/fxcodec/jbig2/JBig2_Context.h.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Context.h
+rename to core/fxcodec/jbig2/JBig2_Context.h.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Define.h b/core/fxcodec/jbig2/JBig2_Define.h.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Define.h
+rename to core/fxcodec/jbig2/JBig2_Define.h.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Image.cpp b/core/fxcodec/jbig2/JBig2_Image.cpp.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Image.cpp
+rename to core/fxcodec/jbig2/JBig2_Image.cpp.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Image.h b/core/fxcodec/jbig2/JBig2_Image.h.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Image.h
+rename to core/fxcodec/jbig2/JBig2_Image.h.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Image_unittest.cpp b/core/fxcodec/jbig2/JBig2_Image_unittest.cpp.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Image_unittest.cpp
+rename to core/fxcodec/jbig2/JBig2_Image_unittest.cpp.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Page.h b/core/fxcodec/jbig2/JBig2_Page.h.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Page.h
+rename to core/fxcodec/jbig2/JBig2_Page.h.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Segment.cpp b/core/fxcodec/jbig2/JBig2_Segment.cpp.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Segment.cpp
+rename to core/fxcodec/jbig2/JBig2_Segment.cpp.migration
+diff --git a/core/fxcodec/jbig2/JBig2_Segment.h b/core/fxcodec/jbig2/JBig2_Segment.h.migration
+similarity index 100%
+rename from core/fxcodec/jbig2/JBig2_Segment.h
+rename to core/fxcodec/jbig2/JBig2_Segment.h.migration

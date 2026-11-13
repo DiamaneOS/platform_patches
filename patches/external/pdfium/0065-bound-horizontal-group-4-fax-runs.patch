@@ -1,0 +1,42 @@
+diff --git a/core/fxcodec/fax/faxmodule.cpp b/core/fxcodec/fax/faxmodule.cpp
+index be2c61b0ecf84de120c59252389eaebc18b29dea..53e14cdde597d1060fcc424b27861176eab925d0 100644
+--- a/core/fxcodec/fax/faxmodule.cpp
++++ b/core/fxcodec/fax/faxmodule.cpp
+@@ -360,6 +360,9 @@ void FaxG4GetRow(pdfium::span<const uint8_t> src_buf,
+                       : pdfium::span<const uint8_t, pdfium::dynamic_extent>(
+                             kFaxBlackRunIns),
+               src_buf, bitpos);
++          if (run < 0 || run > columns - run_len1) {
++            return;
++          }
+           run_len1 += run;
+           if (run < 64) {
+             break;
+@@ -368,9 +371,6 @@ void FaxG4GetRow(pdfium::span<const uint8_t> src_buf,
+         if (a0 < 0) {
+           ++run_len1;
+         }
+-        if (run_len1 < 0) {
+-          return;
+-        }
+ 
+         a1 = a0 + run_len1;
+         if (!a0color) {
+@@ -385,14 +385,14 @@ void FaxG4GetRow(pdfium::span<const uint8_t> src_buf,
+                       : pdfium::span<const uint8_t, pdfium::dynamic_extent>(
+                             kFaxWhiteRunIns),
+               src_buf, bitpos);
++          if (run < 0 || run > columns - run_len2) {
++            return;
++          }
+           run_len2 += run;
+           if (run < 64) {
+             break;
+           }
+         }
+-        if (run_len2 < 0) {
+-          return;
+-        }
+         a2 = a1 + run_len2;
+         if (a0color) {
+           FaxFillBits(dest_buf, columns, a1, a2);

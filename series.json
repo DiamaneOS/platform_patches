@@ -1497,6 +1497,3602 @@
     ]
    },
    "upstream": "Little CMS 2.19, as in PDFium fcb63e51"
+  },
+  {
+   "id": "0063",
+   "project": "external/pdfium",
+   "file": "patches/external/pdfium/0063-stage-pdfium-case-only-path-migrations.patch",
+   "sha256": "370b6967075472c0028d8b5d02dc85caf972125a6b1b0d01096c5aff307fe873",
+   "title": "Stage PDFium case-only path migrations",
+   "kind": "import",
+   "files": {
+    "core/fxcodec/jbig2/JBig2_Context.cpp": [
+     "100644 7fc61cab2a98e972dbe0c7ca77db2e8cb199a14d",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Context.cpp.migration": [
+     null,
+     "100644 7fc61cab2a98e972dbe0c7ca77db2e8cb199a14d"
+    ],
+    "core/fxcodec/jbig2/JBig2_Context.h": [
+     "100644 b7521e50291f33177b93aa4c89a9bb80f534769d",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Context.h.migration": [
+     null,
+     "100644 b7521e50291f33177b93aa4c89a9bb80f534769d"
+    ],
+    "core/fxcodec/jbig2/JBig2_Define.h": [
+     "100644 f2796f5945336f06c6cef4a002213330174c84f1",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Define.h.migration": [
+     null,
+     "100644 f2796f5945336f06c6cef4a002213330174c84f1"
+    ],
+    "core/fxcodec/jbig2/JBig2_Image.cpp": [
+     "100644 d1c2e4a34bfc844e46aeb2f575d2780388061b2f",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Image.cpp.migration": [
+     null,
+     "100644 d1c2e4a34bfc844e46aeb2f575d2780388061b2f"
+    ],
+    "core/fxcodec/jbig2/JBig2_Image.h": [
+     "100644 7e72e9e963187d0b486a9b7dc440317024b7b92c",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Image.h.migration": [
+     null,
+     "100644 7e72e9e963187d0b486a9b7dc440317024b7b92c"
+    ],
+    "core/fxcodec/jbig2/JBig2_Image_unittest.cpp": [
+     "100644 06436a5daea3ed31ccbe7a8543706c1754567f3a",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Image_unittest.cpp.migration": [
+     null,
+     "100644 06436a5daea3ed31ccbe7a8543706c1754567f3a"
+    ],
+    "core/fxcodec/jbig2/JBig2_Page.h": [
+     "100644 6ea4f351e8cc40fc0f1d26c6b734609f219bf56e",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Page.h.migration": [
+     null,
+     "100644 6ea4f351e8cc40fc0f1d26c6b734609f219bf56e"
+    ],
+    "core/fxcodec/jbig2/JBig2_Segment.cpp": [
+     "100644 63981b0b407da11443cc24e4812a7518b5af9b26",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Segment.cpp.migration": [
+     null,
+     "100644 63981b0b407da11443cc24e4812a7518b5af9b26"
+    ],
+    "core/fxcodec/jbig2/JBig2_Segment.h": [
+     "100644 4641e5361dd585e2df55941759c6a240cff9de29",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Segment.h.migration": [
+     null,
+     "100644 4641e5361dd585e2df55941759c6a240cff9de29"
+    ]
+   },
+   "upstream": "PDFium a4a480f6, renames ahead of the update"
+  },
+  {
+   "id": "0064",
+   "project": "external/pdfium",
+   "file": "patches/external/pdfium/0064-update-pdfium-core-and-retain-android-integration.patch",
+   "sha256": "c12b1cef359559be171fd2ce6d85723a1bba5cc55cf06eba2c6f1d422b06782f",
+   "title": "Update PDFium core and retain Android integration",
+   "kind": "import",
+   "files": {
+    "Android.bp": [
+     "100644 66a4ad01597c7509733aaa977211ae4578f60e2c",
+     "100644 9c6d0e0183a74579e71c73a334d447a670e2f0e5"
+    ],
+    "METADATA": [
+     "100644 8f7c235720eedf9f927de57205d3cd2478d67d80",
+     "100644 d29ffd56d71864681bf873a8d4f9ba493cd4aeff"
+    ],
+    "constants/BUILD.gn": [
+     "100644 536e34c574c64451775259d89ade92ac560926c1",
+     "100644 4878c5c3792e834f2ce0fec990a54251fdb5a049"
+    ],
+    "constants/access_permissions.h": [
+     "100644 b95f7e94a450e7fa9ac46af6aaa7af730b9cb66b",
+     "100644 e2dbe0d7bc83b1e8706e79c06c54bcc61cb30d8c"
+    ],
+    "constants/annotation_common.h": [
+     "100644 b1bf8788d5620806ae7ed3b44e90e5c21f98b8df",
+     "100644 890f84cd0ab77d3e30fc9a0b73f28510d5fe569c"
+    ],
+    "constants/annotation_flags.h": [
+     "100644 d44a0c13c00f74c8c21b5d2a16b27304c0ccc2b9",
+     "100644 22d28c6df35dbe5f8f9eb6fe0d34a86d01ff7373"
+    ],
+    "constants/ascii.h": [
+     "100644 2f64419d9d75c88d967b0bd3049d17fc8da631a2",
+     "100644 5364a9e2df75eef71367b56e95ff8c0766503ea7"
+    ],
+    "constants/catalog.h": [
+     null,
+     "100644 692dd42a1602348d4a13740107ea53270f94cde1"
+    ],
+    "constants/form_flags.h": [
+     "100644 602a164f4feb471fd803ae225a2c8b44fabeaf5c",
+     "100644 5e45fe8dc04f72d9415bc8dd6c0ffb68d8f38dd9"
+    ],
+    "constants/page_object.h": [
+     "100644 f5a7799dd51762bb569fc3f98863045c75b94bad",
+     "100644 2bbdfc19c4fff52702754d21ce5bedcee7c632a1"
+    ],
+    "constants/stream_dict_common.h": [
+     "100644 87c7ad11ff285fbe347a15d84167b8aa7cb75f7b",
+     "100644 ad61f38d64045a0dfb2e8358badc86cbeb794880"
+    ],
+    "constants/transparency.h": [
+     "100644 86d2d4563edc41fee1500d6c2cdf723c4b1de3db",
+     "100644 6b2144ef0c45dffbbea50ca8ba170203d4908fa8"
+    ],
+    "core/README.md": [
+     null,
+     "100644 8455b211fdd5ad09e32df7c41acfd801e249955b"
+    ],
+    "core/fdrm/fx_crypt.cpp": [
+     "100644 a36d57571d3103146111f97335d1f39ce6cff72c",
+     "100644 a1b6cc7f21ba8fd0c82b7a4829d745a831f70ccf"
+    ],
+    "core/fdrm/fx_crypt.h": [
+     "100644 b8e108a87c493d86e9aa6c8d7ac49b529afa68cd",
+     "100644 e6af5cb80d0da3755b8b27217845e4eabe9ffd78"
+    ],
+    "core/fdrm/fx_crypt_sha.cpp": [
+     "100644 af7846b18c71962eeb508134be53bbeadbdb9429",
+     "100644 6404b173365fd4c12b6aeb0d1eaebfa9f289639b"
+    ],
+    "core/fdrm/fx_crypt_sha.h": [
+     "100644 c6e4def27aa88eeb8c35e2119b4bc41d0f4d2386",
+     "100644 891426d7b4466fd03b4f4c1f80e7495f5ac440af"
+    ],
+    "core/fdrm/fx_crypt_unittest.cpp": [
+     "100644 e799be65c42615b728538b8f1bcc0f90c7b47578",
+     "100644 14beb5423295dcc7eb6fa9a6e54bb252f6f71b19"
+    ],
+    "core/fpdfapi/README.md": [
+     null,
+     "100644 2aadb29644be4078e75d00691438e2c214633370"
+    ],
+    "core/fpdfapi/edit/Android.bp": [
+     "100644 6b70ca8c32bd7acb98485f2cc8eb6847822efff9",
+     "100644 a3828c1b04c5d113549cd43a700ebc16826fab10"
+    ],
+    "core/fpdfapi/edit/BUILD.gn": [
+     "100644 cae0d590ae9e1910f786f1b64287e437114b30b5",
+     "100644 a6ecda290867febfbcab657ccafe1456fea2711e"
+    ],
+    "core/fpdfapi/edit/DEPS": [
+     null,
+     "100644 3cd317f3f0d75fabb799fe125e1ce818847e44c4"
+    ],
+    "core/fpdfapi/edit/cpdf_contentstream_write_utils.cpp": [
+     "100644 76268d9352de66ad1fe7274d04f29f6449cc0d2b",
+     "100644 d62d463a1f4801a8dcb62612c10ef5372f2573a3"
+    ],
+    "core/fpdfapi/edit/cpdf_contentstream_write_utils_unittest.cpp": [
+     null,
+     "100644 a28964783fcec8471dd7944ba109195ab7d8b043"
+    ],
+    "core/fpdfapi/edit/cpdf_creator.cpp": [
+     "100644 9d16ee33fe9af3fbe49f63460e559ce39862b179",
+     "100644 195d8cdd55e8544d9324f23fae4b9f81fd406a3d"
+    ],
+    "core/fpdfapi/edit/cpdf_creator.h": [
+     "100644 5e8ca429613223238e29d2b9edcfd8f45692a129",
+     "100644 145d52c06b81a83a633a719868e4258062f874e5"
+    ],
+    "core/fpdfapi/edit/cpdf_creator_embeddertest.cpp": [
+     "100644 8bd7fa068bd5114a4c900e2010c944c2dd6156d4",
+     "100644 5d8836bd749fcb8bc616817170d582dcb6c33619"
+    ],
+    "core/fpdfapi/edit/cpdf_font_util.cpp": [
+     null,
+     "100644 0619ee302e916e3f424ff64faa8d683ede1f1acd"
+    ],
+    "core/fpdfapi/edit/cpdf_font_util.h": [
+     null,
+     "100644 94506806bfe125a2ccf8cdb6b206df6560d7f40b"
+    ],
+    "core/fpdfapi/edit/cpdf_fontsubsetter.cpp": [
+     null,
+     "100644 fe5f5517a282feaacefb1194788dfc1b071c9263"
+    ],
+    "core/fpdfapi/edit/cpdf_fontsubsetter.h": [
+     null,
+     "100644 be5633a9352b871f362f0bad976c3e9730987c53"
+    ],
+    "core/fpdfapi/edit/cpdf_fontsubsetter_embeddertest.cpp": [
+     null,
+     "100644 500ca024394384c3fb5a059980ebf7998d51fa81"
+    ],
+    "core/fpdfapi/edit/cpdf_npagetooneexporter.cpp": [
+     "100644 947c3a834cd7d9349e8060ca57a410f0855b54a1",
+     "100644 b20813726cb0a49dcd115c3c9ad309de3c422cbb"
+    ],
+    "core/fpdfapi/edit/cpdf_pagecontentgenerator.cpp": [
+     "100644 f3c65f3acd3019971727f40f4dd3ecef130a4983",
+     "100644 6fda89b3195837e4ec5e2832f452ae6fe79013d3"
+    ],
+    "core/fpdfapi/edit/cpdf_pagecontentgenerator_unittest.cpp": [
+     "100644 75fede52ec9423e0b1ebddc04f54b3f18a45ece6",
+     "100644 9ccb871895417ff23b6336504c02b287e7d1bd23"
+    ],
+    "core/fpdfapi/edit/cpdf_pageorganizer.cpp": [
+     "100644 a1810cd1d0dce30b61334469fc42331890c679db",
+     "100644 b5aa0638721e9f89b9f9a3b4e9f3c58a94cb9fe1"
+    ],
+    "core/fpdfapi/font/BUILD.gn": [
+     "100644 14c1e9c753990bf9c707ffa518960a47c7d8e3df",
+     "100644 8684cfcd4fbbd5ac1db6d9f6104fb1cfd2494116"
+    ],
+    "core/fpdfapi/font/cfx_cttgsubtable.cpp": [
+     "100644 8e639f930f5aaa24ff6cb92b60735dd6362a6e80",
+     null
+    ],
+    "core/fpdfapi/font/cfx_cttgsubtable.h": [
+     "100644 e760607757f9a4017244d3ada1f5e877215fad17",
+     null
+    ],
+    "core/fpdfapi/font/cfx_stockfontarray.cpp": [
+     "100644 cebf6b444583c8f840b26dc1769acf86b68015ae",
+     null
+    ],
+    "core/fpdfapi/font/cfx_stockfontarray.h": [
+     "100644 89cf30d7c61cc2e54254b64e66de594d2315a777",
+     null
+    ],
+    "core/fpdfapi/font/cpdf_cid2unicodemap.cpp": [
+     "100644 ab8907c658c35c39632d98f63bda42435db0dd08",
+     "100644 01fb88382a7d7a73a2de0bb12fe0c055367c10a3"
+    ],
+    "core/fpdfapi/font/cpdf_cidfont.cpp": [
+     "100644 e4983a5a3e0a822731ea9f21ae231adc39f6a599",
+     "100644 588e1e9e30ac4e2a21ab387b2a47734e8045d21f"
+    ],
+    "core/fpdfapi/font/cpdf_cidfont.h": [
+     "100644 e4d2e01b33e627df3d06429dec409cace0054af2",
+     "100644 beeddf49340e9754b6219faa2abf779036ab90b6"
+    ],
+    "core/fpdfapi/font/cpdf_cmap.cpp": [
+     "100644 f43c072902a0b89a755e5f0d8a27544143195264",
+     "100644 81f35c7d6722dcfdafd6e06488dcc8be62b04cf8"
+    ],
+    "core/fpdfapi/font/cpdf_cmap.h": [
+     "100644 45779e4944e325a74d1d79c40fe3ed68a9dd1b3e",
+     "100644 ede071d6b5e12e9996661f28234c9a36effd567e"
+    ],
+    "core/fpdfapi/font/cpdf_cmapparser.cpp": [
+     "100644 e6f018c8f1f324bf80138ba1def22ebdb71c3cba",
+     "100644 3597bc36a8a864d1c7595b117efe641e90378510"
+    ],
+    "core/fpdfapi/font/cpdf_facebasedsimplefont.cpp": [
+     null,
+     "100644 f67eb8c20ebafdd0e371651cd42b188ff69db9ed"
+    ],
+    "core/fpdfapi/font/cpdf_facebasedsimplefont.h": [
+     null,
+     "100644 4c160a25ec26a2583c2a1f13f1133e674ce1d1d6"
+    ],
+    "core/fpdfapi/font/cpdf_font.cpp": [
+     "100644 c0de42a8de1d06a06d985250c429ef4140319e92",
+     "100644 232b056af0a980abae0ebd398ec5a7668beb6633"
+    ],
+    "core/fpdfapi/font/cpdf_font.h": [
+     "100644 e2a4ff3262d2e85adef6619735ad86acae10326f",
+     "100644 b5dff8642334c5510c124f892054842aa03538df"
+    ],
+    "core/fpdfapi/font/cpdf_fontencoding.h": [
+     "100644 18ebd0601442cf640b200d70682a27a81141daef",
+     "100644 f5498fd0f9b5f9ddc03f09d1a2c090b435990eeb"
+    ],
+    "core/fpdfapi/font/cpdf_fontglobals.cpp": [
+     "100644 bd57de4cfd4143a9a2a8134bb4e5a3ce6605c871",
+     "100644 e1e62e49aead1513eee22f93adf938cd0773a37f"
+    ],
+    "core/fpdfapi/font/cpdf_fontglobals.h": [
+     "100644 669e8a2daf9c479b91cbab354dd55510a5f21bb1",
+     "100644 f37a52e8e650ed6a095b454198c1f6c7889e8dac"
+    ],
+    "core/fpdfapi/font/cpdf_simplefont.cpp": [
+     "100644 bd2fa82fce720b8a5ca0a6750bc89f17eef97616",
+     "100644 bb3d077c8c0bb8a3ab47e681d21c17e65edf3962"
+    ],
+    "core/fpdfapi/font/cpdf_simplefont.h": [
+     "100644 a81b05d39416aa1fc8f76936a3ca2d4c2f047a35",
+     "100644 40df7437e236943b9ef9081f05190c26ea6fdf7d"
+    ],
+    "core/fpdfapi/font/cpdf_simplefont_unittest.cpp": [
+     "100644 93aad8b144cda5d52ae7c9b43b00a63b878d1045",
+     "100644 4b39f740fd49eaeb3ba4aec3b7393ab22b55c689"
+    ],
+    "core/fpdfapi/font/cpdf_stockfontarray.cpp": [
+     null,
+     "100644 72c47cc54c06de5c7f5595b678de0e54c0068faf"
+    ],
+    "core/fpdfapi/font/cpdf_stockfontarray.h": [
+     null,
+     "100644 006372a6cda886234d045eb86b3db461582ff3d5"
+    ],
+    "core/fpdfapi/font/cpdf_tounicodemap.cpp": [
+     "100644 f71d21c4c99e176a69bec587689b5c3f3aa5e4f6",
+     "100644 5a4d342d0e7e9e6dc49a9eabab28b6b31a0748dc"
+    ],
+    "core/fpdfapi/font/cpdf_tounicodemap.h": [
+     "100644 ba73b825b5ec31f5cbdaf160e7dec396da6cf5b4",
+     "100644 5e9dddc2004d3754817190d5562359dbabcc07d4"
+    ],
+    "core/fpdfapi/font/cpdf_tounicodemap_unittest.cpp": [
+     "100644 ce04af5ae36283c8ec4f9fce72f4d192e2b472da",
+     "100644 5b4da257b69f9f3f1e67a0f7b0109c5433456672"
+    ],
+    "core/fpdfapi/font/cpdf_truetypefont.cpp": [
+     "100644 8341430a371aec98721ffb1d18205dfdd739a4a3",
+     "100644 a423af3a76938612b604a3351c6af05164216bd9"
+    ],
+    "core/fpdfapi/font/cpdf_truetypefont.h": [
+     "100644 7f48d3667770ddb58612d5dadda2b037d29e1104",
+     "100644 c91e311d02e9fa61a9ed7bcb1731dc90df285f5d"
+    ],
+    "core/fpdfapi/font/cpdf_type1font.cpp": [
+     "100644 d4a7b9e596d1ed5242852f18d5401c7a360ef72d",
+     "100644 31fa1e2ac45e176b7235a86dd5394527a405c433"
+    ],
+    "core/fpdfapi/font/cpdf_type1font.h": [
+     "100644 ca097b09a49cc5e09916100817734b9f89b82a93",
+     "100644 885577e5ca18c53468140aca381c05f6cfae9422"
+    ],
+    "core/fpdfapi/font/cpdf_type3char.cpp": [
+     "100644 daf476417d2e8a7524a08447689fc34c17f119bd",
+     "100644 0e6275573fd6ccf1b1cc3b41e1199f2a10bf7fcb"
+    ],
+    "core/fpdfapi/font/cpdf_type3char.h": [
+     "100644 f11eb73bf3c6a5b4031e38b4f86aa87337a66fe8",
+     "100644 f1f5c5946ec48c1b5f5ccab97ef08d45dc8a2be5"
+    ],
+    "core/fpdfapi/font/cpdf_type3font.cpp": [
+     "100644 00d95298c8b2ba8dbf6f759c8235833232e0290d",
+     "100644 7b9745c47d41e8cb5f611570f59556047a4f942a"
+    ],
+    "core/fpdfapi/font/cpdf_type3font.h": [
+     "100644 2653e0287de3003e0fb52cf38753e3e98cb022db",
+     "100644 2cd83e236ded12fa93119204e6fcd365f4830dca"
+    ],
+    "core/fpdfapi/page/BUILD.gn": [
+     "100644 f752eae5009dbb1a8fb43868a602313a096ba943",
+     "100644 4f01a5e8e8d1d60ba238c27b1894da705889f5b9"
+    ],
+    "core/fpdfapi/page/cpdf_annotcontext.cpp": [
+     "100644 648a86d5a2d09997de1df3d2bcf75fdbc0763acd",
+     "100644 dcaf97354875bc1fb6f2c81b3559c8922bfda0a0"
+    ],
+    "core/fpdfapi/page/cpdf_colorspace.cpp": [
+     "100644 f7771559d6bf173f485a37a42ade5bff78d9706c",
+     "100644 92754d2dacb34cdb8957e383458cbfc46d9f2267"
+    ],
+    "core/fpdfapi/page/cpdf_contentmarks.cpp": [
+     "100644 fa81a18971b8955608831efdb26496e264fc9f57",
+     "100644 e7604f719015b71d1066dfb543f562bb7cc34fe0"
+    ],
+    "core/fpdfapi/page/cpdf_contentmarks.h": [
+     "100644 7a9ca10c6b9262695b5ca9a7142ba47f79beaac9",
+     "100644 1155932174407a68ac3461d2138c8ccf69d641ad"
+    ],
+    "core/fpdfapi/page/cpdf_devicecs.cpp": [
+     "100644 1f90ed10c603bb4c317b55af1ec03152b79101aa",
+     "100644 822c521982945b8adeb3f6da5ffdb7be93bf49ad"
+    ],
+    "core/fpdfapi/page/cpdf_dib.cpp": [
+     "100644 dbc9a8ec212ead2b689f5df856dc70315a141bf5",
+     "100644 c89f1f8598748dff1f632324848fba53d621bde7"
+    ],
+    "core/fpdfapi/page/cpdf_dib.h": [
+     "100644 4c237aa0d5d7f03d84bf9b0ae39d13d17f75cb1e",
+     "100644 812b98b6f89685c38da3f0cebb8fa1de72f6b4ed"
+    ],
+    "core/fpdfapi/page/cpdf_dib_unittest.cpp": [
+     null,
+     "100644 7f48d946a9489207dce7429be255ea7a5b7f1f3c"
+    ],
+    "core/fpdfapi/page/cpdf_docpagedata.cpp": [
+     "100644 b48f66bb0a391b85e22527c69f5b338986d5b170",
+     "100644 5966d14a7495123621f18cdc56b76ad91a017836"
+    ],
+    "core/fpdfapi/page/cpdf_docpagedata.h": [
+     "100644 e733a872fd97ba399f76584644837f80e5ed3319",
+     "100644 a46ff6ecc06fd8b4703f6ee61514988d0d2c4762"
+    ],
+    "core/fpdfapi/page/cpdf_form.h": [
+     "100644 df158a2d1545882cfa1ad44d5aea155685e3dd77",
+     "100644 ae864b08799a665b7e1c815ca2ff09ca8b5e18ba"
+    ],
+    "core/fpdfapi/page/cpdf_formobject.cpp": [
+     "100644 7af69c4ce01e9c84c8c312d0542199ae96d5766e",
+     "100644 bc8087524d52ce85d3d584d884083b75f7d99de6"
+    ],
+    "core/fpdfapi/page/cpdf_formobject.h": [
+     "100644 49c76c2b67aab649d165c9c7f56850b9552c6a20",
+     "100644 25c8d1f6ace57ac3b00e2a162b6eaff24ef605d8"
+    ],
+    "core/fpdfapi/page/cpdf_iccprofile.cpp": [
+     "100644 c80a8265a251a82e23534a014a30668503a211d5",
+     "100644 f2468ea050b743dd1cd92d2134c1f1a85b45cd4a"
+    ],
+    "core/fpdfapi/page/cpdf_iccprofile.h": [
+     "100644 1fdaec9be6ef20bc083f1fd580b97b6f1b9218ee",
+     "100644 78f78685b173533db0206ebe9c4f6367c977b989"
+    ],
+    "core/fpdfapi/page/cpdf_image.cpp": [
+     "100644 5067b09965517feabc4490313caa6e0e6a52d1b1",
+     "100644 c13ae2b35676fd8f815bc3ce0915c196c6093b59"
+    ],
+    "core/fpdfapi/page/cpdf_imageobject.cpp": [
+     "100644 b8846d5a1902153be23ff0ea4576e9d1f080e72c",
+     "100644 0320f18085f63bb389775c6ad092837158d4dc19"
+    ],
+    "core/fpdfapi/page/cpdf_imageobject.h": [
+     "100644 9e1f0e17e6926ab7294fdf7c7355b513a038be0c",
+     "100644 52d58ed5cd6d31f7a743ce575b3f6866656dc048"
+    ],
+    "core/fpdfapi/page/cpdf_occontext.cpp": [
+     "100644 9830c66ad39f8581aaf313b6a9d2948137d91f44",
+     "100644 5b04be7e6639b7e3328127cacf174d1ae95e98f4"
+    ],
+    "core/fpdfapi/page/cpdf_page.cpp": [
+     "100644 8988623bc6d1abf4d5a1fb9d696589b64079ea36",
+     "100644 0e363731bdc535386d83df92493519908e7ffc4a"
+    ],
+    "core/fpdfapi/page/cpdf_page.h": [
+     "100644 56f0dde1bf319ffe950097b27deb42cf670ea1d9",
+     "100644 34db26359b325808e3c61d5690ec7921a917d366"
+    ],
+    "core/fpdfapi/page/cpdf_page_unittest.cpp": [
+     null,
+     "100644 fd1f632e51ccf43a47a67f36d91433398c999c26"
+    ],
+    "core/fpdfapi/page/cpdf_pageimagecache.cpp": [
+     "100644 6aafc078c358f46203a3c2767512be476dfe4913",
+     "100644 abe248e5a97108ed10ec901ff4d0baa6b8674751"
+    ],
+    "core/fpdfapi/page/cpdf_pageimagecache_unittest.cpp": [
+     "100644 d6d382a3d2d57e17fb4e9a5689f46a51fcfac23d",
+     "100644 c266a220132ccd58b187c769a5dc7aef92fb066a"
+    ],
+    "core/fpdfapi/page/cpdf_pageobject.cpp": [
+     "100644 41d2512e2a16438966ce31b65f279dfed18b9a3f",
+     "100644 635fee693f6f73ae860043a5d31296a5cee516fb"
+    ],
+    "core/fpdfapi/page/cpdf_pageobject.h": [
+     "100644 5b2cb55554463932e133fcaf842bd7fc9a8b6d72",
+     "100644 986d86a790e1f181518b2a42c690bb67a46e8ad7"
+    ],
+    "core/fpdfapi/page/cpdf_pageobjectholder.cpp": [
+     "100644 362b988c6c12729fccf594911cb9c551e822399c",
+     "100644 a264d8ee77bbce8a4a8ca099ce71475e71e59a85"
+    ],
+    "core/fpdfapi/page/cpdf_pathobject.cpp": [
+     "100644 a84f15dd09dc293337d852833d80a1f6c3170c62",
+     "100644 d8f77e9eccb28ef71771ffb7220fa28101730d1d"
+    ],
+    "core/fpdfapi/page/cpdf_pathobject.h": [
+     "100644 0f02a2986988451280c043c3bf898af3c7136125",
+     "100644 90c034baf377409e1bcef9972d47fee2758ccc3d"
+    ],
+    "core/fpdfapi/page/cpdf_psengine.cpp": [
+     "100644 1564518684ed60ff87994af53f27d50f0300dcda",
+     "100644 e006a85ffdd34a790121464553dac6b8b411b5b7"
+    ],
+    "core/fpdfapi/page/cpdf_psengine_unittest.cpp": [
+     "100644 79da3c310bd042dcf5388d4eeec45fcf55ae185d",
+     "100644 36e57701c118135e856dc97401754a7e8182ac83"
+    ],
+    "core/fpdfapi/page/cpdf_sampledfunc.cpp": [
+     "100644 65fdb61602ff4edd8ce6442e7a950f39b248eddb",
+     "100644 7905c27e521fba712924cd733814d198c2390640"
+    ],
+    "core/fpdfapi/page/cpdf_shadingobject.cpp": [
+     "100644 cd012325e2bdeded0a7228e3b2537183f9925623",
+     "100644 488653c54e444f1e31015417c9203464495e4c45"
+    ],
+    "core/fpdfapi/page/cpdf_shadingobject.h": [
+     "100644 5f81b206ed6d6adbe19dd15543b84436596a46e4",
+     "100644 4b0bfa6e3f61f7a9ba850d248b734a14bbac9f70"
+    ],
+    "core/fpdfapi/page/cpdf_shadingpattern.cpp": [
+     "100644 e94f3444f9134d5a6f4cbfb670d65126506f97da",
+     "100644 c0f16a468b5e937d72457846f11742f84d6923b6"
+    ],
+    "core/fpdfapi/page/cpdf_shadingpattern.h": [
+     "100644 9a36d77a8ffe6e25b911fa0aaa8acb11ed85c860",
+     "100644 6fe24942651645eae02936d92e6521806366e462"
+    ],
+    "core/fpdfapi/page/cpdf_streamcontentparser.cpp": [
+     "100644 d4660cc10fecf9a973f065c1c5bb700511c8b884",
+     "100644 a0d239f6a3c7312ff240d3eac8ab0939e9fe5b1e"
+    ],
+    "core/fpdfapi/page/cpdf_streamcontentparser.h": [
+     "100644 38e9977c204f412f986057c04b1a82859fd247ec",
+     "100644 8aa0be595466348f90c2c37eb51128e77b98631b"
+    ],
+    "core/fpdfapi/page/cpdf_streamparser.cpp": [
+     "100644 1441831b7cfb8bf7f074270d27b584fc2618bb35",
+     "100644 4f8f6ccd4c4f3e1ed14b84041789d56463164b84"
+    ],
+    "core/fpdfapi/page/cpdf_streamparser.h": [
+     "100644 b50d2d07ee7b8f1fe56c7d5c6ba242be1cd7b1e4",
+     "100644 95b399210a098f1ec0cab27d062f963be65ad93b"
+    ],
+    "core/fpdfapi/page/cpdf_textobject.cpp": [
+     "100644 624b21e8eb0163e94c559d2cee5edcbb3139080e",
+     "100644 d6336c9a055685940433fd80ada4e8d0f84274a3"
+    ],
+    "core/fpdfapi/page/cpdf_textobject.h": [
+     "100644 2415b7606683a93b6e7446b21ba013012206a452",
+     "100644 337564005d09e1c344b73925ba6b3a8a5023768c"
+    ],
+    "core/fpdfapi/page/cpdf_textstate.cpp": [
+     "100644 ab6008cfc186bd2f5655db7915774b4f903faffe",
+     "100644 9e84698f52c26407d821bcd84a5fb155de8d9827"
+    ],
+    "core/fpdfapi/page/cpdf_textstate.h": [
+     "100644 81f8916296ec0cea2e7b7b2c51a084ada9acd52d",
+     "100644 a4c6df028bc5e72d3cb788b2196504db45693cbf"
+    ],
+    "core/fpdfapi/page/cpdf_transferfunc.cpp": [
+     "100644 410c54ab88d5acde4f1d64a272836bfb24a5fd0f",
+     "100644 a57fc8d26b815eadb21ac33e2749565c1e550148"
+    ],
+    "core/fpdfapi/page/cpdf_transferfunc.h": [
+     "100644 5026d8843f1895c2fa2b725c6e6466361157d83f",
+     "100644 9cfb61ba211a193e9c68fe608985192c78bfd2d2"
+    ],
+    "core/fpdfapi/page/cpdf_transferfuncdib.cpp": [
+     "100644 b565964ea80e9b24c0a6f303ec94fd7632dbe612",
+     "100644 5143b3c6fcb3e1b3ef9e047531f95015c05ebbd3"
+    ],
+    "core/fpdfapi/page/cpdf_transferfuncdib.h": [
+     "100644 b81d56bbe4811dfa3772c120f98806d6626c120c",
+     "100644 696acb9cd9343273c1a2ceb29b11db353a73e2a2"
+    ],
+    "core/fpdfapi/parser/cpdf_array.cpp": [
+     "100644 29fb13ba4d312a6102dd4a54a6e1c9122ac56f7c",
+     "100644 4939e24be0beecc098e1b989f4a36f8b92c4d9d8"
+    ],
+    "core/fpdfapi/parser/cpdf_cross_ref_table.cpp": [
+     "100644 70862b8cb2ffb30f217acba5a16b445d056c6f18",
+     "100644 2670e5d90dc4dea5ba4af40d55d5925a4906b957"
+    ],
+    "core/fpdfapi/parser/cpdf_cross_ref_table.h": [
+     "100644 c2d1328e35bb0952007bcbd26d82905e922b20f0",
+     "100644 9eac7787c7e15574e8272a8f2ffada12e930c4e8"
+    ],
+    "core/fpdfapi/parser/cpdf_crypto_handler.cpp": [
+     "100644 61d5271f8d552039c9745062d823eac1da817984",
+     "100644 737d1a9be295abe6c4b3b1df494111c06620c023"
+    ],
+    "core/fpdfapi/parser/cpdf_data_avail.cpp": [
+     "100644 9a1f58ef63cc645dae8cb730c42257e7a5446396",
+     "100644 305eb7b8bc6d1c6f43771af86191c41a79290b75"
+    ],
+    "core/fpdfapi/parser/cpdf_dictionary.h": [
+     "100644 a6c8653bfa250eeb420b920a8fc6630ed159e032",
+     "100644 092d775ca689a9eb746c1fb1b4fd934636974e6c"
+    ],
+    "core/fpdfapi/parser/cpdf_document.cpp": [
+     "100644 873e058ea8c4abcd4e5d6b09e9b34427aa36d64b",
+     "100644 b70120bbb5f4a8bcb321f46928a19d5dcdddb6b2"
+    ],
+    "core/fpdfapi/parser/cpdf_document.h": [
+     "100644 e22f5464012884e083740aa41ddca66afd233953",
+     "100644 88425f762d17bbd9d914cec8c588a8e2531fa57f"
+    ],
+    "core/fpdfapi/parser/cpdf_document_unittest.cpp": [
+     "100644 27a5a16102766d400faf1a8ce9ae33e212c8a60d",
+     "100644 abed3194b3998c9a8351c0ed375606f573ebfbc3"
+    ],
+    "core/fpdfapi/parser/cpdf_hint_tables.cpp": [
+     "100644 0d9a06f88e2d6f3a5ba5dbd598f9a6f6dcc56736",
+     "100644 68071f6389041e9d6c02180beec127a980c3d2d5"
+    ],
+    "core/fpdfapi/parser/cpdf_hint_tables_unittest.cpp": [
+     "100644 7f68cde4ea82402c73f42a995d2e631898d9891b",
+     "100644 8d023ee247dc81982a4dff4ad7151f20baa74553"
+    ],
+    "core/fpdfapi/parser/cpdf_indirect_object_holder.h": [
+     "100644 46b9a7b4055af6bb23735d1b2ef4c46d84faacc3",
+     "100644 beb44b4ce03d8c26ad0fd18e946fe744a87d267f"
+    ],
+    "core/fpdfapi/parser/cpdf_name.h": [
+     "100644 3ce3bb84914866c55e90965aeb6fda1b19bc5c7d",
+     "100644 a75c7b27288bbe02c0924e1c2190eb3048070f3e"
+    ],
+    "core/fpdfapi/parser/cpdf_number_unittest.cpp": [
+     "100644 8e7c78dbd860d44fc0712dff97a7a74240e13423",
+     "100644 0bf5071c8ebe03047cd118aa03460b943b2300f4"
+    ],
+    "core/fpdfapi/parser/cpdf_object_avail_unittest.cpp": [
+     "100644 a79687a9b6910842ac96b03d0ed725c34f34bf13",
+     "100644 0c19c79cb7ab6cb3a8b0a8188d5c58e744b23fd5"
+    ],
+    "core/fpdfapi/parser/cpdf_object_unittest.cpp": [
+     "100644 34e2972973c0c7650620d0191cf67477e2ab3bae",
+     "100644 2aed796907422e59bde511e6cbce84d78964a999"
+    ],
+    "core/fpdfapi/parser/cpdf_page_object_avail_unittest.cpp": [
+     "100644 d909fb23270b67679d74f079d7319455554ebddb",
+     "100644 57e7ae2ad5351a215820e692d594adf80cbe9bec"
+    ],
+    "core/fpdfapi/parser/cpdf_parser.cpp": [
+     "100644 fcd7658dfbfbf3297ad036ddf8d9fda600077e7d",
+     "100644 6f89380920241b5a766850377e1cd8cc2e5a8697"
+    ],
+    "core/fpdfapi/parser/cpdf_parser.h": [
+     "100644 613a1d750d1748fc6c52cb30629b745989ba6ac2",
+     "100644 76cfa708060370f7c217cea3cf81fed69008b356"
+    ],
+    "core/fpdfapi/parser/cpdf_parser_embeddertest.cpp": [
+     "100644 b959f2766955aac9d6a4cd1981c97dfdcc5e1021",
+     "100644 5fd4b8f95d408d3f7916309f2ac229158b6f3344"
+    ],
+    "core/fpdfapi/parser/cpdf_parser_unittest.cpp": [
+     "100644 726c0495f09313486237a6df981b499ba00a7170",
+     "100644 ecfd50f2361a8bacb71dc66b18783043358848c8"
+    ],
+    "core/fpdfapi/parser/cpdf_read_validator.cpp": [
+     "100644 cdbbab41b54b61f027d4e84b6d03787165763ff3",
+     "100644 85b01a0815058645ec648845b175bb69f2f4a6a6"
+    ],
+    "core/fpdfapi/parser/cpdf_read_validator.h": [
+     "100644 c8665416e3625f07c7dbb94686fec2b8128bf6e2",
+     "100644 d0a615e7bd9ff027476dbc99696f36be8a49d2fa"
+    ],
+    "core/fpdfapi/parser/cpdf_read_validator_unittest.cpp": [
+     "100644 0828f84de91165df4982bb1352e7707f0b27339e",
+     "100644 ca2e422e2581420c9d9bff95f6c4ba2dc9038335"
+    ],
+    "core/fpdfapi/parser/cpdf_security_handler.cpp": [
+     "100644 1458c6687c3b4546a0f4fff3e464d9800911629b",
+     "100644 25b0abcf9cda1938e4d8cae453e4c0eea725111c"
+    ],
+    "core/fpdfapi/parser/cpdf_security_handler_embeddertest.cpp": [
+     "100644 1a59eddc4ad236c9847671adbe5f681f61b83dae",
+     "100644 3dfc2aec87dbef8a9f1280df83b95272a64a8fd7"
+    ],
+    "core/fpdfapi/parser/cpdf_simple_parser_unittest.cpp": [
+     "100644 7f09375e6fc7a12f9049c59e40404ef8e881533c",
+     "100644 61be0f255148ce3de1f2cb54b47693771b3cb85d"
+    ],
+    "core/fpdfapi/parser/cpdf_stream_acc.cpp": [
+     "100644 aa169472a2d152e660b9a43b9c0af835c3bf52a3",
+     "100644 66863ca4234bbc4eb75f8b660f46cde30db98633"
+    ],
+    "core/fpdfapi/parser/cpdf_string.h": [
+     "100644 407629bd5dd779fe30e86bf7ae7ea02f0f265755",
+     "100644 0c5a73e4e408c3d4e02450f7a1204d6311c2c8c5"
+    ],
+    "core/fpdfapi/parser/cpdf_syntax_parser.cpp": [
+     "100644 7ee778ab6079ff4e67c9df8b413eb0d0f3b75846",
+     "100644 ee91e039bc7adc88ef9c4a64f72e953bc8099718"
+    ],
+    "core/fpdfapi/parser/cpdf_syntax_parser.h": [
+     "100644 79fc68d635860ca212b1f72961425f6aaceacb32",
+     "100644 183aee554e99ae5f4fea31631328354ec7053598"
+    ],
+    "core/fpdfapi/parser/fpdf_parser_decode.cpp": [
+     "100644 ca2021bd85fb8553bb482356cb4f6a7b3aa951b2",
+     "100644 962f9d78ac2ec7153526611911693616154e0f99"
+    ],
+    "core/fpdfapi/parser/fpdf_parser_decode_embeddertest.cpp": [
+     "100644 b366febbf6c3979d3b6f1eea55cc737dec67b9e2",
+     "100644 24c3b215cb7248df6fbe104f26a07dcd3d9458ec"
+    ],
+    "core/fpdfapi/parser/fpdf_parser_decode_unittest.cpp": [
+     "100644 aafc357881d2989e2407adbac27ecb8a83213992",
+     "100644 ee7ec3b37f38068f8afd4c6cd3b392afae2c2331"
+    ],
+    "core/fpdfapi/parser/fpdf_parser_utility.cpp": [
+     "100644 20db20666f5c5a176b1f70005b204d6adb32d65f",
+     "100644 5019791510b7a13552a0f029c4dd97b86a9e83a2"
+    ],
+    "core/fpdfapi/parser/fpdf_parser_utility_unittest.cpp": [
+     "100644 6b9caf54c9fcc9e78e18ee8c2fe9e40364b45d63",
+     "100644 4b02c92835201f940fddabb7cc8e0fee9ab9b198"
+    ],
+    "core/fpdfapi/render/BUILD.gn": [
+     "100644 a3964f2a33298a70d88daa04de2fb95669fab100",
+     "100644 7619843201a8b8a300c6b70f35fc8feb67d973ea"
+    ],
+    "core/fpdfapi/render/charposlist.cpp": [
+     "100644 ceb3c179a33af356f91c01c079942dd5330a6e61",
+     null
+    ],
+    "core/fpdfapi/render/charposlist.h": [
+     "100644 c320443840fbb1d5a430d681f6e7b56bc6831071",
+     null
+    ],
+    "core/fpdfapi/render/cpdf_devicebuffer.cpp": [
+     "100644 798a5452cffeee0147e4bc952473c1612c721837",
+     "100644 a0b9a64fd2143021742f0c7df5b9b6a773309284"
+    ],
+    "core/fpdfapi/render/cpdf_devicebuffer.h": [
+     "100644 22b0d1e4585387f42ea366ad4f5a9e6a5793e705",
+     "100644 ea2041013f936caada081a1f125ef5585f23ce40"
+    ],
+    "core/fpdfapi/render/cpdf_docrenderdata.cpp": [
+     "100644 753f96251655e281deec4d00615b52c63a2872d6",
+     "100644 c35e952d742d7acd105180b87f2382ab121813d1"
+    ],
+    "core/fpdfapi/render/cpdf_imagerenderer.cpp": [
+     "100644 4af61db2536f5d914ace3e9118c025c4c3cfbc0f",
+     "100644 239bc544b48a8fe1f07241c6fa29bf87b2366ff1"
+    ],
+    "core/fpdfapi/render/cpdf_imagerenderer.h": [
+     "100644 ff94b2f7ab08d4026404ab4d5e7980e18d54782a",
+     "100644 610f20f68bb326f24f2afaf0db1834283fe08265"
+    ],
+    "core/fpdfapi/render/cpdf_pagerendercontext.h": [
+     "100644 75f2110cb292238bb10164952421ea997a153a36",
+     "100644 71b6c3b44f1dee7a21a0cadd043e7299d3df2118"
+    ],
+    "core/fpdfapi/render/cpdf_progressiverenderer.cpp": [
+     "100644 19b620ddf64e4edd005d1a6d2215a59bd27dc5c0",
+     "100644 3139b93748d9ebd53f1e30d9b61ef114a65ece41"
+    ],
+    "core/fpdfapi/render/cpdf_progressiverenderer.h": [
+     "100644 1c2931f895d5a50d3b3cb97bf367819f8149bee2",
+     "100644 c30dd2f5f2a42dfd51f7a459e8d1fbdbf163df53"
+    ],
+    "core/fpdfapi/render/cpdf_rendercontext.cpp": [
+     "100644 c699c1184fa70349f451c1587e97747f824ff15b",
+     "100644 ead08a491c94f37309b3f3b7f232584a8a415e17"
+    ],
+    "core/fpdfapi/render/cpdf_rendershading.cpp": [
+     "100644 bd70dd48eeadd710483f22e3645e78d1904433ea",
+     "100644 900481dbb986fde4a9590ed56d7c85cb53d76340"
+    ],
+    "core/fpdfapi/render/cpdf_rendershading.h": [
+     "100644 a8702c9147dea7d57e3a62674372333f8d55f0a2",
+     "100644 98e89150e30cf18b730bd9b9bde520dd93131813"
+    ],
+    "core/fpdfapi/render/cpdf_renderstatus.cpp": [
+     "100644 c5a6f35e8e462d6a8780fac0890fe4aa3150ac01",
+     "100644 39c18eb47db552ea66e2e15f082c4006be4e394d"
+    ],
+    "core/fpdfapi/render/cpdf_renderstatus.h": [
+     "100644 f7e153d009af751897f6187a6f29f24f3edbb6cb",
+     "100644 b002aa3125dd466cbade4ba781229f2bb718714f"
+    ],
+    "core/fpdfapi/render/cpdf_rendertiling.cpp": [
+     "100644 23db451644afea9dd0b902ba3d420f011d7587a8",
+     "100644 f407f2403fad79a9bce24a5ebad9de943fde1865"
+    ],
+    "core/fpdfapi/render/cpdf_scaledrenderbuffer.cpp": [
+     "100644 8840d9a1548c4eaee26f19032a6ea65ed0827d32",
+     "100644 dd9f770862bc77685396eb572148e4c98920eab5"
+    ],
+    "core/fpdfapi/render/cpdf_scaledrenderbuffer.h": [
+     "100644 6a9c8c471125ee5c646a9cf91c8ddf4f79bc3c66",
+     "100644 324bfcec0fceb66d6acd974094c4e634cc36f39a"
+    ],
+    "core/fpdfapi/render/cpdf_textrenderer.cpp": [
+     "100644 81dfb2a2c4d8e226e4ed2522ad924389f614bd1e",
+     "100644 d25c368cd69ad21a2459e2c274442145a74a13d3"
+    ],
+    "core/fpdfapi/render/cpdf_type3cache.cpp": [
+     "100644 6fa8b3bcf6c849c5db74623ff9a831ff4afc8bca",
+     "100644 4dbfabdbd0ccb96ce63320033c3f976ab6589436"
+    ],
+    "core/fpdfapi/render/cpdf_type3cache.h": [
+     "100644 6d61ef94d58e266ab863ea04d6d5139bb0b915e8",
+     "100644 8d6929af977cb13bd850c6515f7572d860df6b0b"
+    ],
+    "core/fpdfapi/render/cpdf_windowsrenderdevice.cpp": [
+     "100644 78410ddc6628f492f6370b74b70daf450583d2a0",
+     null
+    ],
+    "core/fpdfapi/render/cpdf_windowsrenderdevice.h": [
+     "100644 c83c588fd0bfff7dcb72daea887af09e704e9842",
+     null
+    ],
+    "core/fpdfapi/render/fpdf_progressive_render_embeddertest.cpp": [
+     "100644 3bae233f4fed38328c72c1b54636651d3adb5515",
+     "100644 32cbbee3e4f934d4c66fbf697a46d589e9e895d6"
+    ],
+    "core/fpdfapi/render/fpdf_render_pattern_embeddertest.cpp": [
+     "100644 4b1ad703df100dd5fc8d2b0c1a2babc892f839bd",
+     "100644 2b5198822fa3be1ea4bbc5524624d96fe302e374"
+    ],
+    "core/fpdfdoc/BUILD.gn": [
+     "100644 b5da78b2fe9f355caace7f3259a37039ba073ddd",
+     "100644 3f1ba966ac6815268e89b355596ca37b4d751550"
+    ],
+    "core/fpdfdoc/cpdf_action.cpp": [
+     "100644 83a03835678c426153c4736d65cd618a8d19423e",
+     "100644 57cd513df53be5468a70bad9d5e0e7ff51082ec5"
+    ],
+    "core/fpdfdoc/cpdf_action.h": [
+     "100644 93fc16be4db2b71a980c9eb822f76e3dc650afd5",
+     "100644 b0545c60cf85ae36e0655de8b9d3bd05a8bc3988"
+    ],
+    "core/fpdfdoc/cpdf_annot.cpp": [
+     "100644 9f7a145e47939efb645497f86b6e53d7e55b1f0f",
+     "100644 ff031b9a103a7249f5aecaac01d075277ef57b66"
+    ],
+    "core/fpdfdoc/cpdf_annot.h": [
+     "100644 70fa55572b9e06103db579e138b7d518704068bf",
+     "100644 3e8bc5e06dbb047b7ce7f80cde2a5cce2e523ddc"
+    ],
+    "core/fpdfdoc/cpdf_annotlist.cpp": [
+     "100644 45d8b1658f34dba3b421ab47e9d3dc1c1b1e503b",
+     "100644 c35c27e4462a74ceed49fbbf58a0be765ecfa3f3"
+    ],
+    "core/fpdfdoc/cpdf_annotlist.h": [
+     "100644 6454a1440c6282b0acb2077675a78dcdd5f73ca7",
+     "100644 ad596975c700c60a1d77e5f7d9a7945f8c2867a4"
+    ],
+    "core/fpdfdoc/cpdf_apsettings.cpp": [
+     "100644 5f36be53e7a6d1a7cb748ccd4afa52c509ff39aa",
+     "100644 d5926f3ca3ac367dd8ff9c6ccd6ce3623a776bdf"
+    ],
+    "core/fpdfdoc/cpdf_apsettings.h": [
+     "100644 719281e200631a01dcf0eeb0c8c1ca32a4152b77",
+     "100644 067bad11b820980e8e77dd6455a06eed80fabef8"
+    ],
+    "core/fpdfdoc/cpdf_bafontmap.cpp": [
+     "100644 324f13dcf90e5946829e4566cf7a6242337fd70a",
+     "100644 55c4eae62bb5d4570e568f8513e9eeda63a57dcc"
+    ],
+    "core/fpdfdoc/cpdf_bafontmap_unittest.cpp": [
+     "100644 db85b9f0f5e15fb416d550ac85b7cbeb9d33fecd",
+     "100644 6204d691e47cf6c622131aa6ff82e9ab67be7096"
+    ],
+    "core/fpdfdoc/cpdf_bookmark.cpp": [
+     "100644 8d7e2437eccbea7de877e311a529aae6f9e19629",
+     "100644 ac8d9b1aef3473be77478f8d5dbb9d76c5005f94"
+    ],
+    "core/fpdfdoc/cpdf_bookmark.h": [
+     "100644 9cbdc92aa011f83f1a3ecfe28eebd8da4998b0b4",
+     "100644 7ac372abb9f0e69513625f4741a94d1dcbd2354c"
+    ],
+    "core/fpdfdoc/cpdf_bookmarktree.cpp": [
+     "100644 158da88c08be00ff6f8854f0faeda84269362127",
+     "100644 ae34e6396b633fddd41218e8bf1524d67891c0dd"
+    ],
+    "core/fpdfdoc/cpdf_color_utils.cpp": [
+     "100644 333aa4012a952b830f59539602e1ff9a74487c4c",
+     "100644 16bda697b0ca27df5ea23e083b6e30d43c61c5b8"
+    ],
+    "core/fpdfdoc/cpdf_defaultappearance.cpp": [
+     "100644 94e56e442f026fa2e632ededa67a4d7566bdbf9d",
+     "100644 ba88278d9b1728e0e6462e07730d5f7ea9a1aef3"
+    ],
+    "core/fpdfdoc/cpdf_filespec.cpp": [
+     "100644 c023a0d383505bd20f2c5dfbe17ca0025cd7ff68",
+     "100644 814e9f1cecfb85a973dd4c6673f0263c04a20690"
+    ],
+    "core/fpdfdoc/cpdf_filespec.h": [
+     "100644 8692d8fee76e961c51ab8b7fcec84702f56b2505",
+     "100644 9f014b1e67a8a4bd2cb60c8bbeb2e07dc35e5209"
+    ],
+    "core/fpdfdoc/cpdf_formcontrol.cpp": [
+     "100644 814a1fa97f1431a6e01f580cbc203e60d8cadda6",
+     "100644 db1d7aa5aee2babd8ba4a13cac15950b99a551d1"
+    ],
+    "core/fpdfdoc/cpdf_formcontrol.h": [
+     "100644 44c5a42776aba9b924a3783fa6d1a8d37bd64a23",
+     "100644 d78f1c41fa4749e73a62661750d594ed2fc8c72a"
+    ],
+    "core/fpdfdoc/cpdf_formfield.cpp": [
+     "100644 60f218143b635b2259e2e8543cd32a23ac07351b",
+     "100644 a43252bfc3ac335bae9b0b2192732f1baca908e3"
+    ],
+    "core/fpdfdoc/cpdf_formfield.h": [
+     "100644 7474fa0e40c5440277814a778792b8781ee817c2",
+     "100644 09669fa1fa8d5cfdd64ada849c485d48fdd99de5"
+    ],
+    "core/fpdfdoc/cpdf_formfield_unittest.cpp": [
+     "100644 a3a92c520a8d20c03f9aa82af9de6366879134b7",
+     "100644 6b31dfa8a4756f1cd7c2905e3e4c6729469862b5"
+    ],
+    "core/fpdfdoc/cpdf_generateap.cpp": [
+     "100644 a5ef72c407d0545075d6076cac6505091db84baa",
+     "100644 546f463ecf3c9b99135afbc05ff5ab1a7495f6ed"
+    ],
+    "core/fpdfdoc/cpdf_interactiveform.cpp": [
+     "100644 24bf93ad4107f67d579f3b98a4e4ccd33035b3d9",
+     "100644 961d8f0d537583b6923b7ba9d211cde0dddba99b"
+    ],
+    "core/fpdfdoc/cpdf_interactiveform_unittest.cpp": [
+     "100644 986668738441bc11a29a8bb682cb31a832cdf724",
+     "100644 a99e8d51d9fd849f0cd8f2dbaf6dc3e004e8339f"
+    ],
+    "core/fpdfdoc/cpdf_nametree.cpp": [
+     "100644 9633df52638d8f675c908726ca4f4863ebb58067",
+     "100644 1410376e2658d222a104eb52a11d4819234c4c04"
+    ],
+    "core/fpdfdoc/cpdf_nametree_unittest.cpp": [
+     "100644 939dd9a6ea33457c33dde63ab58ed0caf3f8e09b",
+     "100644 980158510b54fd905df6898284c789f15bbfda7f"
+    ],
+    "core/fpdfdoc/cpdf_pagelabel.cpp": [
+     "100644 74adad1780c9f9abcd82f3cdded149043f24d92d",
+     "100644 b844545d072af55920cd1084dbbddc93ddb9b144"
+    ],
+    "core/fpdfdoc/cpdf_pagelabel_unittest.cpp": [
+     "100644 a31414abfdecfe7d24d832911294c345cf443a6c",
+     "100644 9edaf8de14d5b347982d254e7e8f243e4b1f9e5d"
+    ],
+    "core/fpdfdoc/cpdf_structelement.cpp": [
+     "100644 e33e51efc34d79445d2423a53b04302b8b804144",
+     "100644 4448a02ff58f290b3154286f659f3582229bb1f6"
+    ],
+    "core/fpdfdoc/cpdf_structelement.h": [
+     "100644 f99df44b4c57a1f2a2813d5952cd9fd2221b34b4",
+     "100644 1578ade1a2b27b21bb06d0ead8a53a5c6b18c308"
+    ],
+    "core/fpdfdoc/cpdf_viewerpreferences.cpp": [
+     "100644 4915373f5321263d1ba703a2a3a1e1f9b0182d07",
+     "100644 8e2f2739a3b60d84734401a89783a8389b01b3dc"
+    ],
+    "core/fpdfdoc/cpvt_lineinfo.h": [
+     "100644 ac1f41d376a82dd4faa7111931a9b2274eb57a49",
+     "100644 234e9bf4341f68fb17260d20fb15d0a2aef40de1"
+    ],
+    "core/fpdfdoc/cpvt_section.cpp": [
+     "100644 6b9f62951b16635e0d02ee3586bbe1129932f181",
+     "100644 b03c3e1c533899016b9d9e49e4a1f96b9c8888a5"
+    ],
+    "core/fpdfdoc/cpvt_section.h": [
+     "100644 d29f61d9ecc7bc3d4abf8866895e1e232501051d",
+     "100644 f35f8b76e90f1c60b907efc3a82ab406fcd92d9d"
+    ],
+    "core/fpdfdoc/cpvt_section_unittest.cpp": [
+     null,
+     "100644 50856339c54f58d6d575274d38dcb94b7d132cd2"
+    ],
+    "core/fpdfdoc/cpvt_stub_provider.cpp": [
+     null,
+     "100644 8e8b9ab279c7234d0848d6bf042b8ce43297dee7"
+    ],
+    "core/fpdfdoc/cpvt_stub_provider.h": [
+     null,
+     "100644 812e8b4ddd2e49234b78b61e50d879ffd094c40c"
+    ],
+    "core/fpdfdoc/cpvt_variabletext.cpp": [
+     "100644 60cb93a41d64ce4427dbe74aae0c37154f2877eb",
+     "100644 424504890c8d06762db15c5bc0dcb6b9c3be2322"
+    ],
+    "core/fpdfdoc/cpvt_variabletext.h": [
+     "100644 2feb95d90baa2bc3e12b676b600e3cf6290ad893",
+     "100644 8e3abf9b2595230a36547abc0563b073f8e65e02"
+    ],
+    "core/fpdfdoc/cpvt_variabletext_unittest.cpp": [
+     null,
+     "100644 0145ab465738ad56521377eec5fcb40c09a5de55"
+    ],
+    "core/fpdfdoc/cpvt_word.cpp": [
+     null,
+     "100644 55d6de65542614a001ab215527869fc9bca9d70e"
+    ],
+    "core/fpdfdoc/cpvt_word.h": [
+     "100644 f5ec84381851f22d72f2d5d9680408fb577dd0ee",
+     "100644 e7009e85d659028065436f1b05561687b1527ac7"
+    ],
+    "core/fpdfdoc/cpvt_wordinfo.cpp": [
+     "100644 689dd2942bf783af2fe446c9c450623bfa215071",
+     "100644 78ce978a4fd0b59cdbdb68c1392e9fe41086cb56"
+    ],
+    "core/fpdfdoc/cpvt_wordinfo.h": [
+     "100644 98ef9f2fcf678aa0ce1a795f48c700f3522952de",
+     "100644 304b31ab214499d9a0c9400e2eb3e20c138e2c01"
+    ],
+    "core/fpdftext/cpdf_textpage.cpp": [
+     "100644 b9ec5f1eedcaecf8be7dde5200dfb881e1cb0e5d",
+     "100644 13ff0303792ee6c023515f3cd22999eaed91e487"
+    ],
+    "core/fpdftext/cpdf_textpage.h": [
+     "100644 2a5aa01831a253757981d61f5e4a5f86ff14330c",
+     "100644 be83cc9879919e77f71197dca9a94b5cbf494774"
+    ],
+    "core/fxcodec/Android.bp": [
+     "100644 e3dd790a5c575927b0ec43f35f4ec60513c1d0fc",
+     "100644 bba67a126d6be0fde00758e44984a233f78e7c7c"
+    ],
+    "core/fxcodec/BUILD.gn": [
+     "100644 e61f7107673d860bdd4dd96cc50fa4fb2dc4bd8e",
+     "100644 f633ec75b5c653662315b22c35c33ec71dcd5ea3"
+    ],
+    "core/fxcodec/DEPS": [
+     null,
+     "100644 b19b06b0dbd51e4e1a870937671f065e8d1572ef"
+    ],
+    "core/fxcodec/basic/basicmodule.cpp": [
+     "100644 2033e4f89bc9a9ccfd6db149050200c2678567ec",
+     "100644 0f04d459be3f6c9a151ed70442f923d158927b75"
+    ],
+    "core/fxcodec/bmp/DEPS": [
+     null,
+     "100644 b4d51b75ae7eb19433208d768a6945ad5859b825"
+    ],
+    "core/fxcodec/bmp/bmp_decoder.cpp": [
+     "100644 bbbc32ddb774a5410d21d4108b02935ed5127b23",
+     null
+    ],
+    "core/fxcodec/bmp/bmp_decoder.h": [
+     "100644 0a619a7757a0fbfb08a62672ae954f35cb605411",
+     null
+    ],
+    "core/fxcodec/bmp/bmp_progressive_decoder.cpp": [
+     "100644 3c1d43a22ca7a73337248c7efa00a785f77abf5e",
+     null
+    ],
+    "core/fxcodec/bmp/bmp_progressive_decoder.h": [
+     "100644 865e1128fcf8c1776973a8c62792027c8019db68",
+     null
+    ],
+    "core/fxcodec/bmp/cfx_bmpcontext.cpp": [
+     "100644 ea266bd3d921985c3b324190464f5517f92870d5",
+     "100644 51022a7cb2f73863d7fcc04431c8237e5cf17b81"
+    ],
+    "core/fxcodec/bmp/cfx_bmpcontext.h": [
+     "100644 b9360b9c570cf0867f94d19e8de22252def90daa",
+     "100644 3e3b350e841ea005c4c5838908d28f50661ae252"
+    ],
+    "core/fxcodec/bmp/cfx_bmpdecompressor.cpp": [
+     "100644 69684a0c01204010d859514f8e2e3857af07c279",
+     "100644 086920ec824cbcf5cf1a24817ae980cdb01560e7"
+    ],
+    "core/fxcodec/bmp/cfx_bmpdecompressor.h": [
+     "100644 8061a77e11fe00ec4b0940a8af57f7bdaf80740a",
+     "100644 5a379f33bd5776dd19b581287e9ea0005ffb1875"
+    ],
+    "core/fxcodec/bmp/rust_bmp_context.cpp": [
+     null,
+     "100644 677a8625e963c71a97d5eaeeae9f2dd27cccbd52"
+    ],
+    "core/fxcodec/bmp/rust_bmp_context.h": [
+     null,
+     "100644 b89ec88e6a3590e48a7eda00433db9347d4e0424"
+    ],
+    "core/fxcodec/bmp/rust_bmp_ffi.rs": [
+     null,
+     "100644 4a14c418520aadf4e4b614df9c780358560a5f10"
+    ],
+    "core/fxcodec/brotli/DEPS": [
+     null,
+     "100644 2e514af196196c5ad9886241735aeeb821435e48"
+    ],
+    "core/fxcodec/brotli/brotli_decoder.cpp": [
+     null,
+     "100644 6a76a8183cac1727a7da67f34284e00dc736fd53"
+    ],
+    "core/fxcodec/brotli/brotli_decoder.h": [
+     null,
+     "100644 d9c6095dab1cd9101c1d4d7ade9a8700c4072841"
+    ],
+    "core/fxcodec/brotli/brotli_embeddertest.cpp": [
+     null,
+     "100644 7e8207e976927a28e632cf89e9ef375c8eebe24d"
+    ],
+    "core/fxcodec/codec_memory_sk_stream.cpp": [
+     null,
+     "100644 276374b503f3e0246d5cc6ef7cb8c22c7bf7da84"
+    ],
+    "core/fxcodec/codec_memory_sk_stream.h": [
+     null,
+     "100644 6ea1e2f0504a2a61274baa88c98ee1706c461703"
+    ],
+    "core/fxcodec/codec_memory_sk_stream_unittest.cpp": [
+     null,
+     "100644 f246af7c130a2b929f214a255c435ded7e59da37"
+    ],
+    "core/fxcodec/fax/faxmodule.cpp": [
+     "100644 f6d8c92938078517187d6c5e34be240383e0a7a9",
+     "100644 be2c61b0ecf84de120c59252389eaebc18b29dea"
+    ],
+    "core/fxcodec/fax/faxmodule.h": [
+     "100644 25496b860ff43908c94e1a2d7934f7f3c07448e8",
+     "100644 0efa8f2279e33cd82b82de68694f1ee4f54ea160"
+    ],
+    "core/fxcodec/flate/flatemodule.cpp": [
+     "100644 3bb25f74a8fb579d8611c4a2b34c0c1c9b5f498b",
+     "100644 d27a1fb9275486d318968a4b1c1bc6242bda08ff"
+    ],
+    "core/fxcodec/fx_codec.cpp": [
+     "100644 9af2de78b2928a655ed305a9a90dddc2af52ae5b",
+     "100644 7a526c9a483bd1b746cd576494a68e775079ac59"
+    ],
+    "core/fxcodec/fx_codec.h": [
+     "100644 9d6725e58426624db567e8585ef3b6ebd50408d3",
+     "100644 c521e3e8dacbeeec017b74271f073a603b3f839a"
+    ],
+    "core/fxcodec/fx_codec_def.h": [
+     "100644 257007a4f46149ba48e1b81c9b9fefd3ecf2e363",
+     "100644 4aa84683fd70b4bc9585d2e4675be5d727e0b3b9"
+    ],
+    "core/fxcodec/gif/cfx_gif.h": [
+     "100644 8556612e3c09160bc026c3e301624a0b8f5f6a5d",
+     "100644 7a98ccdad8796d361ae5244beb2994ecda0ce18a"
+    ],
+    "core/fxcodec/gif/cfx_gifcontext.cpp": [
+     "100644 373bec062f49cf19ca5f10a668c9031ac447a593",
+     "100644 435b8b243c035404450ff2bf1b4ea2b93c9a6b5d"
+    ],
+    "core/fxcodec/gif/cfx_gifcontext.h": [
+     "100644 114d56d5c09235fd62ae64a82fac823de45a2386",
+     "100644 818aeaf43661fac166375d0ebf6193ad571ce86f"
+    ],
+    "core/fxcodec/gif/cfx_gifcontext_unittest.cpp": [
+     "100644 c21819fd29da49081f4f72f5b0661491501e0cf6",
+     "100644 dba7794dc5bbec4ac8f0d278a00cae028a2f41e0"
+    ],
+    "core/fxcodec/gif/gif_decoder.cpp": [
+     "100644 b0c1ed0efd6cebcb854909b5f22f6e765be2c0f0",
+     null
+    ],
+    "core/fxcodec/gif/gif_decoder.h": [
+     "100644 3d7a4ca9cdc5c434da0dc8141970d9f8e1fd2263",
+     null
+    ],
+    "core/fxcodec/gif/gif_progressive_decoder.cpp": [
+     "100644 46de8d3a6be388f6ae549f24cc056722f60f8223",
+     null
+    ],
+    "core/fxcodec/gif/gif_progressive_decoder.h": [
+     "100644 52075a6f0ab50357b4d746c356cb1e93a3d54366",
+     null
+    ],
+    "core/fxcodec/gif/lzw_decompressor.cpp": [
+     "100644 2bad33cb5077ac3b98fbe1e0cce264955dcce69b",
+     "100644 2563e1beaa2a6aa2236d2f0de6943c223c387e1f"
+    ],
+    "core/fxcodec/gif/lzw_decompressor.h": [
+     "100644 1d572d0f33d94291b46750316fde72d1eba5dfd8",
+     "100644 540fa6867714fca5181fd794d4bd40c6e3db9d09"
+    ],
+    "core/fxcodec/icc/icc_transform.cpp": [
+     "100644 0cd02e7b2fcd52b25b2694770f03acf93af0d601",
+     "100644 4c4c62a5a00f9148821f94dd5c6a312d7e5470ba"
+    ],
+    "core/fxcodec/icc/icc_transform.h": [
+     "100644 a11d811c8ebb3d7f4ae098a795506a2b68e1f870",
+     "100644 a460e4e53c7944d456c1e4e2bfeaefa07eb8a5e5"
+    ],
+    "core/fxcodec/jbig2/JBig2_ArithDecoder.cpp": [
+     "100644 b25b5579bcced6c79deda2263348cc62c2b29051",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_ArithDecoder.h": [
+     "100644 4d3ff12547d5644a28939f017ea6815f1c16dc7f",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_ArithIntDecoder.cpp": [
+     "100644 ac66b046104529bf24d0927a08fbd74ed74c340b",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_ArithIntDecoder.h": [
+     "100644 6f3060f0cbcdb139d99c371ed9882a356340deef",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_BitStream.cpp": [
+     "100644 011e116e1634d0fa02a60fabd1bcbe620ca9446e",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_BitStream.h": [
+     "100644 dbbde52397511a1f66598c483d8042c5d83825fb",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_BitStream_unittest.cpp": [
+     "100644 b20fd8f54aaa60cef0363a985bf8f56df569fa7a",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Context.cpp.migration": [
+     "100644 7fc61cab2a98e972dbe0c7ca77db2e8cb199a14d",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Context.h.migration": [
+     "100644 b7521e50291f33177b93aa4c89a9bb80f534769d",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Define.h.migration": [
+     "100644 f2796f5945336f06c6cef4a002213330174c84f1",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_DocumentContext.cpp": [
+     "100644 423c1ba3ca24aa214a379e0f8978d43baafbbe7b",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_DocumentContext.h": [
+     "100644 ad95a9f894a0635a1bd74840c3e29e3650509ff8",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_GrdProc.cpp": [
+     "100644 8d68c9fa50c25315f8d844f098039d7a4875c6d6",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_GrdProc.h": [
+     "100644 8a98a3bfaef929774fb1fc11143eed85d251ef62",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_GrrdProc.cpp": [
+     "100644 08de605ca7137826327514af3d435b26f142661e",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_GrrdProc.h": [
+     "100644 bc194ff71d1403404c0347df01164f94ba9574c0",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_HtrdProc.cpp": [
+     "100644 6f9e7969e3c94c47d3844ddef7ca947f036d502e",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_HtrdProc.h": [
+     "100644 f041d585115593cec6acbe6f807a895dade74211",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_HuffmanDecoder.cpp": [
+     "100644 f1d6fff3cba977567af20e324cb51cf47811a53e",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_HuffmanDecoder.h": [
+     "100644 7e0900f5559fb01aeb38b19e8b39d3605219b4b9",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_HuffmanTable.cpp": [
+     "100644 e4ee07ed39cfae381e9d94fa4861b9c2f43e8d2f",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_HuffmanTable.h": [
+     "100644 fa5a50f2aeaeb860ee56b938524799d8f80c870b",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Image.cpp.migration": [
+     "100644 d1c2e4a34bfc844e46aeb2f575d2780388061b2f",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Image.h.migration": [
+     "100644 7e72e9e963187d0b486a9b7dc440317024b7b92c",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Image_unittest.cpp.migration": [
+     "100644 06436a5daea3ed31ccbe7a8543706c1754567f3a",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Page.h.migration": [
+     "100644 6ea4f351e8cc40fc0f1d26c6b734609f219bf56e",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_PatternDict.cpp": [
+     "100644 a125b2e70babbbd1e561c486e77ae24b6e7e0453",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_PatternDict.h": [
+     "100644 3260405df60617b736f46bbbf91cffaeeb3bc727",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_PddProc.cpp": [
+     "100644 188a3f60b5efb56b286ea4e3579989abdde74eb5",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_PddProc.h": [
+     "100644 4035eaef041068ac7413f385bc240c3b32fb88fe",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_SddProc.cpp": [
+     "100644 9f2c148dd6d4c2005d13c03b402978d318e16600",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_SddProc.h": [
+     "100644 03db2992b5976cec2a182053703edd63d508091d",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Segment.cpp.migration": [
+     "100644 63981b0b407da11443cc24e4812a7518b5af9b26",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_Segment.h.migration": [
+     "100644 4641e5361dd585e2df55941759c6a240cff9de29",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_SymbolDict.cpp": [
+     "100644 ba734374ff7b9a266d3ceb33e09102dbb51684f8",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_SymbolDict.h": [
+     "100644 5a65d2857c3950eb98e91eeb7be801838d3b0b7b",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_TrdProc.cpp": [
+     "100644 f01f5173c593215922db7c72d24130e51aaec163",
+     null
+    ],
+    "core/fxcodec/jbig2/JBig2_TrdProc.h": [
+     "100644 6ec10e4c5c3cfc0b423efeb45610f3eddb693e6f",
+     null
+    ],
+    "core/fxcodec/jbig2/jbig2_arith_decoder.cpp": [
+     null,
+     "100644 49154e70104da2fcb18e5c47e41625cb76b9e812"
+    ],
+    "core/fxcodec/jbig2/jbig2_arith_decoder.h": [
+     null,
+     "100644 7d0d8180e84c9d1bd155246ae93f516c88553132"
+    ],
+    "core/fxcodec/jbig2/jbig2_arith_int_decoder.cpp": [
+     null,
+     "100644 76a90fd1bf5877ea627afa26350d5def5ab45781"
+    ],
+    "core/fxcodec/jbig2/jbig2_arith_int_decoder.h": [
+     null,
+     "100644 fedc259d2eca616d3e17caeaa0bdfb7beb5627d3"
+    ],
+    "core/fxcodec/jbig2/jbig2_bit_stream.cpp": [
+     null,
+     "100644 0a3c46907f2f3c442275a740fd38010241cbd3ae"
+    ],
+    "core/fxcodec/jbig2/jbig2_bit_stream.h": [
+     null,
+     "100644 3b5659f5aead9c1c64a55a75319d36607b8dbbeb"
+    ],
+    "core/fxcodec/jbig2/jbig2_bit_stream_unittest.cpp": [
+     null,
+     "100644 fd10dd7f8fd5c52123fefffb8f09abde7592310a"
+    ],
+    "core/fxcodec/jbig2/jbig2_context.cpp": [
+     null,
+     "100644 219946e010c5aca30022d3a362b2051143f49c5b"
+    ],
+    "core/fxcodec/jbig2/jbig2_context.h": [
+     null,
+     "100644 8dbc467317699ab221e11889094f1c3a42ab8120"
+    ],
+    "core/fxcodec/jbig2/jbig2_decoder.cpp": [
+     "100644 d195525c96fa174ff79fb38f39881307cabd6ead",
+     "100644 9fd3a5e57d739892f8cac09ca509a6191e3ee3c8"
+    ],
+    "core/fxcodec/jbig2/jbig2_decoder.h": [
+     "100644 d068842e7ea09e8bbe91bd4efc491966ec5844ee",
+     "100644 96e3685fa302f91113d6fe4ad854a121929f3edf"
+    ],
+    "core/fxcodec/jbig2/jbig2_define.h": [
+     null,
+     "100644 f2796f5945336f06c6cef4a002213330174c84f1"
+    ],
+    "core/fxcodec/jbig2/jbig2_document_context.cpp": [
+     null,
+     "100644 311bd672efd979bd45b0fd255597a9680888c31d"
+    ],
+    "core/fxcodec/jbig2/jbig2_document_context.h": [
+     null,
+     "100644 e7d16c009e4c68e593fbba1b82f3075bbf03b5de"
+    ],
+    "core/fxcodec/jbig2/jbig2_embeddertest.cpp": [
+     "100644 9aeeb7110c420286b40cbb0ba86cbb3e8f4f8ba9",
+     "100644 d217d7eb324686b24c20b7fec277c7876428199b"
+    ],
+    "core/fxcodec/jbig2/jbig2_grd_proc.cpp": [
+     null,
+     "100644 14fb21df47a494ce6d6ec75b3f30d42e671d46b9"
+    ],
+    "core/fxcodec/jbig2/jbig2_grd_proc.h": [
+     null,
+     "100644 48be463a5649bba64c9649b655428afa0c3afc90"
+    ],
+    "core/fxcodec/jbig2/jbig2_grrd_proc.cpp": [
+     null,
+     "100644 cc08d0f931a41313ae5b3d8e727ea7d9458c0d99"
+    ],
+    "core/fxcodec/jbig2/jbig2_grrd_proc.h": [
+     null,
+     "100644 f8a6721f47085091ecdadc19379addb43f558eb0"
+    ],
+    "core/fxcodec/jbig2/jbig2_htrd_proc.cpp": [
+     null,
+     "100644 f631e293eb89a274508b6f1b984e11e5f11bcefa"
+    ],
+    "core/fxcodec/jbig2/jbig2_htrd_proc.h": [
+     null,
+     "100644 83bdd7c348d404d27cf7c757ffa3b5434de1ed44"
+    ],
+    "core/fxcodec/jbig2/jbig2_huffman_decoder.cpp": [
+     null,
+     "100644 3d2061d596fa7e31260b5e2176d8179409b8075e"
+    ],
+    "core/fxcodec/jbig2/jbig2_huffman_decoder.h": [
+     null,
+     "100644 4b016bd7ae8b6257ffdd83637a9966bc5b19de7a"
+    ],
+    "core/fxcodec/jbig2/jbig2_huffman_table.cpp": [
+     null,
+     "100644 f040a09a9bcadd061547c042854514e96871ceb7"
+    ],
+    "core/fxcodec/jbig2/jbig2_huffman_table.h": [
+     null,
+     "100644 7f5d5a066db9eccd77b8dcef2088070500812aac"
+    ],
+    "core/fxcodec/jbig2/jbig2_image.cpp": [
+     null,
+     "100644 4678a70a7e01371c4f6bab822337e979312306d3"
+    ],
+    "core/fxcodec/jbig2/jbig2_image.h": [
+     null,
+     "100644 0e3afc13a51b9bacf086393a155427ce71ff2a3e"
+    ],
+    "core/fxcodec/jbig2/jbig2_image_unittest.cpp": [
+     null,
+     "100644 b8251172ac50eff39c9c69a92a9cab59c96e3aa0"
+    ],
+    "core/fxcodec/jbig2/jbig2_page.h": [
+     null,
+     "100644 6ea4f351e8cc40fc0f1d26c6b734609f219bf56e"
+    ],
+    "core/fxcodec/jbig2/jbig2_pattern_dict.cpp": [
+     null,
+     "100644 8bf218e25d1a86e7619faded23588e03095b8d19"
+    ],
+    "core/fxcodec/jbig2/jbig2_pattern_dict.h": [
+     null,
+     "100644 743d65b01394018f3b82dd3e4469081dc8c8a6a5"
+    ],
+    "core/fxcodec/jbig2/jbig2_pdd_proc.cpp": [
+     null,
+     "100644 1a67cc4d6d7c649e7649cd06d8e4808c76608965"
+    ],
+    "core/fxcodec/jbig2/jbig2_pdd_proc.h": [
+     null,
+     "100644 086fc2b679ba14a61336888d099b477d73313277"
+    ],
+    "core/fxcodec/jbig2/jbig2_sdd_proc.cpp": [
+     null,
+     "100644 bc867e2a8e43db0a410d6c1a88d98c4001c7b4f1"
+    ],
+    "core/fxcodec/jbig2/jbig2_sdd_proc.h": [
+     null,
+     "100644 37ec1de311d366c07a7534e6d825dc1f4dca94d3"
+    ],
+    "core/fxcodec/jbig2/jbig2_segment.cpp": [
+     null,
+     "100644 f918f0aa97eaf1cd4408373e0020846c3b42af2f"
+    ],
+    "core/fxcodec/jbig2/jbig2_segment.h": [
+     null,
+     "100644 a58ae69d69689c3fa709a4e81122e6f9fa377b6b"
+    ],
+    "core/fxcodec/jbig2/jbig2_symbol_dict.cpp": [
+     null,
+     "100644 91d8b95bdd36522ab30459b40775250e69a329c7"
+    ],
+    "core/fxcodec/jbig2/jbig2_symbol_dict.h": [
+     null,
+     "100644 29398628897232e2e64dcf6752efbc2c41db514e"
+    ],
+    "core/fxcodec/jbig2/jbig2_trd_proc.cpp": [
+     null,
+     "100644 abc97d1d93178ffc06deaafc169b2dc9227fb861"
+    ],
+    "core/fxcodec/jbig2/jbig2_trd_proc.h": [
+     null,
+     "100644 3d8c8869da040a5ad808ab19913fbb7f5289218f"
+    ],
+    "core/fxcodec/jpeg/DEPS": [
+     "100644 88af2417fc545174015c1947937f10201017c4ce",
+     "100644 a78ca5aada57c80d4b86e1158973b638dccf36e0"
+    ],
+    "core/fxcodec/jpeg/jpeg_progressive_decoder.cpp": [
+     "100644 9ca4b67961968c9c2266833aef0de033472f991b",
+     null
+    ],
+    "core/fxcodec/jpeg/jpeg_progressive_decoder.h": [
+     "100644 f3e41aa3f3db110f2e278782618736e5bc0795ca",
+     null
+    ],
+    "core/fxcodec/jpeg/jpegmodule.cpp": [
+     "100644 02b60f95d773ec655b916c2d256ebc8cda3720ad",
+     "100644 3cf8818a9651bfd561c004a20b37675cac37dda5"
+    ],
+    "core/fxcodec/jpeg/jpegmodule.h": [
+     "100644 b24b65ba2254c32aed2e0ab84c6c93c4c553c0d0",
+     "100644 94874668bafa21772d23dc350208c8338df26a38"
+    ],
+    "core/fxcodec/jpeg/jpegmodule_unittest.cpp": [
+     null,
+     "100644 20da9a6a157cdf5633b2ae087cb749523906b376"
+    ],
+    "core/fxcodec/jpeg/libjpeg_jpeg_context.cpp": [
+     null,
+     "100644 64cb274447c97ec60258e4431f835616baa7e3f2"
+    ],
+    "core/fxcodec/jpeg/libjpeg_jpeg_context.h": [
+     null,
+     "100644 a3abe7a247f434ca137df7380ef25ea07732bed7"
+    ],
+    "core/fxcodec/jpeg/libjpeg_scanline_decoder.cpp": [
+     null,
+     "100644 0ecd1ffd47e4bc6c2be389d297851e993ec01d9b"
+    ],
+    "core/fxcodec/jpeg/libjpeg_scanline_decoder.h": [
+     null,
+     "100644 1e417847d641a1ea9c256402dc9913437ca7b804"
+    ],
+    "core/fxcodec/jpeg/skia_jpeg_context.cpp": [
+     null,
+     "100644 7d508c3d688b7fba97b59f2d96150d33869f0343"
+    ],
+    "core/fxcodec/jpeg/skia_jpeg_context.h": [
+     null,
+     "100644 2392a533f8c5ddec6ac7866bf176de93781d0533"
+    ],
+    "core/fxcodec/jpeg/skia_scanline_decoder.cpp": [
+     null,
+     "100644 875601cc26c26468499c9a6d7fcae025cb6a7753"
+    ],
+    "core/fxcodec/jpeg/skia_scanline_decoder.h": [
+     null,
+     "100644 e96550e90934c1a016dd7de383fc2d51c102fc37"
+    ],
+    "core/fxcodec/jpx/cjpx_decoder.cpp": [
+     "100644 fb14811c985f93e5e8f5eb67f71957825addf04d",
+     "100644 94003318c0b8017fff5262acb6a77dc88876ae06"
+    ],
+    "core/fxcodec/png/DEPS": [
+     "100644 9caa4d85335998921d3ecc72f6807c13afb2acab",
+     "100644 cbd0820fd5f9395fd7b1cd8619954bb402b801bb"
+    ],
+    "core/fxcodec/png/libpng_png_context.cpp": [
+     null,
+     "100644 8dd1d963abac2f7c254a551e24191ebef46d08ac"
+    ],
+    "core/fxcodec/png/libpng_png_context.h": [
+     null,
+     "100644 ab43963cb02246e7452b2c7d349f9fbb5a06909b"
+    ],
+    "core/fxcodec/png/png_decoder.cpp": [
+     "100644 c5dd048ac76a491275bc1fa7b9157ae9f1356c2f",
+     null
+    ],
+    "core/fxcodec/png/png_decoder.h": [
+     "100644 32d903083c63593b3f80a865f1137249d53603e9",
+     null
+    ],
+    "core/fxcodec/png/png_decoder_delegate.cpp": [
+     "100644 f6a210a7df652b3519c3c46eb9fed778f9083f95",
+     null
+    ],
+    "core/fxcodec/png/png_decoder_delegate.h": [
+     "100644 a158da59a565b42c143044c0d5d28ea270f042c2",
+     null
+    ],
+    "core/fxcodec/png/rust_png_context.cpp": [
+     null,
+     "100644 5135e139429d925074607db6f46eadb9893a0dc5"
+    ],
+    "core/fxcodec/png/rust_png_context.h": [
+     null,
+     "100644 296f3e1b8a8891b65dfe02ecfa2c24b08122d0bc"
+    ],
+    "core/fxcodec/png/rust_png_ffi.rs": [
+     null,
+     "100644 ef8853a2a8e8bfe64a16721533e101e530bb5830"
+    ],
+    "core/fxcodec/progressive_decoder.cpp": [
+     "100644 25c5355d5f9e620cfc8f72056f4f8eaedda4128f",
+     "100644 ad07c35263d8d5d5ee7488ffa206dc95e8ee4504"
+    ],
+    "core/fxcodec/progressive_decoder.h": [
+     "100644 adb59af21de9a9cb102b14219484f0366f398163",
+     "100644 42733c12c00830cb80b33d939b3404cc700f8406"
+    ],
+    "core/fxcodec/progressive_decoder_context.cpp": [
+     null,
+     "100644 a4d3ca8e821d2297cf70f3f0d7af95acfb293e8e"
+    ],
+    "core/fxcodec/progressive_decoder_context.h": [
+     null,
+     "100644 2a03d73353b7fa3c86e74044d33303dca2dbcdf6"
+    ],
+    "core/fxcodec/progressive_decoder_context_delegate.h": [
+     null,
+     "100644 c3bcae8efa2d10447b1c1e1c254f6d0cfdc0ad84"
+    ],
+    "core/fxcodec/progressive_decoder_iface.h": [
+     "100644 a21f23491de25dfa1a27b1b70befd02f267e8a6f",
+     null
+    ],
+    "core/fxcodec/progressive_decoder_unittest.cpp": [
+     "100644 56f34cf2788dc458e60995a5291a0503bd25d78b",
+     "100644 719df58b6e583b2a27de58ce352b8d5f817227c8"
+    ],
+    "core/fxcodec/tiff/libtiff_tiff_context.cpp": [
+     null,
+     "100644 4f155d9a98852f68723631879b98a19f18ee8238"
+    ],
+    "core/fxcodec/tiff/libtiff_tiff_context.h": [
+     null,
+     "100644 7953101cdb0a2c7e88221195998e60d72784e3a7"
+    ],
+    "core/fxcodec/tiff/tiff_decoder.cpp": [
+     "100644 d216b9ef61b0405f56b89377d47e0f14ba08555f",
+     null
+    ],
+    "core/fxcodec/tiff/tiff_decoder.h": [
+     "100644 4b410bfd63e1fe1cf54d6e00bf9acabab0c5a37a",
+     null
+    ],
+    "core/fxcrt/Android.bp": [
+     "100644 ee632f46cd97acd025434872597492bc8771c759",
+     "100644 b4e10b19c9b01cfca18d10aa4a50e55bcd4ecd2c"
+    ],
+    "core/fxcrt/BUILD.gn": [
+     "100644 796a10a4d2d71ab4ac37f4b86fefc393993278aa",
+     "100644 762592de50888c614822655e30ad0d3a07623834"
+    ],
+    "core/fxcrt/bytestring.cpp": [
+     "100644 70eaf43fb22b37e84396deafc284472c19bb61fb",
+     "100644 a80f0ff6a68bae72972c6e5ea20dd2da47a3c6ac"
+    ],
+    "core/fxcrt/bytestring_pool.cpp": [
+     null,
+     "100644 eda2e8be5c9599e1fb2b0e5cdcf5dbdffc463dac"
+    ],
+    "core/fxcrt/bytestring_pool.h": [
+     null,
+     "100644 97223be3fae97468946b5e89e6666b62536c592d"
+    ],
+    "core/fxcrt/bytestring_pool_unittest.cpp": [
+     null,
+     "100644 c51847997307ed1cd3b88a6cc35defe98c7d49dc"
+    ],
+    "core/fxcrt/bytestring_unittest.cpp": [
+     "100644 22be6f4fe5599dfe17fc2a68e1da609fd7dcf3d6",
+     "100644 ba98a537d22e1646c0a479a430918ccdaec5f2ff"
+    ],
+    "core/fxcrt/cfx_bidi_resolver.cpp": [
+     null,
+     "100644 59f13a3b1c49e31ba98d9f39778e42b202e96505"
+    ],
+    "core/fxcrt/cfx_bidi_resolver.h": [
+     null,
+     "100644 13ec3b4764125dd9f06a1df9c6bd9223a6527f15"
+    ],
+    "core/fxcrt/cfx_bidi_resolver_unittest.cpp": [
+     null,
+     "100644 7e6726e3012f3ddfa53cd06042e64ff21b43c53a"
+    ],
+    "core/fxcrt/cfx_bitstream.cpp": [
+     "100644 633346586e58d840e3979a0c9327b2fbc58028eb",
+     "100644 3c6f01c706fb63f8fcddf9627f28e04c1120fc95"
+    ],
+    "core/fxcrt/cfx_datetime.cpp": [
+     "100644 a91997bbee61c53353257dead7cb409ef4cb7041",
+     "100644 f7cc965bc4d3b60795ee4ce1f55123bb7f760f30"
+    ],
+    "core/fxcrt/cfx_fileaccess_posix.cpp": [
+     "100644 ac074a0dd056e98943b90f9da9843a5dce18c2ec",
+     "100644 d06031189c6c3a8599156d2551b70bdb4a694e5a"
+    ],
+    "core/fxcrt/cfx_fileaccess_posix.h": [
+     "100644 24652a6c6bbbf4a6e13dca990a5fbf91161e9295",
+     "100644 de28106480e982c205c3322da98ac9c4e11758a6"
+    ],
+    "core/fxcrt/cfx_fileaccess_stream.cpp": [
+     null,
+     "100644 8d97c40265d05def2af7671d10177505dc479b2b"
+    ],
+    "core/fxcrt/cfx_fileaccess_stream.h": [
+     null,
+     "100644 1a1747da18a6ac5ee2f73b857ccffd7f2671107d"
+    ],
+    "core/fxcrt/cfx_fileaccess_windows.cpp": [
+     "100644 7adc1b58ac639a651aa1ab2d330331164bcd0485",
+     "100644 d1b1af4734441a7d1934d5ca052552b3ef1ef03c"
+    ],
+    "core/fxcrt/cfx_fileaccess_windows.h": [
+     "100644 1e9b9835f2283a346927ed65a11334c01ce4a70b",
+     "100644 3c196b4cdd89343f174fc9ac05a341b840256e90"
+    ],
+    "core/fxcrt/cfx_read_only_container_stream.cpp": [
+     null,
+     "100644 4c53ae38c75078f5e46eb7f2d29865682d890186"
+    ],
+    "core/fxcrt/cfx_read_only_container_stream.h": [
+     null,
+     "100644 c2684c46875b7792216832fe9302a67e5a0afb03"
+    ],
+    "core/fxcrt/cfx_read_only_container_stream_unittest.cpp": [
+     null,
+     "100644 ad31aab623197efa4e8450881edc667757637056"
+    ],
+    "core/fxcrt/cfx_read_only_span_stream.h": [
+     "100644 b66e6e390f2689a868069b483d45125999156f91",
+     "100644 8346b1e5199429a1ef08458079e038980a3b4456"
+    ],
+    "core/fxcrt/cfx_read_only_string_stream.cpp": [
+     "100644 74d93447afc4db8f3719f6e34fd71433a2371462",
+     null
+    ],
+    "core/fxcrt/cfx_read_only_string_stream.h": [
+     "100644 fe4b26faf37e237f5ae72041c7a6df58bb1ba45f",
+     null
+    ],
+    "core/fxcrt/cfx_read_only_vector_stream.cpp": [
+     "100644 87e742d0948a7846488eeac5691095f0a3a24e69",
+     null
+    ],
+    "core/fxcrt/cfx_read_only_vector_stream.h": [
+     "100644 bf8d06557a2c6dcc87e4cd4c27b8da9fbd7cb5b5",
+     null
+    ],
+    "core/fxcrt/cfx_seekablestreamproxy.cpp": [
+     "100644 33cc528b698cc5e36d9c155dc8c1974ba0fe9d3c",
+     "100644 f0b41434e3458ec2164c706d81070dca354668f7"
+    ],
+    "core/fxcrt/code_point_view.cpp": [
+     null,
+     "100644 12b3783aca5556be840a92e4b8cd35a4fd10a5dd"
+    ],
+    "core/fxcrt/compiler_specific.h": [
+     "100644 c4bbd175a641eda6c19a0584a0d9cc30c04112b5",
+     "100644 dca466c72b9750263ba59b79ee76131ef605144a"
+    ],
+    "core/fxcrt/css/cfx_cssselector.cpp": [
+     "100644 3f829d19f67c271d41296148d48342fd460dadbb",
+     "100644 0d25cbf2b41eb95bcd1084aa2f9258d409505f3f"
+    ],
+    "core/fxcrt/css/cfx_cssstyleselector.cpp": [
+     "100644 7fd33c6d77c274876c5815349a0ac33a560eab58",
+     "100644 049b86cacc8297b0eb529d64ef35c4bec99032c7"
+    ],
+    "core/fxcrt/fileaccess_iface.h": [
+     "100644 59113d10c75b2305953fec01c033a3f5a550e513",
+     "100644 f6c2e44e54bb76d88e844c3d2b1b4e5fea6ac481"
+    ],
+    "core/fxcrt/fx_bidi.cpp": [
+     "100644 d292a5ba89aa1a280c294d90c6397e53a8b143ea",
+     "100644 17e43c7f1e20b81951406fe0657217fe2da1c10a"
+    ],
+    "core/fxcrt/fx_bidi.h": [
+     "100644 f27891c906b27e7e9a347b4faf2e1c65a92777df",
+     "100644 031017877b4219d1a93207adbb5059ab072ffae1"
+    ],
+    "core/fxcrt/fx_bidi_unittest.cpp": [
+     "100644 1b90e321af0ab074299db0f40367bffcce2be3d5",
+     "100644 ec9effea64e7e64acea0d4d5155b5634bd573653"
+    ],
+    "core/fxcrt/fx_codepage.cpp": [
+     "100644 2f9bce67da3be29416dfebfb6b1cfd1fb49812a3",
+     "100644 1fb5e4241b93389d26f279316cbcc805ffd9db67"
+    ],
+    "core/fxcrt/fx_codepage.h": [
+     "100644 5e6eba0222a613bee87a8654ae88de49144e83ec",
+     "100644 ddfc115c5f15854c36558aa27751f830e47d172e"
+    ],
+    "core/fxcrt/fx_codepage_forward.h": [
+     "100644 c67eaf2ae3f18e70407fc893d590a3b50e50a93c",
+     "100644 45cf1894a4bbfc512d4f33c0c42207606d0dba30"
+    ],
+    "core/fxcrt/fx_coordinates.h": [
+     "100644 8a03d132319e29b78a8f132b433c7151fdf33ec7",
+     "100644 0b842d4f7a8cb021dd60aec3c2b63a00dc3ed82c"
+    ],
+    "core/fxcrt/fx_coordinates_unittest.cpp": [
+     "100644 0489fa30bb8207fec48d3255ef15f0b7de6012e7",
+     "100644 670ebabec88fdd297c324af56f65d8ec4a9a96d6"
+    ],
+    "core/fxcrt/fx_extension.cpp": [
+     "100644 d7fc68614488d00d0ce9b5f4a53001806ce57652",
+     "100644 7739b82bc3cd179b2b3935b2015ef0db027f8360"
+    ],
+    "core/fxcrt/fx_extension.h": [
+     "100644 0a154ee19be9a655854187e2c0094908fc44cfff",
+     "100644 8ce31e1d703eaa84ba5d97eeb9329e6f4bcfa24c"
+    ],
+    "core/fxcrt/fx_extension_unittest.cpp": [
+     "100644 15e08791645bee37026678a0965381a99ae759dc",
+     "100644 74f970ace5a87530edd1e9f87b8b66337bbaa6ba"
+    ],
+    "core/fxcrt/fx_memory.h": [
+     "100644 694e7ff348af2d8de85195b4489c8b324e2a2043",
+     "100644 9191dc863d9e7c0f79d49883be861323b6184d89"
+    ],
+    "core/fxcrt/fx_memory_malloc.cpp": [
+     "100644 28f36f0508a28d3e3b2f9b0ccf1d5c01bb0cb1f2",
+     "100644 82bb273e67caba22c184e95c7424c0de2dc1899a"
+    ],
+    "core/fxcrt/fx_memory_pa.cpp": [
+     "100644 9ecf90ad55ec882253e8d050d3689dd88cf48785",
+     "100644 feb6c4f6849fb5054776350e1ca0ffecf80a8e58"
+    ],
+    "core/fxcrt/fx_number.cpp": [
+     "100644 fbd60a5e1f73c5653e9981640c2c23f4a4862728",
+     "100644 8cdb6b4f5d33888b50c87d45e663f6e2ee13669c"
+    ],
+    "core/fxcrt/fx_number_unittest.cpp": [
+     "100644 e79bc3abec6f35057f0e2a046bf7a52af48b5323",
+     "100644 dd8af1b4c61f877d9d98c750878ecde121b4c751"
+    ],
+    "core/fxcrt/fx_random.cpp": [
+     "100644 a35be66260f014ba1ceadddfbfa0e9678ad59c66",
+     "100644 6e9db0774e4510972ae29540bbe880a7659ad37c"
+    ],
+    "core/fxcrt/fx_random.h": [
+     "100644 98bed83c3c14ced3b28a40929b23f31ebcfbe6d4",
+     "100644 ed0da248a81e843c30831ae945ba6cef7d8b9708"
+    ],
+    "core/fxcrt/fx_random_unittest.cpp": [
+     "100644 2634d74f34ed7c08c09601205f195bf0e8707d22",
+     "100644 dfde257d24f24b34a47eea2c7e9d3fea5f230f53"
+    ],
+    "core/fxcrt/fx_stream.cpp": [
+     "100644 6e9c6b22653fa9e699180e0eba2e92bd9d3dac83",
+     "100644 33dbca5ffcbce4c96c7ec07b00cc89998e96ed10"
+    ],
+    "core/fxcrt/fx_stream.h": [
+     "100644 6436f87ac45b80bb0dbbb5da8d1b062a77b0c2d4",
+     "100644 7f8da504515d82d0cc25f9b6655ae93c2fdb41e2"
+    ],
+    "core/fxcrt/fx_string.cpp": [
+     "100644 6c3fa7ddf17e118db8ef30dc7bd87e520373b190",
+     "100644 4b86389b42ae76ba9570a032d7be952fc288d761"
+    ],
+    "core/fxcrt/fx_string.h": [
+     "100644 06ebe3af2ef6995515dee99355c1ff2b8ee63bf2",
+     "100644 fd5a6ad2fb245fdb4f1843ba73f2c69d8d1a5874"
+    ],
+    "core/fxcrt/fx_string_unittest.cpp": [
+     "100644 96ccb3c36e205144fd310a5d2d107ec23a3ba081",
+     "100644 2d342bb61a6b2caf19f025746c05429acc883324"
+    ],
+    "core/fxcrt/fx_unicode.cpp": [
+     "100644 f992c46ca3b913990a72a36f020731611a82a7ff",
+     "100644 847d1b924c62fdd841e032c733770e61bdaa190d"
+    ],
+    "core/fxcrt/fx_unicode.h": [
+     "100644 5ad5ce04fe1ad8a6d21003481375a4fd070ead80",
+     "100644 ff3ff700e333de392b3f0f1f1e9ca26137e54549"
+    ],
+    "core/fxcrt/mapped_data_bytes.cpp": [
+     null,
+     "100644 fb7693a720b2319705cedd7002e765c91b994bb9"
+    ],
+    "core/fxcrt/mapped_data_bytes.h": [
+     null,
+     "100644 0bc1c51c277f1c6c9998014079682b5151783e15"
+    ],
+    "core/fxcrt/mapped_data_bytes_unittest.cpp": [
+     null,
+     "100644 2c4485eac557b6d6ed30b80c14ca0e2f00c543f6"
+    ],
+    "core/fxcrt/mask.h": [
+     "100644 0f9191a688f7070861762c5959a11113f4c9178c",
+     "100644 548681bc3ba4a72f8d99535b871ce72c1d2296c7"
+    ],
+    "core/fxcrt/mask_unittest.cpp": [
+     "100644 a6c4873aafc7d7d54b93c17cf871201d57645bcd",
+     "100644 bbde70b426a51ac636c82955dffc2ae37176b1cb"
+    ],
+    "core/fxcrt/maybe_owned_data_vector.h": [
+     null,
+     "100644 60aeb595613cf1941663a24778f35867b962028d"
+    ],
+    "core/fxcrt/maybe_owned_data_vector_unittest.cpp": [
+     null,
+     "100644 1f5f53ab541a5c983db450e7fc3c1915f8a233c5"
+    ],
+    "core/fxcrt/numerics/OWNERS": [
+     null,
+     "100644 703ed9dbdd9a0f19ff6d2170b511f452a9acc117"
+    ],
+    "core/fxcrt/retain_ptr_unittest.cpp": [
+     "100644 0a65ee5cd998f22096e14b492c40698d8ba11021",
+     "100644 d8be0563e2fe913c91186a4a4ca17499fee54b3d"
+    ],
+    "core/fxcrt/scoped_set_insertion.h": [
+     "100644 bf2ffad06c30c708d02ae40a96e53f6802f7c27d",
+     "100644 abe5a77980ec17324eef30c2523ed8529e4f2af3"
+    ],
+    "core/fxcrt/span_io.h": [
+     null,
+     "100644 c58b093f4c5acc73d8af713666a5e835f0ce62f2"
+    ],
+    "core/fxcrt/span_io_unittest.cpp": [
+     null,
+     "100644 a50936916893416ee49dc76cf7a03eff45a96df0"
+    ],
+    "core/fxcrt/string_data_template.cpp": [
+     "100644 1606f001e76401291c1d58b2f1bce6c494dd3739",
+     "100644 b723b8c2e5d2b43f749e03606a5fd2910514007a"
+    ],
+    "core/fxcrt/string_pool_template.h": [
+     "100644 46d594b2f9172e331c667d1bd2794c7a2ef78cda",
+     null
+    ],
+    "core/fxcrt/string_pool_template_unittest.cpp": [
+     "100644 2d7309f8b0b707b895acae188c24a813498ad4dd",
+     null
+    ],
+    "core/fxcrt/string_view_template.h": [
+     "100644 676023799766aba8a2c8f17aea49d453f37cf218",
+     "100644 a15cf12f1575fa8afa68798f83715eb471d45f03"
+    ],
+    "core/fxcrt/to_underlying.h": [
+     null,
+     "100644 bf2ccc94a95e2704fc431b0bcfd744cfe8ae6634"
+    ],
+    "core/fxcrt/to_underlying_unittest.cpp": [
+     null,
+     "100644 35428697e7dedbde45dbac304a2a368ffe7c9bf8"
+    ],
+    "core/fxcrt/unowned_ptr.h": [
+     "100644 8218c58b0fa50cb869344c8fcaef4f34af260126",
+     "100644 7ae57ba0cc32ff7d6970f262f81b06d90297563a"
+    ],
+    "core/fxcrt/unowned_ptr_unittest.cpp": [
+     "100644 0757442813e6fc1376a6fadeec2a4f1abd5aa4c2",
+     "100644 697378c4452bf8c15319b1254c73ffd1ebd6ab63"
+    ],
+    "core/fxcrt/widestring.cpp": [
+     "100644 ad176370769d8ce4278244f0931bc0539d10c001",
+     "100644 2b686022643defb80c643d648b46ddf5b19dd2c6"
+    ],
+    "core/fxcrt/widestring.h": [
+     "100644 a5f203e7b1e65ae8956962ea31e41560babf0eba",
+     "100644 2cd3f8c0354077a7d296ab947513c1c88d478fe0"
+    ],
+    "core/fxcrt/widestring_unittest.cpp": [
+     "100644 c1d5a053ea4cab32699a991f918f6acaa5e33461",
+     "100644 8f546a7a051b705ca8370a63115bc0b18fe7b94a"
+    ],
+    "core/fxcrt/xml/cfx_xmlelement.cpp": [
+     "100644 185bd93927d99fc2176aa2c2e9608c0022f76ad5",
+     "100644 00c57575aed7a2a2a1e49b05794f8c8c211957dd"
+    ],
+    "core/fxcrt/xml/cfx_xmlparser.cpp": [
+     "100644 762fada8876763ca2241c202eac5e2479fe0086e",
+     "100644 c516cc1946789d44a3fa38631a915ceeb3d2d054"
+    ],
+    "core/fxcrt/zip.h": [
+     "100644 8a44a165d7d88962cdb5693e73e267bcc7297406",
+     "100644 6093bf89f959cfde495c6cd2acee06c3351b7d01"
+    ],
+    "core/fxge/BUILD.gn": [
+     "100644 933f53891a7e7fb194e5d449e1e3c706e529955b",
+     "100644 00c8cfe942493658d332f0c360bcec3a20b4cb83"
+    ],
+    "core/fxge/DEPS": [
+     "100644 90942366ada92a1816cd38ab4030378d9f8c3665",
+     "100644 2e884c64df95daa7ce450f7f475bfba79da49ede"
+    ],
+    "core/fxge/agg/cfx_agg_bitmapcomposer.cpp": [
+     "100644 3f7422e5a731e2d0cd6fb6254532ef3c708f0f45",
+     "100644 72433beae2a96e860029e42ca77bdb6eed2337a3"
+    ],
+    "core/fxge/agg/cfx_agg_cliprgn.cpp": [
+     "100644 d753d25d4cc6e1a423ca81e17c36ce2fcde9bba9",
+     "100644 931f5dbbcb7b13c6aabfc14d7ad39249713cfd71"
+    ],
+    "core/fxge/agg/cfx_agg_cliprgn.h": [
+     "100644 5a09e7d813944767d8c7e4db527c9d535ba5b13f",
+     "100644 3bc330834e89264161e0bda6cd241a554344da2c"
+    ],
+    "core/fxge/agg/cfx_agg_devicedriver.cpp": [
+     "100644 6babd3b77b747b242d5e352aac1a5a5263fe2f5e",
+     "100644 24351a51ad16f01af342d3eeb7fda64cdc9db244"
+    ],
+    "core/fxge/agg/cfx_agg_devicedriver.h": [
+     "100644 0454e18e459ea0d8de0ed26e83294c1787b21f52",
+     "100644 25256ba8993512106f45060ac25dd9680d113378"
+    ],
+    "core/fxge/agg/cfx_agg_imagerenderer.cpp": [
+     "100644 00a6bffdafcfb8641fa3000a58f377b2962bc3d6",
+     "100644 98887b92d3103e3db9937225ce7d663c5fbf3d74"
+    ],
+    "core/fxge/agg/cfx_agg_imagerenderer.h": [
+     "100644 b1e3232cf8382e7a490b1255f8e491c49549793c",
+     "100644 27f068ab3f9b0a5edadec8a94c0768fb80f3e0c2"
+    ],
+    "core/fxge/android/cfpf_skiadevicemodule.cpp": [
+     "100644 0b4983b223c6da72a9bb2c7b84378da25ba67036",
+     null
+    ],
+    "core/fxge/android/cfpf_skiadevicemodule.h": [
+     "100644 27f6007eee0e6b254cd0d3a09846e751a90ee11c",
+     null
+    ],
+    "core/fxge/android/cfpf_skiafont.cpp": [
+     "100644 b879a09d3d9b5a48f70072742c9ba1b014287fd9",
+     null
+    ],
+    "core/fxge/android/cfpf_skiafont.h": [
+     "100644 dfff1c78099210eaaecfde7f0f89bddae92851a3",
+     null
+    ],
+    "core/fxge/android/cfpf_skiafontmgr.cpp": [
+     "100644 ce21eb9ddcb6a2fbe7dda2ccfcf1b3582bb68c79",
+     null
+    ],
+    "core/fxge/android/cfpf_skiafontmgr.h": [
+     "100644 3958b52bd00a98ef76ca145e732afbcc1a2163f9",
+     null
+    ],
+    "core/fxge/android/cfpf_skiapathfont.cpp": [
+     "100644 b903653481d56f9f854c292c0df8ba09b0cf3806",
+     null
+    ],
+    "core/fxge/android/cfpf_skiapathfont.h": [
+     "100644 36a1ebcc6ae3b3b1381ec220838d0f3b68864e09",
+     null
+    ],
+    "core/fxge/android/cfx_androidfontinfo.cpp": [
+     "100644 50baa435c98da8cbd964221c33ab70efd4d28918",
+     "100644 2695814240545857ca752bbbe2605ce6ca6be479"
+    ],
+    "core/fxge/android/cfx_androidfontinfo.h": [
+     "100644 3c287fea831d2013204d0b009a9fc98c698f2b2f",
+     "100644 6ad442c3b4774331aa8d86e64cf4f3553993f558"
+    ],
+    "core/fxge/android/cfx_androidfontinfo_unittest.cpp": [
+     null,
+     "100644 9d2f72976817fc76bcc99cd6aba657a3ab3fc6c8"
+    ],
+    "core/fxge/android/fx_android_impl.cpp": [
+     "100644 050d7f3384252147b340aabc33229ec04b886195",
+     "100644 a2caaea72b47e43d7e382669dfafc981605d2d26"
+    ],
+    "core/fxge/apple/capple_platform.cpp": [
+     null,
+     "100644 95dab74bb0f2a2091cfc472d28f773d356540a57"
+    ],
+    "core/fxge/apple/capple_platform.h": [
+     null,
+     "100644 0baeb8ac1c37561fb76e4b3713e87cf574293b3e"
+    ],
+    "core/fxge/apple/cquartz_2d.cpp": [
+     null,
+     "100644 1bf7f02dd5c63cc31a485629980cb1f485e55261"
+    ],
+    "core/fxge/apple/cquartz_2d.h": [
+     null,
+     "100644 03b89cea264d4c9dce0e5a735a8b0691355f1e4c"
+    ],
+    "core/fxge/apple/fx_apple_impl.cpp": [
+     "100644 4f9cbd073da1b98b43ebaceee84c93ee4b179312",
+     "100644 2283be3e28ab146a900f8d2e922da7b8aa300bdb"
+    ],
+    "core/fxge/apple/fx_apple_platform.cpp": [
+     "100644 ec0a7e296085426906042859ef6c1ee9fd6d5ecb",
+     null
+    ],
+    "core/fxge/apple/fx_apple_platform.h": [
+     "100644 e71180dd451773c0eb4eff811a8c03b5900cba80",
+     null
+    ],
+    "core/fxge/apple/fx_quartz_device.cpp": [
+     "100644 fb416f6ced06ef9982163b6ef4e152643e6debc5",
+     null
+    ],
+    "core/fxge/apple/fx_quartz_device.h": [
+     "100644 1f92a8d869e45cf1cc4a43893eb54b73284a9692",
+     null
+    ],
+    "core/fxge/cfx_charmap_resolver.cpp": [
+     null,
+     "100644 813d07031a2ccd4413053d5b10de46cbe9db9b49"
+    ],
+    "core/fxge/cfx_charmap_resolver.h": [
+     null,
+     "100644 dbf07b78d76c99624aaf414fbf3aed1140852389"
+    ],
+    "core/fxge/cfx_color.cpp": [
+     "100644 f0287997e4ffbf91176730c63efce10356ccaeca",
+     "100644 965f5b44f27e338e8d3625d1fe0215cdfba8da42"
+    ],
+    "core/fxge/cfx_color.h": [
+     "100644 39d4cd4c904d44f873b7d368210dd05feafc4227",
+     "100644 60d3ff62a921063bac48aed0ee703bcfa408ff54"
+    ],
+    "core/fxge/cfx_color_unittest.cpp": [
+     null,
+     "100644 6adc04355e1bb4c296a3c92adcbf69b5163c78a6"
+    ],
+    "core/fxge/cfx_cttgsubtable.cpp": [
+     null,
+     "100644 eb8c153dd13be914aa4d4b403b7e7588fa77b28a"
+    ],
+    "core/fxge/cfx_cttgsubtable.h": [
+     null,
+     "100644 4aa35ffdda493b60c9c3ecd54a745c896e70638b"
+    ],
+    "core/fxge/cfx_cttnametable.cpp": [
+     null,
+     "100644 fa13f5df21239c0b844cc39607336ca1f7b7988b"
+    ],
+    "core/fxge/cfx_cttnametable.h": [
+     null,
+     "100644 570400015e3adfcc0e0e77db359b9bad43c53ccc"
+    ],
+    "core/fxge/cfx_defaultrenderdevice.cpp": [
+     "100644 44d55e1e9df8d8984611bf42d076ba04b87060cd",
+     null
+    ],
+    "core/fxge/cfx_defaultrenderdevice.h": [
+     "100644 c4db618f9cb3d30e258ee8336f0c1fe79a27c947",
+     null
+    ],
+    "core/fxge/cfx_defaultrenderdevice_unittest.cpp": [
+     "100644 c2a1369407b2ac6eef748ba518692a6b3050412e",
+     null
+    ],
+    "core/fxge/cfx_face.cpp": [
+     "100644 9cc6f4983486269e68a41f7f02a63beacbda3a88",
+     "100644 609d3c6ad78a6d36e30834bbaf72210dfd72dd7d"
+    ],
+    "core/fxge/cfx_face.h": [
+     "100644 c2f2fd118f9abcaa9f87d018704b22e39d7bf90f",
+     "100644 6c225d0aca487e108fba7b0091c3c11a4be55f7d"
+    ],
+    "core/fxge/cfx_folderfontinfo.cpp": [
+     "100644 2976da3d65fb71deffe0d6d8dbc8afac50bbc255",
+     "100644 74a9478f675e412a7f585e9dc66cf832bbe7a9cc"
+    ],
+    "core/fxge/cfx_folderfontinfo.h": [
+     "100644 4545ce6003aa7af2cc5dc27b37dc7532b2757409",
+     "100644 a335bfa779eccc595ee6ac2062da96ddeb758b24"
+    ],
+    "core/fxge/cfx_folderfontinfo_unittest.cpp": [
+     "100644 0aea3700715e8f047cfac4068fb6d81f2ba9a0e7",
+     "100644 a02095e340f81868982a749335bd7236de124944"
+    ],
+    "core/fxge/cfx_font.cpp": [
+     "100644 9dc444783b2578a29ab821155d9b2b52496ca339",
+     "100644 6cff42a624faf9f1cb4167349ca14eed5d7e88ba"
+    ],
+    "core/fxge/cfx_font.h": [
+     "100644 465503a0a86bf811a1d82cc6718722d870560965",
+     "100644 b6501a4bc8cc60c2da620f1eb1f1db43a96a6557"
+    ],
+    "core/fxge/cfx_font_unittest.cpp": [
+     null,
+     "100644 b48b06419b22dd9c498a4ea49f2c1550adc8721d"
+    ],
+    "core/fxge/cfx_fontcache.cpp": [
+     "100644 1423936eedade178c02270caaf7891790bcf6d2a",
+     null
+    ],
+    "core/fxge/cfx_fontcache.h": [
+     "100644 d826953c890479a1db3bc587b32d311333ac543f",
+     null
+    ],
+    "core/fxge/cfx_fontmapper.cpp": [
+     "100644 cf81db255d619679f578ca51a575357460a51789",
+     "100644 ef317eeb91fbb5abb444e91b7cdab8f43afd56de"
+    ],
+    "core/fxge/cfx_fontmapper.h": [
+     "100644 38ccf1d4e5bbc733922472f36f092109951b2358",
+     "100644 ccae5050984967571ad684db872e25e0b9a7b644"
+    ],
+    "core/fxge/cfx_fontmapper_unittest.cpp": [
+     "100644 b29cdead298838ed107e170363563cb2f4529ce3",
+     "100644 4e764e814dab4266472696aef69b3c23f2de6528"
+    ],
+    "core/fxge/cfx_fontmgr.cpp": [
+     "100644 2747e1f70dbd7dfb5b770325e440297196ca6d53",
+     "100644 1f7513a774d8e1234b3785d100dc431b02e9c785"
+    ],
+    "core/fxge/cfx_fontmgr.h": [
+     "100644 56a1fe3250238b48354998f86cc35cce679faa0e",
+     "100644 707bc83ee87be268b26411225ac37980a45ec3d2"
+    ],
+    "core/fxge/cfx_gemodule.cpp": [
+     "100644 148671eca14e74298b8f0496ce1d0bbf21e2d360",
+     "100644 cd9618e28b586e291b819609a8821a8cc731a508"
+    ],
+    "core/fxge/cfx_gemodule.h": [
+     "100644 2fa3032161e6e3a0aabf346bedd19eb165d2b263",
+     "100644 03eb6a60bef8e670415d8e1ef38b114069358fc1"
+    ],
+    "core/fxge/cfx_glyphbitmap.cpp": [
+     "100644 29f9c0bc26cf6f28c019b7eff2fd78dc602845a0",
+     "100644 77b82b10e7e0cab7ecd0cf6fa834c29bfc45ab6e"
+    ],
+    "core/fxge/cfx_glyphbitmap.h": [
+     "100644 e4a616ee4c00a69cbcbadcde5aa05f570e8e6b41",
+     "100644 123c9807355273d575f058102a2f9c75caf098bf"
+    ],
+    "core/fxge/cfx_glyphcache.cpp": [
+     "100644 7954089e9bbe8abde7f19e3e4ec2225c230efba9",
+     "100644 e19bd202191ead161ef2cc60f08d667999b98a0e"
+    ],
+    "core/fxge/cfx_glyphcache.h": [
+     "100644 03c971f72abfd4fc2e4f7166f00a3caf0e817d45",
+     "100644 d4c9d6e7ceaeab40bd898696d8ff709da5b45135"
+    ],
+    "core/fxge/cfx_renderdevice.cpp": [
+     "100644 d39c95def0a1f66ac3c975d17e13b86ea0400a16",
+     "100644 c5a7d08af1d165a4c3c365b8c86245ee5f6be1f2"
+    ],
+    "core/fxge/cfx_renderdevice.h": [
+     "100644 311a51cc19fc61c6ae71a13ff83aabb21e836d0e",
+     "100644 4114b98840eb07794227c473c9d8739bca0a4703"
+    ],
+    "core/fxge/cfx_renderdevice_unittest.cpp": [
+     null,
+     "100644 483802191f17d801fdf6190af09fbdd7b04cb8bb"
+    ],
+    "core/fxge/cfx_standardfont.cpp": [
+     null,
+     "100644 2ac215800da17d73b419be52e765563bd3f566a0"
+    ],
+    "core/fxge/cfx_standardfont.h": [
+     null,
+     "100644 c21fcc65b896731a16e20ae1ef67e95704242a80"
+    ],
+    "core/fxge/cfx_standardfont_unittest.cpp": [
+     null,
+     "100644 b9f3f099864befd1533eb33ff3b6045fa13731c2"
+    ],
+    "core/fxge/cfx_substfont.cpp": [
+     "100644 e2909d028036d628a01cc931b744e79ab8991fe6",
+     "100644 f5670f1a25ba5836aabc6ec5a4a8abb422303164"
+    ],
+    "core/fxge/cfx_substfont.h": [
+     "100644 a62cdcdbf838fb6d781a166e79a0f444bed67718",
+     "100644 34a249947866cf99443911de582dec3bd63676fa"
+    ],
+    "core/fxge/cfx_substfont_unittest.cpp": [
+     null,
+     "100644 67c82cbca1e8841814f584683880598c5342794e"
+    ],
+    "core/fxge/cfx_unicodeencoding.cpp": [
+     "100644 b0f2b4bedaf82d28b146426910b423d7048d3199",
+     null
+    ],
+    "core/fxge/cfx_unicodeencoding.h": [
+     "100644 29c133bb2bd0aabb0a8a5286b00ca9f9bf7534ec",
+     null
+    ],
+    "core/fxge/cfx_unicodeencodingex.cpp": [
+     "100644 ba742dba62c1da8f89b24996714eda3107348981",
+     null
+    ],
+    "core/fxge/cfx_unicodeencodingex.h": [
+     "100644 5a323a29949d4583d5c5ff455608997578af1bde",
+     null
+    ],
+    "core/fxge/cfx_windowsrenderdevice.cpp": [
+     "100644 26f35a6952b186b1ce60e6d98b5dc3136f6509df",
+     null
+    ],
+    "core/fxge/cfx_windowsrenderdevice.h": [
+     "100644 7684fe30bf5f4e3243085be0e287817968014199",
+     null
+    ],
+    "core/fxge/cfx_windowsrenderdevice_embeddertest.cpp": [
+     "100644 231c5960ca3afa1c6a2294580964fbbafe4cd569",
+     null
+    ],
+    "core/fxge/dib/blend.h": [
+     "100644 10b6e5d032c8e788bade1dd74ce25665abd3fd49",
+     "100644 15c9eb0f4a70ececd53f3532e314992551a2fa82"
+    ],
+    "core/fxge/dib/cfx_cmyk_to_srgb.cpp": [
+     "100644 2163d15280a99785262255d0fc64a3d26b94452f",
+     "100644 c6709aa880f1843bdf05315a30c2a80f1cf1defc"
+    ],
+    "core/fxge/dib/cfx_cmyk_to_srgb.h": [
+     "100644 a0b30babf2973a0ae7ef1f90ce50cfbc046b3160",
+     "100644 4df7823f39f58c3cb45f5fb9c8bca9c8f51a063a"
+    ],
+    "core/fxge/dib/cfx_cmyk_to_srgb_unittest.cpp": [
+     "100644 1e50a7a306aee437f95ed1fe36c7f04e49be9685",
+     "100644 941087c5ac6a6c06e9b40c20a2425c2a1d47656d"
+    ],
+    "core/fxge/dib/cfx_dibbase.cpp": [
+     "100644 8680911cbb21ae1b24e2481bf73a73fa8ff0b112",
+     "100644 a544eb386df68069d330fb17a47a25ed9bd359db"
+    ],
+    "core/fxge/dib/cfx_dibbase.h": [
+     "100644 8895ac46d2d6d3b575b7fb4e0ca08e325e8c0584",
+     "100644 02278677711c3b101bdd801f8500e8c6890d0529"
+    ],
+    "core/fxge/dib/cfx_dibitmap.cpp": [
+     "100644 e96bf8f42aedc161852612ccd656a95b9ccf70e4",
+     "100644 2abe0e5964ba25f2cea228efcf1f9e54916b5040"
+    ],
+    "core/fxge/dib/cfx_dibitmap.h": [
+     "100644 45bec530014f0e07fdd165cd7d3b9f47e71b3004",
+     "100644 0c98f1c280a0c5c85c56222fcde8c01491da7d75"
+    ],
+    "core/fxge/dib/cfx_scanlinecompositor.cpp": [
+     "100644 870f0dfbb272db9d64f86b935588b58c30133f92",
+     "100644 498f80a929006b5fcd7b7c031a940f3ba9962d91"
+    ],
+    "core/fxge/dib/cfx_scanlinecompositor_unittest.cpp": [
+     "100644 7fb996ef428f5495f67353c2983b7c38cda0247a",
+     "100644 6b78d29ce01959071ced09ef1b9dbebd56e9cd1e"
+    ],
+    "core/fxge/dib/cstretchengine.cpp": [
+     "100644 8d563f777619ac3c41c1d391e5776ce511604e70",
+     "100644 c9fa6fd396433ff3581de35e8f53bce0a579d6be"
+    ],
+    "core/fxge/dib/cstretchengine.h": [
+     "100644 7c3e6162ee865e26722946e1e1cae3e62765f789",
+     "100644 dd699f956d64746a30495fc1e30f789eb9955d7e"
+    ],
+    "core/fxge/dib/cstretchengine_unittest.cpp": [
+     "100644 d15965bba1cb4e42edba484fa9658f8863411510",
+     "100644 9312c5f3dba4f62e7acdfdf317148dc99623c2ac"
+    ],
+    "core/fxge/dib/fx_dib.cpp": [
+     "100644 918459a73ed17f7615b0b11fbb231d7594d5f252",
+     "100644 8059510b344501e4f76071f1bb26dbae0e4d9d73"
+    ],
+    "core/fxge/dib/fx_dib.h": [
+     "100644 a45416dee9b46429be70452aabb723a79d29992d",
+     "100644 6e941d5927206d9338c8602b1483783ded242e7f"
+    ],
+    "core/fxge/dib/fx_dib_unittest.cpp": [
+     "100644 0daebf0d18be4816aa22c7f28eecaf541c39cbaf",
+     "100644 4063f83df86b68c2aa405b9c2ceefbe19cabd525"
+    ],
+    "core/fxge/freetype/fx_freetype.cpp": [
+     "100644 3e775d7b433b02a90c5b3d29177cab035476dfb1",
+     "100644 89b96ba8595fdca6487de475d78976f7c0b801eb"
+    ],
+    "core/fxge/freetype/fx_freetype.h": [
+     "100644 ee7eed86700e151a9b951accc2989165d7cb47c5",
+     "100644 e570367c8c175c9d4e8577feccd545fc6fd5fa59"
+    ],
+    "core/fxge/fx_font.cpp": [
+     "100644 e5d15a4f6799c7086e06242c7497f10d62beadb9",
+     "100644 0e9f620ae6677b1464461a27962c13dec9b22e86"
+    ],
+    "core/fxge/fx_font.h": [
+     "100644 4891c268b3315637d8b4842e36cb39fc69b42fe6",
+     "100644 b4b017850afd45ecefd1cf1aef3cec8fa35fc4bf"
+    ],
+    "core/fxge/fx_font_unittest.cpp": [
+     "100644 a505a4e8cb28db256d87f6376abcd236915324ac",
+     "100644 4c81f3318c8ba27d5b12c937d9db0b492a075290"
+    ],
+    "core/fxge/linux/fx_linux_impl.cpp": [
+     "100644 68871273e058a5dd30707c25ebdd884a5b159a83",
+     "100644 3cf0a2cf3e5d2c292688fa819bb4a2e4b8600e05"
+    ],
+    "core/fxge/render_defines.h": [
+     "100644 98858de6950e383ebded15cf027fa7874ab75a22",
+     null
+    ],
+    "core/fxge/renderdevicedriver_iface.cpp": [
+     "100644 2baf44b8086dd63e7f33e195dd984ca21bc65081",
+     "100644 f3ecba417f68987d8f59f15d5bb372e284d061cc"
+    ],
+    "core/fxge/renderdevicedriver_iface.h": [
+     "100644 401dc7fabdadbc4a837e05323799549cab07ed61",
+     "100644 4c876a6ad0268f551bb822d30eb35fc23ed1cd26"
+    ],
+    "core/fxge/scoped_font_transform.cpp": [
+     "100644 17fa375535d1b14d5c81a4ca16c860fa6e231dee",
+     null
+    ],
+    "core/fxge/scoped_font_transform.h": [
+     "100644 bcc0300c652f21686d600310152dc965caee8b8b",
+     null
+    ],
+    "core/fxge/skia/cfx_dibbase_skia.cpp": [
+     "100644 9065d3a601175a78c134ef63436d912566a862d5",
+     "100644 d1d3861f9787ac247a25e7cd7024f50dcde381af"
+    ],
+    "core/fxge/skia/fx_skia_device.cpp": [
+     "100644 7b1cac71602b12557b4f19116ced95618ac0f3e1",
+     "100644 0ee8118f974d8eff767886c02710566f7d2c99f8"
+    ],
+    "core/fxge/skia/fx_skia_device.h": [
+     "100644 69a12c8c829c5699f5a66ed8eee3831eed03bf38",
+     "100644 7eac371039c6fb4a3edfa453a496e7f531a85801"
+    ],
+    "core/fxge/skia/fx_skia_device_embeddertest.cpp": [
+     "100644 832bfe391fbce96802af0e6b7f93315d06880b76",
+     "100644 27d1662873b1d4f5920e2b536c59fe386d2846ed"
+    ],
+    "core/fxge/skrifa/Cargo.toml": [
+     null,
+     "100644 bc941642336d0a48c67d736cbfdf215732e61ee8"
+    ],
+    "core/fxge/skrifa/DEPS": [
+     null,
+     "100644 b2dfe033091a370cd19179cbe91ea3c7942a29d4"
+    ],
+    "core/fxge/skrifa/fx_skrifa_unittest.cpp": [
+     null,
+     "100644 8b0821b0e5d603740074c8e5c04a53c3d2910cdb"
+    ],
+    "core/fxge/skrifa/src/main.rs": [
+     null,
+     "100644 d71999984f06f1f0b40b95e009770928df488a8a"
+    ],
+    "core/fxge/skrifa/src/outlines.cpp": [
+     null,
+     "100644 d52e2417fa776c480a07d2e262880fb9ac290197"
+    ],
+    "core/fxge/skrifa/src/outlines.h": [
+     null,
+     "100644 dcfe9239078028c0869bf88a615bc4ccecfd4bb0"
+    ],
+    "core/fxge/systemfontinfo_iface.h": [
+     "100644 ee97d21cc43b5332ef1096829c04e1eb01b95dfd",
+     "100644 e472d7a997e007f0953416d76e2be712ac3422bf"
+    ],
+    "core/fxge/text_char_pos.cpp": [
+     "100644 92f98737a2c01378ef60bb54e6704d91fc0d9b2b",
+     "100644 fbc4f2cebcc66d7467a18ca8ebc95d99d9be5b97"
+    ],
+    "core/fxge/text_char_pos.h": [
+     "100644 26750cc9f6397e39fa22a0226e2bc4d931ce7542",
+     "100644 2dd40645dd8b07a6d5a7476d3755a6c771b26318"
+    ],
+    "core/fxge/win32/cfx_psrenderer.cpp": [
+     "100644 461d930f6ad32dd962cabc79d4dad354d20a9aee",
+     "100644 b8710e50ed01233b2aefbf1760e26e05964b315e"
+    ],
+    "core/fxge/win32/cfx_psrenderer.h": [
+     "100644 00ee417112a6391f42f82bc1fa86f44b9c2218ab",
+     "100644 c0ee27376f7d0c48d513bbfaf2c94efed32cd9d9"
+    ],
+    "core/fxge/win32/cfx_psrenderer_unittest.cpp": [
+     "100644 4add9a3ab1762b73740ced777269498e1a86af46",
+     "100644 b74d1a7a7d8e6cdcdfe6317840a7a2fb9943be73"
+    ],
+    "core/fxge/win32/cgdi_device_driver.cpp": [
+     "100644 46954207c7c1536be3d5aa8eb0cff9b4b1e528fe",
+     "100644 2f950d579b5debbec4c1285e02a05925539845c8"
+    ],
+    "core/fxge/win32/cgdi_device_driver.h": [
+     "100644 e0f6cb590f44a3a99ea34301383d2027e7475156",
+     "100644 e350333ceb81524dc4c28f7192be91527263f46a"
+    ],
+    "core/fxge/win32/cgdi_display_driver.cpp": [
+     "100644 4de0c734e2cc29fbecf6fe66e85468570f9ae54c",
+     "100644 2269e3b55858c4c9f829b05e104dfbfb476d0357"
+    ],
+    "core/fxge/win32/cgdi_display_driver.h": [
+     "100644 6f1eb715c118f3627a569bef597c7c2f9c4cb248",
+     "100644 9841500c36fcee5792fca02714ccc1cf2ab4c324"
+    ],
+    "core/fxge/win32/cgdi_printer_driver.cpp": [
+     "100644 5355bad17e736e86f2d3f2be6b14a140d59fd228",
+     "100644 2020eeb4b3621d5ff9bae4a9fcc963cffe34019f"
+    ],
+    "core/fxge/win32/cgdi_printer_driver.h": [
+     "100644 dac525b714dd2b51b95c8e97812958488bdeb702",
+     "100644 77a0e75dfcee33f1943c9fcb18582eed59884c04"
+    ],
+    "core/fxge/win32/cps_printer_driver.cpp": [
+     "100644 deef7cdefca49c05aa32d49ae5e19dbd49e880f1",
+     "100644 cb83206349268a247f4c98138919cbbdb3ff401d"
+    ],
+    "core/fxge/win32/cps_printer_driver.h": [
+     "100644 e5899b4c89a49528e549174ea202a2fe63c0c02a",
+     "100644 85fbfb56fbc0cbed90f74b045c53b66f670ea9f1"
+    ],
+    "core/fxge/win32/cpsoutput.cpp": [
+     "100644 c85b1bb074e9279cd16cfd374ce321e907207c44",
+     "100644 77a1251cb30e8c2a21a00f007cbb91081d3b1b0d"
+    ],
+    "core/fxge/win32/ctext_only_printer_driver.cpp": [
+     "100644 27091601f737c820640cfa9c49e38d494992e09b",
+     "100644 957a46e7b08f9f68f54b187701220a9bf47d6f89"
+    ],
+    "core/fxge/win32/ctext_only_printer_driver.h": [
+     "100644 1b757e8d4145c48e4d96defa12b432d42333e299",
+     "100644 5b7038f724386e110b96da32d5e2f15b16de43d6"
+    ],
+    "core/fxge/win32/cwin32_platform.cpp": [
+     "100644 5673bee2895dff4edc4f3bb1f670d420a8be21c9",
+     "100644 0c8bf7e1c459d189c9842f5795b6e61680134fb6"
+    ],
+    "core/fxge/win32/cwin32_platform.h": [
+     "100644 5a2557e67b2c6941ccb2a537e70ed793e2598878",
+     "100644 b48e311e848b24f349affa808741744da648dccf"
+    ],
+    "fpdfsdk/cpdfsdk_appstream.cpp": [
+     "100644 f1d40d3bb69363cd8b9baf859bdbf478fc0ca45f",
+     "100644 14a8ed06b1afdab4a9cf74ec36fd88c5c57757c0"
+    ],
+    "fpdfsdk/cpdfsdk_baannot.cpp": [
+     "100644 79b47a4931d64db809cb6486dbb8e6cc5b73f836",
+     "100644 61c06af9f4c612556fb1dde150f51db3448424e8"
+    ],
+    "fpdfsdk/cpdfsdk_baannot_embeddertest.cpp": [
+     "100644 1a4b61bcb22553c9b69985f65507d2b97bc4aeba",
+     "100644 281652d8d7182e2077fa56e640784ff3947358b6"
+    ],
+    "fpdfsdk/cpdfsdk_formfillenvironment.cpp": [
+     "100644 b64865d25004f9a7b9abb5f27ec8c12f0f60ec59",
+     "100644 6c9b796617a13aec74b3d332946a82ed860575fe"
+    ],
+    "fpdfsdk/cpdfsdk_formfillenvironment.h": [
+     "100644 ce1dd0e09b61de922e3f9db0f4794b87d4a893b6",
+     "100644 56613dcfeef96fd387ad319b03ac671de0438d85"
+    ],
+    "fpdfsdk/cpdfsdk_helpers.cpp": [
+     "100644 e814937b361944f63488df7991604a70570a5b69",
+     "100644 45ffcbcc115c37891b335b99402ecddc5002a3dd"
+    ],
+    "fpdfsdk/cpdfsdk_helpers.h": [
+     "100644 4e1dc08741bea8258b8ecb9b0b465ae98b5de19d",
+     "100644 bb6e6841d2970cb93b14017ac3dc6baef95ca1aa"
+    ],
+    "fpdfsdk/cpdfsdk_helpers_unittest.cpp": [
+     "100644 cf9c29060413393b20eadf512d73fad72c9d97d8",
+     "100644 f10253ef58079910be98041da5a963b466b6a636"
+    ],
+    "fpdfsdk/cpdfsdk_interactiveform.cpp": [
+     "100644 1a8c1c12a513226156c157df1d658cabbe959546",
+     "100644 0518db94a1400eddb8de5a2d113da09f041d32bc"
+    ],
+    "fpdfsdk/cpdfsdk_interactiveform.h": [
+     "100644 2abd00ee1f129b8f5a461dbd725ee9867a8b06f9",
+     "100644 e90505df2961fefc9b75f53ea2acddffd54f1d13"
+    ],
+    "fpdfsdk/cpdfsdk_pageview.cpp": [
+     "100644 53820b8e4fd26e6114920609caa779e4cb3b87af",
+     "100644 339201caecf3213ce1c7963af1647358abbe9970"
+    ],
+    "fpdfsdk/cpdfsdk_renderpage.cpp": [
+     "100644 da24c64b883a17b233b01fc47348b4272c6a2e65",
+     "100644 4def06a07c75c1168b059e2baf701513db8b2b47"
+    ],
+    "fpdfsdk/cpdfsdk_renderpage.h": [
+     "100644 9b33a817c20c736a9be2936bdc3931a1898e8c33",
+     "100644 9f6176b319094602cd79a14f5559dd3dfb42bb9e"
+    ],
+    "fpdfsdk/cpdfsdk_widget.cpp": [
+     "100644 adb2813ee77e5dfb09314d90aac04dfa0f7dfa61",
+     "100644 6b928906f3b052e3d76accf26997bc16f7f2f48b"
+    ],
+    "fpdfsdk/cpdfsdk_widget.h": [
+     "100644 31b616498f5e6dea9ffab99f714f4e585f6709ae",
+     "100644 19788d812536687303fa7ea704203b2f9508a36e"
+    ],
+    "fpdfsdk/formfiller/cffl_checkbox.cpp": [
+     "100644 03453a33ee2e4772d5ce975b519d632c2e136cbe",
+     "100644 0fd3857ad908278686a146415d17b0df142a393a"
+    ],
+    "fpdfsdk/formfiller/cffl_combobox.cpp": [
+     "100644 bd60f79c04d6c8216363a09a3ad4f3c0553d5944",
+     "100644 eb7fd98e3cd455e7179aff05f9701425f77191a9"
+    ],
+    "fpdfsdk/formfiller/cffl_formfield.cpp": [
+     "100644 340963069538f7f9f4a50dbe47311a38a7ff5c0c",
+     "100644 947fa14a51a1867489ff3485b00895c14e0c2655"
+    ],
+    "fpdfsdk/formfiller/cffl_formfield.h": [
+     "100644 6d38e423f0ffa2a27ca6b60ab0f3eb71f970f84f",
+     "100644 729705a03a207482d25014c5fdd5984a13f02684"
+    ],
+    "fpdfsdk/formfiller/cffl_interactiveformfiller.cpp": [
+     "100644 bdaa0c2480b5a662ea0a975e6505d2d71ae1c113",
+     "100644 b041ff7e583df6013c86b0b838b4fcc33cf54d34"
+    ],
+    "fpdfsdk/formfiller/cffl_interactiveformfiller.h": [
+     "100644 16084680a140ae3201e37192b36f8593f4714141",
+     "100644 461748b21f469dfdce9a22a4cbe198d68d3a751e"
+    ],
+    "fpdfsdk/formfiller/cffl_listbox.cpp": [
+     "100644 084398eccdc135f471a6cd4f3b328db6a5f22f68",
+     "100644 12a8857563d7fe2f5d6489e5b05369d0aae9aa30"
+    ],
+    "fpdfsdk/formfiller/cffl_textfield.cpp": [
+     "100644 b578b4b0b03c78e3278d7823abd79acddd2c09bc",
+     "100644 9b0d1261b6c1f29aa0886a39d16aaf2d02471e0b"
+    ],
+    "fpdfsdk/fpdf_annot.cpp": [
+     "100644 a67614241db9c3beba09458ac4ca42b8e33330d6",
+     "100644 fb5c862d3f2a3b539b470e0e1586da90e3872bad"
+    ],
+    "fpdfsdk/fpdf_annot_embeddertest.cpp": [
+     "100644 1c8d9f7236afd30c9b0f918c49095670ae4e620d",
+     "100644 470b1f119457f2878464864746c3c4c4582a1f98"
+    ],
+    "fpdfsdk/fpdf_attachment.cpp": [
+     "100644 31f7c855366b2ffbf280a64ceb7d0506b689dde1",
+     "100644 241101d010c94a538c69981b0bff4f7c339c5e34"
+    ],
+    "fpdfsdk/fpdf_attachment_embeddertest.cpp": [
+     "100644 72250e199aba058a5462360b3e397887f1482e4a",
+     "100644 929bafc91720a6315aa676bf8a52df89918ed7ac"
+    ],
+    "fpdfsdk/fpdf_catalog.cpp": [
+     "100644 abe7150fdd488aec8ecdccb914a53e04074791d1",
+     "100644 2c0d0e43cca39e0b68e20fbd9b29e3f262644ec7"
+    ],
+    "fpdfsdk/fpdf_catalog_embeddertest.cpp": [
+     "100644 ae8e6974fd4583447d6c4dcce0945b9a7fcff3fe",
+     "100644 ff30893d45520ecf963aed15205149fdda13e614"
+    ],
+    "fpdfsdk/fpdf_catalog_unittest.cpp": [
+     "100644 aea01790f7f9f9def2501863fdb13df3b1e3e2a1",
+     "100644 11ba4759d0a5d5d34d30e15adbfce53ecff43b8f"
+    ],
+    "fpdfsdk/fpdf_doc.cpp": [
+     "100644 7c8309cf70cf880607cd4a1a11363309d1c418b9",
+     "100644 05866dd6c177d4c0a803052a413f3ee1f6628dfa"
+    ],
+    "fpdfsdk/fpdf_doc_embeddertest.cpp": [
+     "100644 abeb1f98dc1a8a7d1f2c78f3bb0327f60fe9c350",
+     "100644 aa2ed522a31ce20f433b823f64a4ea06f3c2a530"
+    ],
+    "fpdfsdk/fpdf_doc_unittest.cpp": [
+     "100644 96ae7cc2b01cb5f8e9d7d2711519915c90e3380c",
+     "100644 250af62e46a220bdaf0854606dbae9d3e77fb318"
+    ],
+    "fpdfsdk/fpdf_edit_embeddertest.cpp": [
+     "100644 d6769ddc746169bf7cd548fef809f6a96ece205f",
+     "100644 5fae0f2cd62da780c5d560d9f56cd2d21ef0a811"
+    ],
+    "fpdfsdk/fpdf_edit_unittest.cpp": [
+     "100644 5f6fb0fa705a98967dbe1ea03f4c75b41477db51",
+     "100644 50d4efcad0f75da51fda401df79eb3bcda7b1b29"
+    ],
+    "fpdfsdk/fpdf_editimg.cpp": [
+     "100644 80b3732fed6392e4175dbd0d41f305f8b028e3e0",
+     "100644 9bdc1e1b5ebbed53a3fa3648766ae3ae52021793"
+    ],
+    "fpdfsdk/fpdf_editimg_embeddertest.cpp": [
+     "100644 7b5f7915c9d04fc47377a8f7e39bca752ad8ea1b",
+     "100644 cbd24e2c626787da25554bbd50b8e2f79b14dac1"
+    ],
+    "fpdfsdk/fpdf_editpage.cpp": [
+     "100644 dcee7bfd93f50c8b22c3b7a70afed448b52169a3",
+     "100644 758aae8592b5a8243316f96205c6cf279c28f364"
+    ],
+    "fpdfsdk/fpdf_editpage_embeddertest.cpp": [
+     "100644 493f1116a0cd953910adb95bc7451a5828226d4e",
+     "100644 c4cf9088efff172d168ce74c0057900f21f97ece"
+    ],
+    "fpdfsdk/fpdf_editpath.cpp": [
+     "100644 067ef2bb8a7bdbf916502d9a2319abd121853ac8",
+     "100644 97ef64788f8ca79e793dc4cc06907863a6f4fb44"
+    ],
+    "fpdfsdk/fpdf_editpath_embeddertest.cpp": [
+     "100644 16ac8f66fc60b4531252021cf80b200a9b7fdea7",
+     "100644 dbddb6ebb0365ca4843b39a9930cc695907d3a87"
+    ],
+    "fpdfsdk/fpdf_edittext.cpp": [
+     "100644 df851a8e8886e9b3606145d2b20e5b4c80e1be3a",
+     "100644 727d30283b6335dc8a9817a09cc7012f44abe089"
+    ],
+    "fpdfsdk/fpdf_flatten.cpp": [
+     "100644 4fc126ca9d337a4651e43d4fc573543e0c94aa81",
+     "100644 483527e5fc99207868cc93590cf84d1d1db76028"
+    ],
+    "fpdfsdk/fpdf_flatten_embeddertest.cpp": [
+     "100644 977c8ec5b9971d67d15a952b79a8c38c4c177064",
+     "100644 23a18d52b0be89fb0aaef2185ef426c140df4dea"
+    ],
+    "fpdfsdk/fpdf_formfill.cpp": [
+     "100644 512c13cc9498a2bed4c597386943a2b3f15f154e",
+     "100644 a8b13d739acd67572ec8648c38d0c2b037912288"
+    ],
+    "fpdfsdk/fpdf_formfill_embeddertest.cpp": [
+     "100644 6f33fa583cca6a68f425aa15ed5edf7d80da33b8",
+     "100644 13cbcbd3a4d9311032fad4bea3ab80620b47e213"
+    ],
+    "fpdfsdk/fpdf_ppo.cpp": [
+     "100644 3f75cae5c3bdea833695048f389fb67276ce2292",
+     "100644 ae1eb689366ed1b02572f9002d6a8059dec68185"
+    ],
+    "fpdfsdk/fpdf_ppo_embeddertest.cpp": [
+     "100644 5e88207bfb7522c211dafc17a0c0a7bcf85235ac",
+     "100644 1a0f60c44f950b21b3d156f1d1a46520937a0f82"
+    ],
+    "fpdfsdk/fpdf_progressive.cpp": [
+     "100644 6d847eebefe839bf4074c20e4aa6ea9d9a0f3cd0",
+     "100644 f53dea57c295a0c071a46f8915e9790257af9a33"
+    ],
+    "fpdfsdk/fpdf_save.cpp": [
+     "100644 597b5aebafea13bbf47e220087386886de0f330c",
+     "100644 07ac1bc4f8b7e5f725067102b646ec678a03dc15"
+    ],
+    "fpdfsdk/fpdf_save_embeddertest.cpp": [
+     "100644 ae44648ddf38b7b2c605ae4fccc4b78d9b720733",
+     "100644 715e2b8da2149c2e6f23b3fc280cb07387197e70"
+    ],
+    "fpdfsdk/fpdf_signature.cpp": [
+     "100644 ede24bea6cd25deb147eb4cfc6e1012ae9908d36",
+     "100644 915e3a57070c61a37b87dc01284cc3e51245b338"
+    ],
+    "fpdfsdk/fpdf_structtree.cpp": [
+     "100644 5ca81f1713a3da995b8faadeb2622941868f5f42",
+     "100644 96455e726f07e4118d510490e90b74892ccbecf4"
+    ],
+    "fpdfsdk/fpdf_structtree_embeddertest.cpp": [
+     "100644 a0080a57d1e4a5f8641cfbad26503631ff3e8475",
+     "100644 bd6cc8d78133f88d1be272488ddbc8bb2ee212ba"
+    ],
+    "fpdfsdk/fpdf_sysfontinfo.cpp": [
+     "100644 51edf69c1edc83c87d9883e787ba93cefb9d54c3",
+     "100644 a56bb08358072a8222df162d54494f06474e4eeb"
+    ],
+    "fpdfsdk/fpdf_sysfontinfo_embeddertest.cpp": [
+     "100644 10007d9bfbfb7fff70fb9792b9dadc0355a0d7cc",
+     "100644 8d79455c2c03f6e1cd90188efb834411911ab778"
+    ],
+    "fpdfsdk/fpdf_text.cpp": [
+     "100644 de92370d27a3d003a1f9fdb11ea768ef0ce8fdba",
+     "100644 960b2aefce19f586cc3e70d6a54948e67553d6a4"
+    ],
+    "fpdfsdk/fpdf_text_embeddertest.cpp": [
+     "100644 16dca2b59e759c1bbda1afab549230e53bc914b3",
+     "100644 7740e9e8179a147a3bb890a249c276552689caaf"
+    ],
+    "fpdfsdk/fpdf_thumbnail_embeddertest.cpp": [
+     "100644 5d6d7db973da3b83f9f559dec48e22db4842341f",
+     "100644 18f352227134cba4cbe5afa8289cc9dbbf8acd2d"
+    ],
+    "fpdfsdk/fpdf_transformpage_embeddertest.cpp": [
+     "100644 8ca7c193e360ca76056e5ff85f2d78c674ea2a78",
+     "100644 f9a03ead7a0af0b17ecb4ed613f6ed274064fd77"
+    ],
+    "fpdfsdk/fpdf_view.cpp": [
+     "100644 3a2fb8e3dc2edab151f94c9441a84444247dc6ec",
+     "100644 2ac91516912f47100ecb5751b9d6a38fd171b128"
+    ],
+    "fpdfsdk/fpdf_view_c_api_test.c": [
+     "100644 c19e126ce5a603e0381d0dead30899ef2c9c8255",
+     "100644 b51a810876fbe9f1173ea47c7dc6a00001eb4bf0"
+    ],
+    "fpdfsdk/fpdf_view_embeddertest.cpp": [
+     "100644 47db12536781383d3705731b46e7ced7d9357d29",
+     "100644 817819e49253a7aab941ae8d879f4da27f02830b"
+    ],
+    "fpdfsdk/fpdfxfa/BUILD.gn": [
+     "100644 4374f5905040e290572bae0df64deed17ba66c13",
+     "100644 64b18aa367866af46a347cb3a12784e5503404b0"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_context.cpp": [
+     "100644 48a2e3a8d6beb4a96b0eca9d70a0044b3e888474",
+     "100644 e9ce2bb674ebcd8ee2f067af4f90ec0c9d0d04bb"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_context.h": [
+     "100644 45fe053b3cdc7435377c7fa9e0b77fc3a63cc981",
+     "100644 2434b4502f23ae30aa715af979d44968092ff256"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_context_embeddertest.cpp": [
+     "100644 36b1ad05b6b4a369edfc744e2d3235fed24f8b52",
+     "100644 73fc27a61f543fa24ce0fec424b70fb668ff4649"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_docenvironment.cpp": [
+     "100644 df7ac3cf1ad18be2af1654bcf289ee8ef9cf539d",
+     "100644 15c3e4a2a617dc0ad6b8f26329901dfbd51d4cb2"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_docenvironment.h": [
+     "100644 059edf47577ec1d586215cf869c1b0b4a4fe5cc1",
+     "100644 f5c26dc0ea9d1165c4f354e9c3f39250de8c6ed6"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_page.cpp": [
+     "100644 f41978496a1c393d5beeeb9b3866e3fc45afe77e",
+     "100644 3beb2155f1d4aa5b4a4260f134c2824e34125349"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_page.h": [
+     "100644 888bc30b92796505703584439ac359590b88026c",
+     "100644 248b076dca2ac3b4b6b2a320ba4b9ee77072bec1"
+    ],
+    "fpdfsdk/fpdfxfa/cpdfxfa_widget.cpp": [
+     "100644 9bcf67b745f7b92c84a3679e3f9db80df1b9e0db",
+     "100644 1e7f9b1b98cde39a19f72c1f0a23a97bd5a0ec91"
+    ],
+    "fpdfsdk/pwl/BUILD.gn": [
+     "100644 e1722a8b127f1777b6f51fb2db515ba33e36df07",
+     "100644 cacff5dc328b4c7f7b13395f93a0160d9d3bb909"
+    ],
+    "fpdfsdk/pwl/cpwl_combo_box.cpp": [
+     "100644 9290f2a7d4aafe7a705e2df358b1c10b83e2f2e1",
+     "100644 e06d47862e6af6919baa2c8a8d9360a88e94b312"
+    ],
+    "fpdfsdk/pwl/cpwl_combo_box.h": [
+     "100644 7e5743ed391b56a79bd0465446e5ab2d790a4ef0",
+     "100644 726c1b0990156cfb96333cfac9f65e1371c6173a"
+    ],
+    "fpdfsdk/pwl/cpwl_combo_box_edit_embeddertest.cpp": [
+     "100644 7806f94e0573a49edfa4bf96077708204a5ab693",
+     "100644 0feb907252eb667228ebf935eec0633260226b61"
+    ],
+    "fpdfsdk/pwl/cpwl_edit.cpp": [
+     "100644 b6c8c91143f8f94cfe515853bc3a75d92e93774c",
+     "100644 d6fa576d5dda82ef5dcc24dff359159cd0c7ffa4"
+    ],
+    "fpdfsdk/pwl/cpwl_edit.h": [
+     "100644 bf04fe49638e6019bb0de83bdc188ef427fb311e",
+     "100644 ab8c18e9214682485a130b054e967898829ecb29"
+    ],
+    "fpdfsdk/pwl/cpwl_edit_embeddertest.cpp": [
+     "100644 fa90c503eb8575b63e5294cff760fc7dcfbfef55",
+     "100644 5d83eb6f3fce41d07faf6d6ac7594143e1918fbb"
+    ],
+    "fpdfsdk/pwl/cpwl_edit_impl.cpp": [
+     "100644 a025ebaeb641dee99be16e53a4e2037bf1aeeb3e",
+     "100644 ea7239377b2184a73fa20c408309d7b50893e2ad"
+    ],
+    "fpdfsdk/pwl/cpwl_edit_impl.h": [
+     "100644 99dcf971457a8976c729c2132c1aa88381e29a3f",
+     "100644 76a972f4b14efcd850db1841d27ffc26f270ebe2"
+    ],
+    "fpdfsdk/pwl/cpwl_list_box.cpp": [
+     "100644 8200c47eb13c7be6b89bb681a123b51dd1ab08e3",
+     "100644 66f95dc004cd126e9f14bf2a764f0d7e39a8cda7"
+    ],
+    "fpdfsdk/pwl/cpwl_list_box.h": [
+     "100644 b8db3222bf5a6428ad82b064fb1422a26930f0c0",
+     "100644 f5e59e005c87cab08b7bf8f18cb83f02258995d7"
+    ],
+    "fpdfsdk/pwl/cpwl_list_ctrl.cpp": [
+     "100644 6e9db91ea2d60212417ab73b33997a083cc345b3",
+     "100644 c0eef2c66144ad99f8e332d6a6930cc73674c4bc"
+    ],
+    "fpdfsdk/pwl/cpwl_list_ctrl.h": [
+     "100644 3d7e5820a775f895195b2b06866ee32e49b32655",
+     "100644 46a2003e6ce79702bd067e4ae34a177c00e11755"
+    ],
+    "fpdfsdk/pwl/cpwl_scroll_bar.cpp": [
+     "100644 0692cb6f420798be91075143fb3c409de7a8b06d",
+     "100644 d06c073512e8625444dd43fbce5d11a41f6c8b14"
+    ],
+    "fpdfsdk/pwl/cpwl_wnd.cpp": [
+     "100644 67b84d8c70bd47038d7e2a821bbc37c96e7b342f",
+     "100644 e8a4b9ae7f94fc1d87ff0c99dc2037d97c7bede4"
+    ],
+    "fpdfsdk/pwl/cpwl_wnd.h": [
+     "100644 972fd946b1e0339bec6126cde33346d5ae1c2337",
+     "100644 b0f7bd7a8b285d66b8af49cbba36b73de311c78d"
+    ],
+    "fxjs/BUILD.gn": [
+     "100644 870f9386f2483306332fca7f9f6bbd9bc3fd5636",
+     "100644 8062138eed74612dde135444a0d93c416455f285"
+    ],
+    "fxjs/cfx_globaldata.cpp": [
+     "100644 8ef1e0120c427c64f5f7cffef52f018276c40523",
+     "100644 b9e13d84545c5c5b9a0aa8718c99888da525975e"
+    ],
+    "fxjs/cfx_isolate_wrapper.cpp": [
+     null,
+     "100644 08670f6000791768066d98632242815407c580a7"
+    ],
+    "fxjs/cfx_isolate_wrapper.h": [
+     null,
+     "100644 adcbecc6d39b7286720c374d9ece0bc7f5512f91"
+    ],
+    "fxjs/cfx_isolate_wrapper_unittest.cpp": [
+     null,
+     "100644 0b1fbc39d6f56e710517bf0d6f648ed206af51fe"
+    ],
+    "fxjs/cfx_v8.cpp": [
+     "100644 9eb5b1fbe80b13b572ddb84e3da1e334c0e21a18",
+     null
+    ],
+    "fxjs/cfx_v8.h": [
+     "100644 269517290654294b0d2223569cec38301fdf20b2",
+     null
+    ],
+    "fxjs/cfx_v8_array_buffer_allocator.cpp": [
+     "100644 c08de115d26e6035d7963b43aa6371be06972586",
+     "100644 8bd24ce9e7b28b975c6a8ce25baa12815fc60677"
+    ],
+    "fxjs/cfx_v8_array_buffer_allocator.h": [
+     "100644 a6daef04627a955eeb57b5ce79702b9fd98910de",
+     "100644 38bb2bbd6e5950be722009ea611c088ed5a3ef3e"
+    ],
+    "fxjs/cfx_v8_unittest.cpp": [
+     "100644 12b9f43dc226e4e9743f76d796d3eb4ecddb7fb4",
+     null
+    ],
+    "fxjs/cfxjs_engine.cpp": [
+     "100644 f3720ac5b6ee22937fef00637eb6d5fb98bc924c",
+     "100644 7b83bb8577bb0967569814729ef2455591e08606"
+    ],
+    "fxjs/cfxjs_engine.h": [
+     "100644 0bb353b0b333a673ef6d88a4822f83726db769be",
+     "100644 bcdd0c4b2f08819e26d2592fe88f1c92a794cf86"
+    ],
+    "fxjs/cfxjs_engine_embeddertest.cpp": [
+     "100644 32188e6404f11496ec39d98325da72e8468472bb",
+     "100644 7a079a9a2e3344ad156d65385692f407341185be"
+    ],
+    "fxjs/cjs_annot.cpp": [
+     "100644 3a73ba3830ec4468c52da4081a2b90a0587c9053",
+     "100644 4251e62916798770ecdbe0ff87cace0b9a0c40c3"
+    ],
+    "fxjs/cjs_app.cpp": [
+     "100644 e38e465da6a5a7a6c2eb44af42f1216998be7446",
+     "100644 793b6442f0dbc8b29515273ae80980f2af912820"
+    ],
+    "fxjs/cjs_color.cpp": [
+     "100644 455b45b999ead631a099233aeb0f19c01a2dc38b",
+     "100644 daaefae4b0c631156553e4687f47b732114707d5"
+    ],
+    "fxjs/cjs_document.cpp": [
+     "100644 2b0b4fb87defad7997bea78ef460b5f2e97f8419",
+     "100644 2197eb4508b6d0a3e780fd8995cca6b99a46661e"
+    ],
+    "fxjs/cjs_event.cpp": [
+     "100644 8674bc02832f116f37cb1281cff5f1f3f9e601b9",
+     "100644 62e7e6ee9f46c0390188fe14e20a1e64c4cbde87"
+    ],
+    "fxjs/cjs_event_context.h": [
+     "100644 968f8fe2e7fcdd1552b8e4e167c20e150aefcc68",
+     "100644 3b43ad83ad87e5029df700a9535bd1cdfc82af57"
+    ],
+    "fxjs/cjs_field.cpp": [
+     "100644 22d0926def8feda059be1c18b907374407457ee7",
+     "100644 6d1180d264f29d7dde72e385d6eca6b7d8a6b120"
+    ],
+    "fxjs/cjs_global.cpp": [
+     "100644 af29d4cce014520e15511bde19297a23536474bd",
+     "100644 6ae91afb7c1cfc3305feb7edbc8f4857bd0e7f05"
+    ],
+    "fxjs/cjs_global.h": [
+     "100644 3a7d23197c68c71f3b3cec47ced7aade45cd1916",
+     "100644 83b9ec259dd7ed9de774e5da9006497b2bda3fa4"
+    ],
+    "fxjs/cjs_object.h": [
+     "100644 4677f042afbc6a5eb17fe9f80bc4c806c78fd02e",
+     "100644 414710484e6ea7484d165ff5eb3a543ea9c0688d"
+    ],
+    "fxjs/cjs_publicmethods.cpp": [
+     "100644 b708a16f0559d6367b2461f43914c90821153239",
+     "100644 92ee10d1b23eee83b81ccf503316b8aaf66d6d47"
+    ],
+    "fxjs/cjs_publicmethods_embeddertest.cpp": [
+     "100644 94cef4b498d1c0e2b66cca04872e856e88719859",
+     "100644 1aa5c98cb0b14ab200ccca5cbe5228a99149622e"
+    ],
+    "fxjs/cjs_runtime.cpp": [
+     "100644 aaac4df768c144e7484dd86e420a2fc491886920",
+     "100644 941d378bd80e3483daa22f15ba3c012c5cc5512e"
+    ],
+    "fxjs/cjs_runtime.h": [
+     "100644 9b508b96b06bd12e514f69d304b84e52c008eaa4",
+     "100644 84cf6f3fd9974ae06a93e1225b66f1b34f88d49d"
+    ],
+    "fxjs/cjs_runtimestub.cpp": [
+     "100644 215ea3522786cc0e7c91aba53354e1cad825e0dd",
+     "100644 03dbb7093dcae5acb1b54e7c57f5c66d444b021e"
+    ],
+    "fxjs/cjs_runtimestub.h": [
+     "100644 81839929747354afd62ba3dbed4fd9ee795dbcd4",
+     "100644 4e49fa7945fe4f4461aaf45ec0a9816cd0f66283"
+    ],
+    "fxjs/cjs_util.cpp": [
+     "100644 81cf38379eb1f62e37befe99f774322a4c655257",
+     "100644 439cc55dcdc8e65633f368e03d12b1b3764a3e46"
+    ],
+    "fxjs/fxv8.cpp": [
+     "100644 27b8a41e7a341eb38fee577a71f920aeef6bf773",
+     "100644 ee39d92ededf4f9f930642c4cdfdfb24edb24240"
+    ],
+    "fxjs/fxv8.h": [
+     "100644 90b8326e9a016665b95f9e27fa23a0732e2dbb75",
+     "100644 d77f0a817654dbb84b135896c9912fe6be2416dd"
+    ],
+    "fxjs/gc/heap.cpp": [
+     "100644 7161cf440685e578262652cec75471810d3d7ea6",
+     "100644 96b813c3df335b98c276f9e887ea2e1d2bbc2f82"
+    ],
+    "fxjs/ijs_runtime.h": [
+     "100644 4a5bdacba5004462bea989fe09d4ebdec053df47",
+     "100644 52e15c8d4cc07ad12be1cbd63c05ab604672c6e0"
+    ],
+    "fxjs/js_define.cpp": [
+     "100644 aaa355609a9e757ada7034d49259de8a0d7826bd",
+     "100644 9fa717d393a35d45df93e4ebfb3260fe2c41ad1e"
+    ],
+    "fxjs/js_define.h": [
+     "100644 93542f534a66960ffdb91b419feda10b1e03b481",
+     "100644 a6de74471ec540cb3cb512b9ff1b8e7c668c13be"
+    ],
+    "fxjs/xfa/cfxjse_class.cpp": [
+     "100644 3af21ed8c992522e490d2654406f04fd86f61cbe",
+     "100644 05007e884b94ee80e1121adebef494e6468a7e4b"
+    ],
+    "fxjs/xfa/cfxjse_class.h": [
+     "100644 2cda10ad558387a9e0615cd05e7a29ca6a953a6f",
+     "100644 58271303fede592ed925766c0a57959e15ef0513"
+    ],
+    "fxjs/xfa/cfxjse_context.cpp": [
+     "100644 74516caf010d520242b7f544edd12e71fb0ab01a",
+     "100644 bdb512ffa2fcb57b58f2a62a206a6085eb5d74ad"
+    ],
+    "fxjs/xfa/cfxjse_context.h": [
+     "100644 9735d92528af1a690f05ad32b670d9cec6280ae9",
+     "100644 fb736624b099ee1aa5c5fb2fe325e16ec142b15f"
+    ],
+    "fxjs/xfa/cfxjse_engine.cpp": [
+     "100644 df72ee3f4578fc12d154a51a16fff56d75ba706e",
+     "100644 b47dbfc975fea42bf8d9da02d4f78bb3d2334bdd"
+    ],
+    "fxjs/xfa/cfxjse_engine.h": [
+     "100644 8162c1b4af31197347d2cf537c890f1e51c4c38d",
+     "100644 04401e99aca483822411784d82bfa9f21d6582e8"
+    ],
+    "fxjs/xfa/cfxjse_formcalc_context.cpp": [
+     "100644 88aa5f32547b2b2375e380957bf6b40116e574c1",
+     "100644 503b6746b4ed1fed7ab630709ae32a35146c3d63"
+    ],
+    "fxjs/xfa/cfxjse_formcalc_context.h": [
+     "100644 6ea039d7cde4231d1afef73626a18f3ac5e0b982",
+     "100644 1fcd18a5e12550f620ef67c3afa3c5bd24ce36e3"
+    ],
+    "fxjs/xfa/cfxjse_formcalc_context_embeddertest.cpp": [
+     "100644 5b26bb021e7e65f22c03ea87fee071acae7ac7c9",
+     "100644 459c42c9b2f5b7aee04c121d84fa8271d658c577"
+    ],
+    "fxjs/xfa/cfxjse_formcalc_context_unittest.cpp": [
+     "100644 3efeb20c16b626c9642beebff1375478c242e0f0",
+     "100644 95ab4b5cb0398c6f7258f25ef5d67bab9a66c9cb"
+    ],
+    "fxjs/xfa/cfxjse_isolatetracker.cpp": [
+     "100644 c6cbfc334a7b1fb0c47d5af99ba91519c993ee45",
+     "100644 6bfaa9c68d8ceb2422b9c8e103cd8503145318ad"
+    ],
+    "fxjs/xfa/cfxjse_isolatetracker.h": [
+     "100644 7353ac09b4cc4cdb4f7f0d94c7fc23710d7a6a9e",
+     "100644 0ee8418fac5cf29c0fc3c6dee8cdc4ae63f3d017"
+    ],
+    "fxjs/xfa/cfxjse_nodehelper.cpp": [
+     "100644 208c69c105b1a81429c86198308cedf6153cc212",
+     "100644 7bcf4edadb1fb15f3a2fd2f5b9f5e2a1b093173d"
+    ],
+    "fxjs/xfa/cfxjse_resolveprocessor.cpp": [
+     "100644 48d18d3c7bdf94ae933fe24a92ccb44bdddc9751",
+     "100644 8af230bd2e0a703c4fa4df442312d0a4c20b086a"
+    ],
+    "fxjs/xfa/cfxjse_runtimedata.cpp": [
+     "100644 a1b68b98af098a830e151bd3d4c505380c4cdcff",
+     "100644 0d4126ad1b63d7884283904e910486c1232d20da"
+    ],
+    "fxjs/xfa/cfxjse_value.cpp": [
+     "100644 cd6d61035f56eb6a2ed67b80bcaac1321b54a2cd",
+     null
+    ],
+    "fxjs/xfa/cfxjse_value.h": [
+     "100644 174bfcff24c8282cdcaecc41bfb934c10a5b7558",
+     null
+    ],
+    "fxjs/xfa/cfxjse_value_embeddertest.cpp": [
+     "100644 198e11024dc012753c457a973077559142e6c420",
+     null
+    ],
+    "fxjs/xfa/cjx_boolean.cpp": [
+     "100644 e55287696c1afc812c636067d4c24405aa37132d",
+     "100644 a3e17da589ad4eac7f2158cc7e50fcb49d1cba7d"
+    ],
+    "fxjs/xfa/cjx_container.cpp": [
+     "100644 6e7c611263af41c45ebc0b82eab6941464df7075",
+     "100644 34183ef555344e7a0c6dea8af0e1135a24f0dfbd"
+    ],
+    "fxjs/xfa/cjx_datawindow.cpp": [
+     "100644 dcefe384a2d8247827c2f9d10bcbfbc1cfd67889",
+     "100644 ddaa4c735c046a6185a5fc6547c02ab9e49ca0b1"
+    ],
+    "fxjs/xfa/cjx_delta.cpp": [
+     "100644 2c0851a1aa177d4667cde3c6d587532ffdcf76db",
+     "100644 cd3257dde3b00003de0289edba251bcffacb5cfb"
+    ],
+    "fxjs/xfa/cjx_desc.cpp": [
+     "100644 7bf5f9d7c53986b273c2934089e1ec4bf5c3fa41",
+     "100644 c8ead4dbbe07bade155d9dfb196c8e86efe69ed3"
+    ],
+    "fxjs/xfa/cjx_draw.cpp": [
+     "100644 5793e5497db238bbb8b20369ac18899e3805f042",
+     "100644 9015decb1f97ddca436e408ccecf02e3d52a6ba8"
+    ],
+    "fxjs/xfa/cjx_exclgroup.cpp": [
+     "100644 3a364944b84c1b6e0659b06685e2410b95427141",
+     "100644 4aa5476b506d6e25902d659ea8779df2a434b386"
+    ],
+    "fxjs/xfa/cjx_field.cpp": [
+     "100644 2ab79a37f8b3282053429d1853cf0517d823cb1c",
+     "100644 02b58edbf1f9e3e57d609e95ef32666f43850d12"
+    ],
+    "fxjs/xfa/cjx_form.cpp": [
+     "100644 ac5ad7f4f7e73b6e34205a7c2576be1cfe568e8e",
+     "100644 ac69a28b8737c1ab61a3cc04da8b398d15f740bb"
+    ],
+    "fxjs/xfa/cjx_hostpseudomodel.cpp": [
+     "100644 a654a64156d1a6f156f77ca685eb83de95475988",
+     "100644 7bb36a761f70ea0fe67446fa9d9b693c41137910"
+    ],
+    "fxjs/xfa/cjx_instancemanager.cpp": [
+     "100644 154a738417ac7cbad336214b1e71271096e1d8ef",
+     "100644 87eb97251c657e66ec3ec30fe51c6b3bd197eda1"
+    ],
+    "fxjs/xfa/cjx_layoutpseudomodel.cpp": [
+     "100644 7035be0c78edf867e91a98d9e5fc570cc983bc86",
+     "100644 e0633afb81961926360d090f3c69b62fb539b02b"
+    ],
+    "fxjs/xfa/cjx_list.cpp": [
+     "100644 a8548c5b6fcbe396840b045777c0273b611db761",
+     "100644 018226bcd11f98390bb7b39881367af0ae325f2d"
+    ],
+    "fxjs/xfa/cjx_list_embeddertest.cpp": [
+     "100644 a9b5427fe24682f14d4530c8d5ea8a91659a383a",
+     "100644 d64677bafc1534b182f777d4302b3c9c76052ecc"
+    ],
+    "fxjs/xfa/cjx_logpseudomodel.cpp": [
+     "100644 d0eea166d6733d4b3f8a3560afedfd94f930b62c",
+     "100644 e77bd88b939ce3ffcbf4cfc4a8016c2788e4702d"
+    ],
+    "fxjs/xfa/cjx_manifest.cpp": [
+     "100644 cc73826877c328770e3c81d495e1fceae6aaf811",
+     "100644 0cceaae19fa67cc1679b11cb2c1cf710ce6bf234"
+    ],
+    "fxjs/xfa/cjx_model.cpp": [
+     "100644 63ead4dc2c7c4ecaa6b519b9b3bae9eb173161da",
+     "100644 f7f22ca5688fea53a16367b4314ee697c5043b23"
+    ],
+    "fxjs/xfa/cjx_node.cpp": [
+     "100644 43d3a6b369d36d656667f164ac9a72c5239e971f",
+     "100644 5f05684c70ace95f9a49883ed9cf325a5bd3601a"
+    ],
+    "fxjs/xfa/cjx_object.cpp": [
+     "100644 c88e3c710e8db5ec7b92d1f6c3e832f08d84d268",
+     "100644 499d771e14b70a69488c649ca4beb26e141ce5c4"
+    ],
+    "fxjs/xfa/cjx_occur.cpp": [
+     "100644 657b23074846da8c805aade63104c2938df7c56f",
+     "100644 e42f8448ccaf9ebb6598eff069812f01b3637edf"
+    ],
+    "fxjs/xfa/cjx_packet.cpp": [
+     "100644 8c2b4be6ed16dd9b32550db3a9f5e826fcff1ca8",
+     "100644 1aea31f17b9c523099926300b935c7897926e6f5"
+    ],
+    "fxjs/xfa/cjx_signaturepseudomodel.cpp": [
+     "100644 445b1580d02666c555a26d2c362df1fb44844871",
+     "100644 dac10f5dd9f8ff81eaf5fdd3cbd2075a379fea23"
+    ],
+    "fxjs/xfa/cjx_source.cpp": [
+     "100644 102567b9df36b6eec05d211e92942fa947589390",
+     "100644 4b6c9d7127c782a5fd812cc4b1296cd6a574f184"
+    ],
+    "fxjs/xfa/cjx_subform.cpp": [
+     "100644 89b328eeb449f11a9f779070c84f53261cdd8e76",
+     "100644 0314fcef8e380ad898cb4fd4dd7d2e32a8338ba9"
+    ],
+    "fxjs/xfa/cjx_template.cpp": [
+     "100644 b1e34db252c52e8cdae53ece2a20d3c853eb97bd",
+     "100644 358cb3d1264b116642e86aa8558a96c86379a141"
+    ],
+    "fxjs/xfa/cjx_textnode.cpp": [
+     "100644 2bdb41450cf3fe54aff09a6fadb3569c48bcf829",
+     "100644 6414ad32519900790589edef2e22fcb833b5a176"
+    ],
+    "fxjs/xfa/cjx_tree.cpp": [
+     "100644 6665cc665f7d0e8f22172231bfe6a347292077ce",
+     "100644 6d14cca33935a3f1e18eaa91e7d405a3d4708e35"
+    ],
+    "fxjs/xfa/cjx_treelist.cpp": [
+     "100644 bc265490dec98d10a6ab4d8fa1065f9662999e40",
+     "100644 bee46b09c6f208b053f985a4e68aebc4bec93990"
+    ],
+    "fxjs/xfa/cjx_wsdlconnection.cpp": [
+     "100644 8a00ce9e01029435cf440434c797cc13842dd1b0",
+     "100644 30c56997f5187d29089714359eb154eea4581ed6"
+    ],
+    "fxjs/xfa/fxjse.cpp": [
+     "100644 81854f28e73ccc65f3c6103969f77c9edc74b17f",
+     "100644 72d3ce4f4cf7a51cf851413d37634ff9ad5cdbc4"
+    ],
+    "public/fpdf_annot.h": [
+     "100644 0aa9f688663448008bbd7bfa67f759758737ebb9",
+     "100644 b452cfaf1dde7a14cf38ede24fc8c2ac14965b9c"
+    ],
+    "public/fpdf_attachment.h": [
+     "100644 a8a40b34b9f4f0324b947ab13b5d02c717f67f7a",
+     "100644 64728f61c3132801aea89681163027509c43ccf3"
+    ],
+    "public/fpdf_catalog.h": [
+     "100644 033cca5fd965d3027f1527a280fc44f0ded917ac",
+     "100644 fdbe674e800fac5db7283cbbb9438710420e92ac"
+    ],
+    "public/fpdf_doc.h": [
+     "100644 2dc22d9c97686836649b57074932a1ec9c49df49",
+     "100644 6d551c1ce2684e7c3cf329dc4d679af114cda557"
+    ],
+    "public/fpdf_edit.h": [
+     "100644 c6b63f65f31ea3e06b118bea7fb7ea1bddc2913a",
+     "100644 2dbd60db589ded616595ad62736cddb515d24e38"
+    ],
+    "public/fpdf_formfill.h": [
+     "100644 312238ca7338d326db07e701ee1c94ac56b56868",
+     "100644 f7d5b0a03531781dc6c409d64c8553275559ed32"
+    ],
+    "public/fpdf_ppo.h": [
+     "100644 1734bc6825f249f4cb8490d2b8ce4d87d7ce4abf",
+     "100644 c621d355f9b63c7ebca47eb1ad5f006e57c4848a"
+    ],
+    "public/fpdf_save.h": [
+     "100644 ca7009030d7fce37472f8e9ce73fe89355fcdf08",
+     "100644 04f882e0dde4aabdaff617ce277442aeb4cd1860"
+    ],
+    "public/fpdf_structtree.h": [
+     "100644 ea67fefd2a9397405a40662e2bbe6deb4aa9216f",
+     "100644 c9823a634827edb55b31b097617726a2889e8f31"
+    ],
+    "public/fpdf_sysfontinfo.h": [
+     "100644 f3bc544b5d773ed72916675e9806b298d0ab1c03",
+     "100644 07bec0dd6d34bac4b75a28cf191d65586f95062f"
+    ],
+    "public/fpdfview.h": [
+     "100644 d96556b4755474a4dda6903bfda73df1f5451b8f",
+     "100644 c64b1b3cadffb843c1920173931ad5939afdb38a"
+    ],
+    "third_party/BUILD.gn": [
+     "100644 e8d51d5f09e9a78d93f98b633542fc541b26b06e",
+     "100644 9cc3e72383410f4e37b63a97133d03ee4b9b184e"
+    ],
+    "third_party/NotoSansBengali2/LICENSE": [
+     null,
+     "100644 70fbc7f46a2c4ddafa78858b04ac15222b3b0b59"
+    ],
+    "third_party/NotoSansBengali2/NotoSansBengali-Regular.subset.ttf": [
+     null,
+     "100644 31d408528f37b2219f7b0799ce5fef3a0db4a6f8"
+    ],
+    "third_party/NotoSansBengali2/README.pdfium": [
+     null,
+     "100644 6afbb3f591722f2d30ed095b554dd2cc91da8102"
+    ],
+    "third_party/NotoSansBengali3/LICENSE": [
+     null,
+     "100644 70fbc7f46a2c4ddafa78858b04ac15222b3b0b59"
+    ],
+    "third_party/NotoSansBengali3/NotoSansBengali-Regular.subset.ttf": [
+     null,
+     "100644 8bb940966a34a4db6ce3473d271fe6b8bee04201"
+    ],
+    "third_party/NotoSansBengali3/README.pdfium": [
+     null,
+     "100644 649505cff0adbfea8ef6f30e13512be0e7302251"
+    ],
+    "third_party/agg23/0017-support-odd-size-dash-arrays.patch": [
+     null,
+     "100644 dd77b1a76040f638e30fe40f03365778d3e3ce44"
+    ],
+    "third_party/agg23/README.pdfium": [
+     "100644 8857222d559ed37bba60f43e94227f527b02a7ac",
+     "100644 a40bb083d5e930fabdb68ffe994bec25cd7b917c"
+    ],
+    "third_party/agg23/agg_conv_dash.h": [
+     "100644 3a45d5563fae293e9d279e86f149760916796b3e",
+     "100644 5ce584a6a40c6642af1611e860ab3b9c1fde59d2"
+    ],
+    "third_party/agg23/agg_vcgen_dash.cpp": [
+     "100644 47683f9b2c6eab1d9c839006c5a2978f1ff6f312",
+     "100644 b0d16a1d882c977897d08b7dda85d072fb96874b"
+    ],
+    "third_party/agg23/agg_vcgen_dash.h": [
+     "100644 2a4c94eab4608c1f4eec5c9746ff117eea374aed",
+     "100644 016c2ce9f3c4e0bb3a31641817bd65076d5d8fb1"
+    ],
+    "third_party/bigint/README.pdfium": [
+     null,
+     "100644 95ac4fd45e12b9fcb63e880b0900c7ffa4be3933"
+    ],
+    "third_party/cpu_features/BUILD.gn": [
+     "100644 8f1c8dcef3561725ddec8d83f67ac03b0530f6c6",
+     "100644 f6fcc3d2be58f98fdf6e70f31b90d974a68d6f0a"
+    ],
+    "third_party/dragonbox/BUILD.gn": [
+     null,
+     "100644 981be5b9c7ff9426c5f137b40880e9f61c2ea4ff"
+    ],
+    "third_party/dragonbox/README.pdfium": [
+     null,
+     "100644 d68071cc09427efa402a6b9395c709c34f9e7c01"
+    ],
+    "third_party/dragonbox/src/LICENSE-Boost": [
+     null,
+     "100644 36b7cd93cdfbac762f5be4c6ce276df2ea6305c2"
+    ],
+    "third_party/dragonbox/src/include/dragonbox/dragonbox.h": [
+     null,
+     "100644 84d6e24e3f49c6ad2952bec9ac53cfeabb5ebc2c"
+    ],
+    "third_party/fast_float/README.pdfium": [
+     "100644 4b58ec0ef04d85e64a90b499b05e43da5ff301a4",
+     "100644 997f5822fc26db4bc33ae62f0f88db605730ab73"
+    ],
+    "third_party/fast_float/src/LICENSE-MIT": [
+     null,
+     "100644 2fb2a37ad7fda521092c8b7b16911176c3f8a81b"
+    ],
+    "third_party/fast_float/src/include/fast_float/ascii_number.h": [
+     "100644 1da99467498e7bc0642a167cd5600ce767c86c48",
+     "100644 e6ead45bb808aa6a42e66a46351c49f1fa2cd89d"
+    ],
+    "third_party/fast_float/src/include/fast_float/bigint.h": [
+     "100644 0909680d7672396dcc419dda1141bdd475357e81",
+     "100644 74901e3956f2ee87ebd3d1db43b4dc358a6818bc"
+    ],
+    "third_party/fast_float/src/include/fast_float/constexpr_feature_detect.h": [
+     "100644 23bdb520a254fd20b0d48d1ee63c7fa31294ae87",
+     "100644 6751afecd6bbea2819b8d5b4eb012642c41da670"
+    ],
+    "third_party/fast_float/src/include/fast_float/decimal_to_binary.h": [
+     "100644 33b0baf17fe6517456cdde3279b31a4967efc91a",
+     "100644 948768265eb3d0e513d1d5e0d11ace75f2be44c9"
+    ],
+    "third_party/fast_float/src/include/fast_float/digit_comparison.h": [
+     "100644 d52942bcdfd6904b4bf3e81c2d96e3dfd399ce05",
+     "100644 c2c83b0cf5fbb25543e7aad41f77a43a55fa1d38"
+    ],
+    "third_party/fast_float/src/include/fast_float/fast_float.h": [
+     "100644 5ca1a4822cd1ca75164502300d797cfda2cde90d",
+     "100644 1e79ac612e65fa2048a0dbad145a1b38d5450c37"
+    ],
+    "third_party/fast_float/src/include/fast_float/fast_table.h": [
+     "100644 c39a3d291e1d176cbe6d5beb542b7462bd75871c",
+     "100644 69f9b2c9245f63dc57884807391377e754b2bf99"
+    ],
+    "third_party/fast_float/src/include/fast_float/float_common.h": [
+     "100644 b23accf4224bbd66888bc9802717fc7c11a288db",
+     "100644 405513768e05e127f385b59a7fc815190e578086"
+    ],
+    "third_party/fast_float/src/include/fast_float/parse_number.h": [
+     "100644 5e125309a4cf2648e6db0b31810c6d6575b7ec93",
+     "100644 5d11dfad5ed551eeb50f61b327e401887cf00eae"
+    ],
+    "third_party/freetype/OWNERS": [
+     null,
+     "100644 d3d5e9583ff876537b720bebef65ffef7743c193"
+    ],
+    "third_party/freetype/README.pdfium": [
+     "100644 7c0e4e5ac29b192d6b4182b9fc23ea7f241d9d66",
+     "100644 43e7bf72c907bbf0642aedad5647b751efc23912"
+    ],
+    "third_party/freetype/include/pstables.h": [
+     "100644 2a941b04609690995b27cb6afe3116697e5c9682",
+     "100644 8a32aac325f29aa765a39b53125689c8d07c6bb5"
+    ],
+    "third_party/googletest/BUILD.gn": [
+     "100644 d2964aa219d7a6f447903181d7f9302930af1cef",
+     "100644 a6647013f15692f52277bd0e086641d1f1a3a49e"
+    ],
+    "third_party/harfbuzz/BUILD.gn": [
+     null,
+     "100644 a7aea21b804861aaab47f3a2557f2cc85444d078"
+    ],
+    "third_party/harfbuzz/README.pdfium": [
+     null,
+     "100644 a44e02240b4bcbd81b25ab0c203985fe0c03c43e"
+    ],
+    "third_party/harfbuzz/harfbuzz.gni": [
+     null,
+     "100644 3be78e4d2b64c4d3fbc0c8618458307a53f70871"
+    ],
+    "third_party/harfbuzz/pdfium-config-override.h": [
+     null,
+     "100644 264661aad7fe5b343c99aff38be86aca10f03976"
+    ],
+    "third_party/libopenjpeg/0022-jp2_apply_pclr_overflow.patch": [
+     "100644 d978f06120e858c11fd2d376aee149d7c7d7db5a",
+     "100644 7b529a954d8f7104ed39f499d76a9b77890d8519"
+    ],
+    "third_party/libopenjpeg/0035-opj_image_data_free.patch": [
+     "100644 436b31d6bd787829dcfd4c33d8240b206a28769e",
+     null
+    ],
+    "third_party/libopenjpeg/0047-opj_j2k_read_sod.patch": [
+     null,
+     "100644 93259a54bf780b31673be8f64bacaca8a9507125"
+    ],
+    "third_party/libopenjpeg/0048-dwt_neon_9-7_idwt.patch": [
+     null,
+     "100644 d45aa599a1bf39bc98dbcf7d9e8027c6b84449ea"
+    ],
+    "third_party/libopenjpeg/0049-dwt_neon_5-3_idwt.patch": [
+     null,
+     "100644 4b3196bc2c20fddb58f791dc08a35deac7da02e6"
+    ],
+    "third_party/libopenjpeg/0050-opj_pi_initialise_encode_overflow.patch": [
+     null,
+     "100644 1f44a5dfee44f98473ef4cc948f8c9de5ef59efc"
+    ],
+    "third_party/libopenjpeg/0051-opj_j2k_copy_default_double_free.patch": [
+     null,
+     "100644 a0c8b26f912e7e3174edadaaebdce86537d8d102"
+    ],
+    "third_party/libopenjpeg/README.pdfium": [
+     "100644 289f19a598e1671c4dee1b085d1a415308ee2bcb",
+     "100644 2823e66e0ce0bd692bebfdc9e0f54c57829f5796"
+    ],
+    "third_party/libopenjpeg/dwt.c": [
+     "100644 731e7b2c9617169545cf7ecdeb68acf81dd9ed62",
+     "100644 726f08ace373aa30ab3a7be2dd6dcfe85c71b5dc"
+    ],
+    "third_party/libopenjpeg/j2k.c": [
+     "100644 5e9d75076e52387ed9fa1453029f6810d1b7bc98",
+     "100644 1fb83f8b5f640c6c9c1c3d54fb09ae5f6ee53e9d"
+    ],
+    "third_party/libopenjpeg/pi.c": [
+     "100644 ad96f47eb50c5ba050448ac7262888b43adecb77",
+     "100644 b199a7b2a1dee3b6dc87ccc9e1b32724c29b634e"
+    ],
+    "third_party/libtiff/0017-safe_skews_in_gtTileContig.patch": [
+     "100644 cdc3c2d1b9f1f1b265998831e5b08808d57a0dbb",
+     null
+    ],
+    "third_party/libtiff/0034-shrink-TIFFFaxTabEnt.patch": [
+     null,
+     "100644 1da4e90bd27ff0aa0754a3ccff3c3b209e910061"
+    ],
+    "third_party/libtiff/README.pdfium": [
+     "100644 f4e934a9597ca5e3cc56b69ccb52fbcf702e521e",
+     "100644 bd61bce49745e8e678c2f31ca9546f81ad671856"
+    ],
+    "third_party/libtiff/tif_aux.c": [
+     "100644 e9606a42e0fe24ebcc5203ae50f27c43848cc2d5",
+     "100644 1b2db76867052439c0c05d5ff00cd3d03b25eae4"
+    ],
+    "third_party/libtiff/tif_close.c": [
+     "100644 d6bb7f1d7cc6216b18c9c27cc13c2980ca148ba7",
+     "100644 e60aba7113dd281b2c9924013350b7087bf385a3"
+    ],
+    "third_party/libtiff/tif_color.c": [
+     "100644 a52fdacba59c7e3a782a0673993aad5641d465db",
+     "100644 4a17914a44c5d0f5286f76c10efdef9ff289905b"
+    ],
+    "third_party/libtiff/tif_compress.c": [
+     "100644 c6e17d3e1142a5a7a38f769f44bd77caf8dfa142",
+     "100644 3002083f12e8a4512006e1679ee4f9e831e5aa4b"
+    ],
+    "third_party/libtiff/tif_dir.c": [
+     "100644 459f9696fd3e453cd81947e331c23d137d988d49",
+     "100644 999a2452f333a90699f943c45e8eeb0d617c4519"
+    ],
+    "third_party/libtiff/tif_dir.h": [
+     "100644 ffad085e02ed01ab5434c93d1f66de6cf0f2055c",
+     "100644 aed972222882aeb00fc9ea81eef60a5d0d0fc90c"
+    ],
+    "third_party/libtiff/tif_dirinfo.c": [
+     "100644 432e6e1e448c1072e903c7068c655fea3dfbf5de",
+     "100644 9218661b723289a10e19e237f6084a4909d60efc"
+    ],
+    "third_party/libtiff/tif_dirread.c": [
+     "100644 2b6e0b450d700c0c34c59a6035cb9c14777674d0",
+     "100644 3df651ef7ce32ce7f20a383ac98dc9088c83a6a0"
+    ],
+    "third_party/libtiff/tif_dirwrite.c": [
+     "100644 facdeaf7b161504012327a143a6b6e35aab88e8e",
+     "100644 5da087e29542717e82841844660ddfa829027bfd"
+    ],
+    "third_party/libtiff/tif_dumpmode.c": [
+     "100644 267d5d2d7a53f95b8f520dbb9d9c0eae79156209",
+     "100644 4e3133f4192ba2f6aa0b2cc47c2d60150203461d"
+    ],
+    "third_party/libtiff/tif_fax3.c": [
+     "100644 01a784730bdcc4b68e08e9aa49581c8aa0485f29",
+     "100644 06b9508df58df086a979c75d45ec4e221f3618c4"
+    ],
+    "third_party/libtiff/tif_fax3.h": [
+     "100644 e095009bba4a99e01d8ac80678606b68278c267a",
+     "100644 494914f9f3e3d0ad256010f77cf67838d351e02d"
+    ],
+    "third_party/libtiff/tif_getimage.c": [
+     "100644 3ee06262ab84a897049d018602dd29cd1dc1df79",
+     "100644 316284db30f0974e044669f69ea8191a09eed538"
+    ],
+    "third_party/libtiff/tif_hash_set.c": [
+     "100644 9be488e04456a7bd83f111a3270be41dffd38318",
+     "100644 aefcaada741d4530e52592aba602f8c962248b48"
+    ],
+    "third_party/libtiff/tif_jpeg.c": [
+     "100644 0596e402f0255334eb53f8b0f2ef0b7f25fcba5b",
+     "100644 1f17d0cadbaa447ddd9b1b00c94993fcf764200c"
+    ],
+    "third_party/libtiff/tif_luv.c": [
+     "100644 d19653550c6b7002e904b13e4478f27768d0fd98",
+     "100644 d9bc8fe31056a455dc655333b08ae49be22e9fbd"
+    ],
+    "third_party/libtiff/tif_lzw.c": [
+     "100644 4baf78e50b206a1661ffdccc685e034ffb9a2894",
+     "100644 d9f56a427ba7bb44ab3c15b1e8a54733a05aa8b8"
+    ],
+    "third_party/libtiff/tif_next.c": [
+     "100644 f000574ee748f572f3489f2794e25035a7c70a42",
+     "100644 04ae474b95bb5a37ac1bc581e2963531d6a7a839"
+    ],
+    "third_party/libtiff/tif_open.c": [
+     "100644 59a07bee023230275463a828d26f7e41d58ceb65",
+     "100644 43cb170286dbdbaac31bd4bb5e8d97c5f66841aa"
+    ],
+    "third_party/libtiff/tif_packbits.c": [
+     "100644 1ae50cbd47ce6975405c0a89a68066f25e0a6462",
+     "100644 13d0f1d3908e4a35f3b92b96f2d4284af6633a3f"
+    ],
+    "third_party/libtiff/tif_pixarlog.c": [
+     "100644 b4c4c9c118493a38ae200d7f94419c84444da457",
+     "100644 78925221da517341d7b710fcc765cf5349814fa2"
+    ],
+    "third_party/libtiff/tif_predict.c": [
+     "100644 386b5fe82adcf402ae683f60b2ceccad6ed8e473",
+     "100644 18b90c211e13ac35bfcf6be999601214b1d41937"
+    ],
+    "third_party/libtiff/tif_print.c": [
+     "100644 2b7fd1765ae9662c80acd289239fdb8485eb358a",
+     "100644 1ea450db95bbdadac3515efcc312934cb4219ea8"
+    ],
+    "third_party/libtiff/tif_read.c": [
+     "100644 7efab59c6a3827ec71b32896a4d0561299e94aeb",
+     "100644 d1a4e892168633523e9da2c88b43d8c68fa6ae0b"
+    ],
+    "third_party/libtiff/tif_strip.c": [
+     "100644 4dbcf37e48b26e04e43f2229fb69e4669c1c2601",
+     "100644 b07bf9ff2110ea307ccb4080af310e9e2195e604"
+    ],
+    "third_party/libtiff/tif_swab.c": [
+     "100644 827b025ce7ae58aa536130fd9461ac4a3f9c3fb0",
+     "100644 50fe635fbc01f15b124aa29c533bec0fb88251d4"
+    ],
+    "third_party/libtiff/tif_thunder.c": [
+     "100644 bac0607dbe548a23add7462d10c659c8b3c564ae",
+     "100644 0c688db1ee44f04ee5f1d7ce6f738df42ce0b628"
+    ],
+    "third_party/libtiff/tif_tile.c": [
+     "100644 f07032f731f95665a6b0614337dc5d2f29f1ba4e",
+     "100644 f90760940096a0d244755364e53131afd147a3b3"
+    ],
+    "third_party/libtiff/tif_write.c": [
+     "100644 6631a782fd3c2fbed0decdac640ee8e164b92b88",
+     "100644 614a8ea85a4c119e511eab6120300fb2619acbb1"
+    ],
+    "third_party/libtiff/tiff.h": [
+     "100644 d8da33dc3837d9b1fb4c4cbcee479a22391e2cfe",
+     "100644 980e8e8f52bb1497f8c687f80d54899c0a99e8a8"
+    ],
+    "third_party/libtiff/tiffio.h": [
+     "100644 225f3c1bfeabae2b31a5f35fbfd12d14b570dcd8",
+     "100644 bb8fbde248b6c9f4070d9394320c313badf94e84"
+    ],
+    "third_party/libtiff/tiffiop.h": [
+     "100644 d861fd5ebdfcf232f8b9afe536521e2f591cb5f6",
+     "100644 8df0e841640f91a27387ffad5df55a77a20ffe11"
+    ],
+    "third_party/libtiff/tiffvers.h": [
+     "100644 3ded6acec6556eaa62d0165196c2bba097696a61",
+     "100644 2adbbee70bb16f261c649d68b07b4b15cf8ea282"
+    ],
+    "third_party/llvm-libc/BUILD.gn": [
+     "100644 6d327606b7925c55a911daf6c1976a2c6fa565c5",
+     "100644 b92cdbde754cad5c76fec971b88110c4a5685786"
+    ]
+   },
+   "upstream": "PDFium a4a480f6 (2026-09-02)"
+  },
+  {
+   "id": "0065",
+   "project": "external/pdfium",
+   "file": "patches/external/pdfium/0065-bound-horizontal-group-4-fax-runs.patch",
+   "sha256": "f277853b4c390c7697b731ff82ead12002446e091ee6e772817fb0bede0abe27",
+   "title": "Bound horizontal Group 4 fax runs",
+   "kind": "fix",
+   "files": {
+    "core/fxcodec/fax/faxmodule.cpp": [
+     "100644 be2c61b0ecf84de120c59252389eaebc18b29dea",
+     "100644 53e14cdde597d1060fcc424b27861176eab925d0"
+    ]
+   }
   }
  ]
 }
