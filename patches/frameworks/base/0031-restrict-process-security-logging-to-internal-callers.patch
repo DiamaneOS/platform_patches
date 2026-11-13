@@ -1,0 +1,110 @@
+diff --git a/core/java/android/content/pm/IPackageManager.aidl b/core/java/android/content/pm/IPackageManager.aidl
+index 81ef17444ea4b4a6c3f1d3ee71accaabb697278e..d94ce8e7c5f7fbbc3459de5f0621d89a4a2e3ea1 100644
+--- a/core/java/android/content/pm/IPackageManager.aidl
++++ b/core/java/android/content/pm/IPackageManager.aidl
+@@ -414,11 +414,6 @@ interface IPackageManager {
+     @UnsupportedAppUsage
+     int getApplicationEnabledSetting(in String packageName, int userId);
+ 
+-    /**
+-     * Logs process start information (including APK hash) to the security log.
+-     */
+-    void logAppProcessStartIfNeeded(String packageName, String processName, int uid, String seinfo, String apkFile, int pid);
+-
+     /**
+      * As per {@link android.content.pm.PackageManager#flushPackageRestrictionsAsUser}.
+      */
+diff --git a/services/core/java/android/content/pm/PackageManagerInternal.java b/services/core/java/android/content/pm/PackageManagerInternal.java
+index 595494a040969d82c3ef7dd9089fdf38e1959157..edf4e0d9f39ec63e19f01fe154e25ae76c035af7 100644
+--- a/services/core/java/android/content/pm/PackageManagerInternal.java
++++ b/services/core/java/android/content/pm/PackageManagerInternal.java
+@@ -1436,6 +1436,10 @@ public abstract class PackageManagerInternal {
+     public abstract void setPackageStoppedState(@NonNull String packageName, boolean stopped,
+             @UserIdInt int userId);
+ 
++    /** Logs process-start data supplied by trusted system-server callers. */
++    public abstract void logAppProcessStartIfNeeded(String packageName, String processName, int uid,
++            String seinfo, String apkFile, int pid);
++
+     /**
+      * Tells PackageManager when a component of the package is used
+      * and the package should get out of stopped state and be enabled.
+diff --git a/services/core/java/com/android/server/am/ProcessList.java b/services/core/java/com/android/server/am/ProcessList.java
+index b6bc4c3e0d2176a0b412bc49201401cd39686733..39ca953ed0cfae385d568b7e5efa04919ba792dc 100644
+--- a/services/core/java/com/android/server/am/ProcessList.java
++++ b/services/core/java/com/android/server/am/ProcessList.java
+@@ -3054,10 +3054,6 @@ public final class ProcessList extends ProcessListInternal
+                 app.processName, app.getHostingRecord().getType(),
+                 app.getHostingRecord().getName() != null ? app.getHostingRecord().getName() : "");
+ 
+-        try {
+-            AppGlobals.getPackageManager().logAppProcessStartIfNeeded(app.info.packageName,
+-                    app.processName, app.uid, app.getSeInfo(), app.info.sourceDir, pid);
+-        } catch (RemoteException ex) {
+-            // Ignore
+-        }
++        mService.getPackageManagerInternal().logAppProcessStartIfNeeded(app.info.packageName,
++                app.processName, app.uid, app.getSeInfo(), app.info.sourceDir, pid);
+ 
+diff --git a/services/core/java/com/android/server/pm/PackageManagerInternalBase.java b/services/core/java/com/android/server/pm/PackageManagerInternalBase.java
+index 8d56c2f990b2b151763b8dd262c5c4338222c699..4bff681834272fc627a753871a8c9d71a9c0693c 100644
+--- a/services/core/java/com/android/server/pm/PackageManagerInternalBase.java
++++ b/services/core/java/com/android/server/pm/PackageManagerInternalBase.java
+@@ -781,6 +781,12 @@ abstract class PackageManagerInternalBase extends PackageManagerInternal {
+         mService.setPackageStoppedState(snapshot(), packageName, stopped, userId);
+     }
+ 
++    @Override
++    public void logAppProcessStartIfNeeded(String packageName, String processName, int uid,
++            String seinfo, String apkFile, int pid) {
++        mService.logAppProcessStartIfNeeded(packageName, processName, uid, seinfo, apkFile, pid);
++    }
++
+     @Override
+     public void notifyComponentUsed(@NonNull String packageName, @UserIdInt int userId,
+             @Nullable String recentCallingPackage, @NonNull String debugInfo) {
+diff --git a/services/core/java/com/android/server/pm/PackageManagerService.java b/services/core/java/com/android/server/pm/PackageManagerService.java
+index 201d99aa9e9afe6c7558bc733cc3bee77bce97d3..511a73dd99d6dbafbc42709446118d0a0478903a 100644
+--- a/services/core/java/com/android/server/pm/PackageManagerService.java
++++ b/services/core/java/com/android/server/pm/PackageManagerService.java
+@@ -5086,6 +5086,15 @@ public class PackageManagerService implements PackageSender, TestUtilityService
+         return UserHandle.getUid(userId, setting.getAppId());
+     }
+ 
++    void logAppProcessStartIfNeeded(String packageName, String processName, int uid,
++            String seinfo, String apkFile, int pid) {
++        if (SecurityLog.isLoggingEnabled()) {
++            mProcessLoggingHandler.logAppProcessStart(mContext,
++                    LocalServices.getService(PackageManagerInternal.class), apkFile, packageName,
++                    processName, uid, seinfo, pid);
++        }
++    }
++
+     public class IPackageManagerImpl extends IPackageManagerBase {
+ 
+         public IPackageManagerImpl() {
+@@ -5938,24 +5947,6 @@ public class PackageManagerService implements PackageSender, TestUtilityService
+             }
+         }
+ 
+-        /**
+-         * Logs process start information (including base APK hash) to the security log.
+-         * @hide
+-         */
+-        @Override
+-        public void logAppProcessStartIfNeeded(String packageName, String processName, int uid,
+-                String seinfo, String apkFile, int pid) {
+-            final Computer snapshot = snapshotComputer();
+-            if (snapshot.getInstantAppPackageName(Binder.getCallingUid()) != null) {
+-                return;
+-            }
+-            if (!SecurityLog.isLoggingEnabled()) {
+-                return;
+-            }
+-            mProcessLoggingHandler.logAppProcessStart(mContext,
+-                    LocalServices.getService(PackageManagerInternal.class), apkFile, packageName,
+-                    processName, uid, seinfo, pid);
+-        }
+ 
+         @android.annotation.EnforcePermission(android.Manifest.permission.MOVE_PACKAGE)
+         @Override

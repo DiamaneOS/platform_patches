@@ -1,0 +1,96 @@
+diff --git a/NfcNci/src/com/android/nfc/NfcInjector.java b/NfcNci/src/com/android/nfc/NfcInjector.java
+index 143c25df418048aee65a2fcca1221fa119bb70ac..ac133533b187986755b6efe4703ab05f8f849897 100644
+--- a/NfcNci/src/com/android/nfc/NfcInjector.java
++++ b/NfcNci/src/com/android/nfc/NfcInjector.java
+@@ -29,6 +29,8 @@ import android.nfc.Constants;
+ import android.nfc.NfcFrameworkInitializer;
+ import android.nfc.NfcServiceManager;
+ import android.os.Handler;
++import android.os.Binder;
++import android.os.Build;
+ import android.os.HandlerThread;
+ import android.os.Looper;
+ import android.os.Process;
+@@ -379,6 +381,17 @@ public class NfcInjector {
+      * Returns whether boot completed or not (used to detect if NFC stack crashed and came back up).
+      * @return
+      */
++    public int getCallingUid() { return Binder.getCallingUid(); }
++
++    public boolean isDebuggable() {
++        return "userdebug".equals(Build.TYPE) || "eng".equals(Build.TYPE);
++    }
++
++    public boolean isRunningInUserTestHarness() {
++        return ActivityManager.isRunningInUserTestHarness()
++                || ActivityManager.isRunningInTestHarness();
++    }
++
+     public boolean isBootCompleted() {
+         return "1".equals(SystemProperties.get("sys.boot_completed"));
+     }
+diff --git a/NfcNci/src/com/android/nfc/NfcService.java b/NfcNci/src/com/android/nfc/NfcService.java
+index c04257c8763723b59637a32d785827f560d8066e..567b6a5580f732ad4c55ba630569fba14c2e67a8 100644
+--- a/NfcNci/src/com/android/nfc/NfcService.java
++++ b/NfcNci/src/com/android/nfc/NfcService.java
+@@ -2603,6 +2603,24 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback
+     }
+ 
+     final class NfcAdapterService extends INfcAdapter.Stub {
++        private boolean isEligibleForTestInjection() {
++            if (mNfcInjector.isDebuggable() || mNfcInjector.isRunningInUserTestHarness()) return true;
++            final int uid = mNfcInjector.getCallingUid();
++            if (uid == android.os.Process.ROOT_UID || uid == android.os.Process.SHELL_UID) return true;
++            final PackageManager pm = mContext.getPackageManager();
++            final String[] packages = pm == null ? null : pm.getPackagesForUid(uid);
++            if (packages == null) return false;
++            for (String name : packages) {
++                try {
++                    if ((pm.getApplicationInfoAsUser(name, 0,
++                            UserHandle.getUserHandleForUid(uid)).flags
++                            & ApplicationInfo.FLAG_PERSISTENT) != 0) return true;
++                } catch (PackageManager.NameNotFoundException ignored) {
++                }
++            }
++            return false;
++        }
++
+         @Override
+         public boolean enable(String pkg) throws RemoteException {
+             mNfcPermissions.checkPackage(Binder.getCallingUid(), pkg);
+@@ -3717,6 +3735,8 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback
+ 
+         @Override
+         public void notifyPollingLoop(PollingFrame frame) {
++            NfcPermissions.enforceAdminPermissions(mContext);
++            if (!isEligibleForTestInjection()) return;
+             try {
+                 byte[] data;
+                 int type = frame.getType();
+@@ -3760,7 +3780,9 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback
+                         + " 03 " + type_str
+                         + " 00 " + String.format("%02x", 5 + frame_data_length) + " "
+                         + timestampBytes + " " + String.format("%02x", gain) + frame_data_str);
+-                ((NativeNfcManager) mDeviceHost).injectNtf(data);
++                if (mDeviceHost instanceof NativeNfcManager) {
++                    ((NativeNfcManager) mDeviceHost).injectNtf(data);
++                }
+             } catch (Exception ex) {
+                 Log.e(TAG, "notifyPollingLoop: error when notifying polling loop", ex);
+             }
+@@ -3768,11 +3790,15 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback
+ 
+         @Override
+         public void notifyTestHceData(int technology, byte[] data) {
++            NfcPermissions.enforceAdminPermissions(mContext);
++            if (!isEligibleForTestInjection()) return;
+             onHostCardEmulationData(technology, data);
+         }
+ 
+         @Override
+         public void notifyHceDeactivated() {
++            NfcPermissions.enforceAdminPermissions(mContext);
++            if (!isEligibleForTestInjection()) return;
+             try {
+                 mCardEmulationManager.onHostCardEmulationDeactivated(1);
+             } catch (Exception ex) {

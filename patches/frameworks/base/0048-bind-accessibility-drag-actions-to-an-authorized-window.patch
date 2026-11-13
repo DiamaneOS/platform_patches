@@ -1,0 +1,120 @@
+diff --git a/services/accessibility/java/com/android/server/accessibility/AbstractAccessibilityServiceConnection.java b/services/accessibility/java/com/android/server/accessibility/AbstractAccessibilityServiceConnection.java
+index b5cb564e19986d67e6c44ba5349aeea8f1243771..fc131c6f8b8673c16d1936483beb9a18f1d553c7 100644
+--- a/services/accessibility/java/com/android/server/accessibility/AbstractAccessibilityServiceConnection.java
++++ b/services/accessibility/java/com/android/server/accessibility/AbstractAccessibilityServiceConnection.java
+@@ -2337,6 +2337,13 @@ abstract class AbstractAccessibilityServiceConnection extends IAccessibilityServ
+             if (action == ACTION_CLICK || action == ACTION_LONG_CLICK) {
+                 mA11yWindowManager.notifyOutsideTouch(userId, resolvedWindowId);
+             }
++            if (action == AccessibilityNodeInfo.AccessibilityAction.ACTION_DRAG_START.getId()) {
++                mWindowManagerService.getAccessibilityController()
++                        .setAccessibilityDragWindowToken(windowToken);
++            } else if (action == AccessibilityNodeInfo.AccessibilityAction.ACTION_DRAG_DROP.getId()) {
++                mWindowManagerService.getAccessibilityController()
++                        .setAccessibilityDropWindowToken(windowToken);
++            }
+             if (windowToken != null) {
+                 mWindowManagerService.requestWindowFocus(windowToken);
+             }
+diff --git a/services/core/java/com/android/server/wm/AccessibilityController.java b/services/core/java/com/android/server/wm/AccessibilityController.java
+index 7065d3dd28b08575d2196a21dffa5ab203b22f32..dd2546084e934c75438a705740b0a13ac8038e27 100644
+--- a/services/core/java/com/android/server/wm/AccessibilityController.java
++++ b/services/core/java/com/android/server/wm/AccessibilityController.java
+@@ -1324,12 +1324,29 @@ final class AccessibilityController {
+         private UiChangesForAccessibilityCallbacksDispatcher mCallbacksDispatcher;
+         private final Looper mLooper;
+ 
++        private final WindowManagerService mService;
++
+         private AccessibilityControllerInternalImpl(WindowManagerService service) {
++            mService = service;
+             mLooper = service.mH.getLooper();
+             mTracing = AccessibilityTracing.getInstance(service);
+             mEnabledTracingFlags = 0L;
+         }
+ 
++        @Override
++        public void setAccessibilityDragWindowToken(IBinder token) {
++            synchronized (mService.mGlobalLock) {
++                mService.mDragDropController.setAccessibilityDragWindowToken(token);
++            }
++        }
++
++        @Override
++        public void setAccessibilityDropWindowToken(IBinder token) {
++            synchronized (mService.mGlobalLock) {
++                mService.mDragDropController.setAccessibilityDropWindowToken(token);
++            }
++        }
++
+         @Override
+         public void startTrace(long loggingTypes) {
+             mEnabledTracingFlags = loggingTypes;
+diff --git a/services/core/java/com/android/server/wm/DragDropController.java b/services/core/java/com/android/server/wm/DragDropController.java
+index 3b38403089af8da7b2d7ffa096ffe947af8b01c2..6a40564f8082151d4ec1f3f67965c3016c617004 100644
+--- a/services/core/java/com/android/server/wm/DragDropController.java
++++ b/services/core/java/com/android/server/wm/DragDropController.java
+@@ -159,6 +159,18 @@ class DragDropController {
+         mDragState.sendDragStartedIfNeededLocked(window);
+     }
+ 
++    private IBinder mAccessibilityDragWindowToken;
++    private IBinder mAccessibilityDropWindowToken;
++
++    void setAccessibilityDragWindowToken(IBinder token) {
++        mAccessibilityDragWindowToken = token;
++        mAccessibilityDropWindowToken = null;
++    }
++
++    void setAccessibilityDropWindowToken(IBinder token) {
++        mAccessibilityDropWindowToken = token;
++    }
++
+     IBinder performDrag(int callerPid, int callerUid, IWindow window, int flags,
+             SurfaceControl surface, int touchSource, int touchDeviceId, int touchPointerId,
+             float touchX, float touchY, float thumbCenterX, float thumbCenterY, ClipData data) {
+@@ -176,6 +188,11 @@ class DragDropController {
+             CompletableFuture<Boolean> touchFocusTransferredFuture = null;
+             synchronized (mService.mGlobalLock) {
+                 try {
++                    if ((flags & View.DRAG_FLAG_ACCESSIBILITY_ACTION) != 0) {
++                        if (window == null || mAccessibilityDragWindowToken == null
++                                || mAccessibilityDragWindowToken != window.asBinder()) return null;
++                        mAccessibilityDragWindowToken = null;
++                    }
+                     if (!callbackResult) {
+                         Slog.w(TAG_WM, "IDragDropCallback rejects the performDrag request");
+                         return null;
+@@ -562,6 +579,8 @@ class DragDropController {
+             return;
+         }
+         mDragState = null;
++        mAccessibilityDragWindowToken = null;
++        mAccessibilityDropWindowToken = null;
+     }
+ 
+     void reportDropWindow(IBinder token, float windowX, float windowY, float rawX, float rawY) {
+@@ -577,6 +596,9 @@ class DragDropController {
+ 
+     boolean dropForAccessibility(IWindow window, float windowX, float windowY) {
+         synchronized (mService.mGlobalLock) {
++            if (window == null || mAccessibilityDropWindowToken == null
++                    || mAccessibilityDropWindowToken != window.asBinder()) return false;
++            mAccessibilityDropWindowToken = null;
+             final boolean isA11yEnabled = getAccessibilityManager().isEnabled();
+             if (!dragDropActiveLocked()) {
+                 return false;
+diff --git a/services/core/java/com/android/server/wm/WindowManagerInternal.java b/services/core/java/com/android/server/wm/WindowManagerInternal.java
+index e12ad800ab474c82cd245079bbe8d8e2e665a730..397582f5fb6296e45881ee540361b58fece54633 100644
+--- a/services/core/java/com/android/server/wm/WindowManagerInternal.java
++++ b/services/core/java/com/android/server/wm/WindowManagerInternal.java
+@@ -136,6 +136,9 @@ public abstract class WindowManagerInternal {
+          */
+         void setUiChangesForAccessibilityCallbacks(UiChangesForAccessibilityCallbacks callbacks);
+ 
++        void setAccessibilityDragWindowToken(IBinder token);
++        void setAccessibilityDropWindowToken(IBinder token);
++
+         /**
+          * This interface is used by window manager to dispatch some ui change events which may
+          * affect the screen accessibility features.

@@ -1,0 +1,99 @@
+diff --git a/services/core/java/com/android/server/wm/BackgroundActivityStartController.java b/services/core/java/com/android/server/wm/BackgroundActivityStartController.java
+index 867fd1263c162fb0f7caf0f7eb2b2ec3279a2711..929ce354925d4497a63d24ec2b88169d49cf664f 100644
+--- a/services/core/java/com/android/server/wm/BackgroundActivityStartController.java
++++ b/services/core/java/com/android/server/wm/BackgroundActivityStartController.java
+@@ -894,7 +894,7 @@ public class BackgroundActivityStartController {
+                     Process.getAppUidForSdkSandboxUid(state.mRealCallingUid);
+             // realCallingSdkSandboxUidToAppUid should probably just be used instead (or in addition
+             // to realCallingUid when calculating resultForRealCaller below.
+-            if (getService().hasActiveVisibleWindow(realCallingSdkSandboxUidToAppUid)) {
++            if (getService().hasActiveVisibleNotPinnedWindow(realCallingSdkSandboxUidToAppUid)) {
+                 state.setResultForRealCaller(new BalVerdict(BAL_ALLOW_SDK_SANDBOX,
+                         "uid in SDK sandbox has visible (non-toast) window").allowNewTask());
+                 return allowBasedOnRealCaller(state);
+@@ -908,7 +908,7 @@ public class BackgroundActivityStartController {
+                     getService().mContext.getPackageManager()
+                             .getAppUidForPrivateComputeCoreUid(state.mRealCallingUid);
+ 
+-            if (getService().hasActiveVisibleWindow(realCallingAppUid)) {
++            if (getService().hasActiveVisibleNotPinnedWindow(realCallingAppUid)) {
+                 state.setResultForRealCaller(new BalVerdict(
+                         BAL_ALLOW_PCC_DEFINING_APP_HAS_VISIBLE_WINDOW,
+                         "PCC process's parent app has visible (non-toast) window")
+diff --git a/services/core/java/com/android/server/wm/WindowProcessController.java b/services/core/java/com/android/server/wm/WindowProcessController.java
+index 845d861d6c2d602dd6271e37313c575aa0891b2d..f4d04de88a6214b3e915d57925aea6324dec6df4 100644
+--- a/services/core/java/com/android/server/wm/WindowProcessController.java
++++ b/services/core/java/com/android/server/wm/WindowProcessController.java
+@@ -365,6 +365,8 @@ public class WindowProcessController extends ConfigurationContainer<Configuratio
+     public static final int ACTIVITY_STATE_FLAG_PERCEPTIBLE_FREEFORM = 1 << 24;
+     public static final int ACTIVITY_STATE_FLAG_VISIBLE_MULTI_WINDOW_MODE = 1 << 25;
+     public static final int ACTIVITY_STATE_FLAG_OCCLUDED_FREEFORM = 1 << 26;
++    public static final int ACTIVITY_STATE_FLAG_VISIBLE_NOT_PINNED = 1 << 27;
++    public static final int ACTIVITY_STATE_FLAG_VISIBLE_TASK_NOT_PINNED = 1 << 28;
+     public static final int ACTIVITY_STATE_FLAG_MASK_MIN_TASK_LAYER = 0x0000ffff;
+ 
+     /**
+@@ -743,7 +745,7 @@ public class WindowProcessController extends ConfigurationContainer<Configuratio
+             int appSwitchState, BalCheckConfiguration checkConfiguration) {
+         return mBgLaunchController.areBackgroundActivityStartsAllowed(mPid, mUid,
+                 mInfo.packageName, appSwitchState, checkConfiguration,
+-                hasActivityInVisibleTask(), inPinnedWindowingMode(),
++                hasActivityInVisibleTask(), isExclusivelyInPinnedVisibleTask(),
+                 mInstrumentingWithBackgroundActivityStartPrivileges,
+                 mAtm.getLastStopAppSwitchesTime(),
+                 mLastActivityLaunchTime, mLastActivityFinishTime);
+@@ -920,15 +922,15 @@ public class WindowProcessController extends ConfigurationContainer<Configuratio
+      * Check if any Activity is visible (or visibility requested) and not pinned.
+      */
+     boolean hasVisibleNotPinnedActivity() {
+-        if (!hasVisibleActivities()) return false;
+-        for (int i = mActivities.size() - 1; i >= 0; --i) {
+-            final ActivityRecord activityRecord = mActivities.get(i);
+-            if ((activityRecord.isVisible() || activityRecord.isVisibleRequested())
+-                    && !activityRecord.inPinnedWindowingMode()) {
+-                return true;
+-            }
+-        }
+-        return false;
++        return (mActivityStateFlags & ACTIVITY_STATE_FLAG_VISIBLE_NOT_PINNED) != 0;
++    }
++
++    boolean hasActivityInVisibleNotPinnedTask() {
++        return (mActivityStateFlags & ACTIVITY_STATE_FLAG_VISIBLE_TASK_NOT_PINNED) != 0;
++    }
++
++    boolean isExclusivelyInPinnedVisibleTask() {
++        return hasActivityInVisibleTask() && !hasActivityInVisibleNotPinnedTask();
+     }
+ 
+     @Nullable
+@@ -1306,6 +1308,9 @@ public class WindowProcessController extends ConfigurationContainer<Configuratio
+             if (r.isVisible()) {
+                 stateFlags |= ACTIVITY_STATE_FLAG_IS_WINDOW_VISIBLE;
+             }
++            if ((r.isVisible() || r.isVisibleRequested()) && !r.inPinnedWindowingMode()) {
++                stateFlags |= ACTIVITY_STATE_FLAG_VISIBLE_NOT_PINNED;
++            }
+             final Task task = r.getTask();
+             if (task == null) {
+                 Slog.e(TAG, "Unexpected detached " + r + " in " + this);
+@@ -1313,6 +1318,9 @@ public class WindowProcessController extends ConfigurationContainer<Configuratio
+             }
+             if (task.mLayerRank != Task.LAYER_RANK_INVISIBLE) {
+                 stateFlags |= ACTIVITY_STATE_FLAG_HAS_ACTIVITY_IN_VISIBLE_TASK;
++                if (!r.inPinnedWindowingMode()) {
++                    stateFlags |= ACTIVITY_STATE_FLAG_VISIBLE_TASK_NOT_PINNED;
++                }
+             }
+             final ActivityRecord.State state = r.getState();
+             if (r.isVisibleRequested()) {
+@@ -1369,6 +1377,9 @@ public class WindowProcessController extends ConfigurationContainer<Configuratio
+                 if ((mRemoteActivities.valueAt(i)[0] & REMOTE_ACTIVITY_FLAG_EMBEDDED_ACTIVITY) != 0
+                         && mRemoteActivities.keyAt(i).isVisibleRequested()) {
+                     stateFlags |= ACTIVITY_STATE_FLAG_IS_VISIBLE;
++                    if (!mRemoteActivities.keyAt(i).inPinnedWindowingMode()) {
++                        stateFlags |= ACTIVITY_STATE_FLAG_VISIBLE_NOT_PINNED;
++                    }
+                 }
+             }
+         }

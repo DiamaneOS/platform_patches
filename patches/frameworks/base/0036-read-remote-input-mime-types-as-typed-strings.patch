@@ -1,0 +1,13 @@
+diff --git a/core/java/android/app/RemoteInput.java b/core/java/android/app/RemoteInput.java
+index 145efa961bcbf4cf8bc41f11e31ecb90d76ca5ab..ce2d848c85ab8945b55b47818d476856f12f10b3 100644
+--- a/core/java/android/app/RemoteInput.java
++++ b/core/java/android/app/RemoteInput.java
+@@ -372,7 +372,7 @@ public final class RemoteInput implements Parcelable {
+         mFlags = in.readInt();
+         mEditChoicesBeforeSending = in.readInt();
+         mExtras = in.readBundle();
+-        mAllowedDataTypes = (ArraySet<String>) in.readArraySet(null);
++        mAllowedDataTypes = in.readArraySet(null, String.class);
+     }
+ 
+     /**

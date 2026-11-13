@@ -1,0 +1,258 @@
+diff --git a/core/java/com/android/internal/widget/BigPictureNotificationImageView.java b/core/java/com/android/internal/widget/BigPictureNotificationImageView.java
+index 7426c92b5a61cc7a1f9d41ecedea2572f7999ca1..425a5063e199751b87286d2dadb39113f63460a4 100644
+--- a/core/java/com/android/internal/widget/BigPictureNotificationImageView.java
++++ b/core/java/com/android/internal/widget/BigPictureNotificationImageView.java
+@@ -138,18 +138,7 @@ public class BigPictureNotificationImageView extends ImageView implements
+     private Drawable loadImage(Icon icon) {
+         if (icon == null) return null;
+ 
+-        Drawable drawable = LocalImageResolver.resolveImage(icon, mContext, mMaximumDrawableWidth,
++        return LocalImageResolver.resolveImage(icon, mContext, mMaximumDrawableWidth,
+                 mMaximumDrawableHeight);
+-        if (drawable != null) {
+-            return drawable;
+-        }
+-
+-        drawable = icon.loadDrawable(mContext);
+-        if (drawable != null) {
+-            return drawable;
+-        }
+-
+-        Log.e(TAG, "Couldn't load drawable for icon: " + icon);
+-        return null;
+     }
+ }
+diff --git a/core/java/com/android/internal/widget/CachingIconView.java b/core/java/com/android/internal/widget/CachingIconView.java
+index 3c3221b172f9f641d7a5711960cd6b4e67012d93..51b3a6dd76d2ffdb18f62185101dbb12052d5054 100644
+--- a/core/java/com/android/internal/widget/CachingIconView.java
++++ b/core/java/com/android/internal/widget/CachingIconView.java
+@@ -22,6 +22,7 @@ import android.annotation.DrawableRes;
+ import android.annotation.Nullable;
+ import android.compat.annotation.UnsupportedAppUsage;
+ import android.content.Context;
++import android.content.ContentResolver;
+ import android.content.res.Configuration;
+ import android.content.res.TypedArray;
+ import android.graphics.Bitmap;
+@@ -38,6 +39,7 @@ import android.widget.RemoteViews;
+ 
+ import com.android.internal.R;
+ 
++import java.io.FileNotFoundException;
+ import java.util.Objects;
+ import java.util.function.Consumer;
+ 
+@@ -104,7 +106,7 @@ public class CachingIconView extends ImageView {
+             // This calls back to setImageDrawable, make sure we don't clear the cache there.
+             Drawable drawable = loadSizeRestrictedIcon(icon);
+             if (drawable == null) {
+-                super.setImageIcon(icon);
++                super.setImageIcon(null);
+             } else {
+                 super.setImageDrawable(drawable);
+             }
+@@ -125,7 +127,7 @@ public class CachingIconView extends ImageView {
+         if (drawable != null) {
+             return () -> setImageDrawable(drawable);
+         }
+-        return super.setImageIconAsync(icon);
++        return () -> setImageDrawable(null);
+     }
+ 
+     @Override
+@@ -136,7 +138,7 @@ public class CachingIconView extends ImageView {
+             // This calls back to setImageDrawable, make sure we don't clear the cache there.
+             Drawable drawable = loadSizeRestrictedDrawable(resId);
+             if (drawable == null) {
+-                super.setImageResource(resId);
++                super.setImageDrawable(null);
+             } else {
+                 super.setImageDrawable(drawable);
+             }
+@@ -146,8 +148,8 @@ public class CachingIconView extends ImageView {
+ 
+     @Nullable
+     private Drawable loadSizeRestrictedDrawable(@DrawableRes int resId) {
+-        return LocalImageResolver.resolveImage(resId, getContext(), mMaxDrawableWidth,
+-                mMaxDrawableHeight);
++        return resId == 0 ? null
++                : loadSizeRestrictedIcon(Icon.createWithResource(getContext(), resId));
+     }
+ 
+     @Override
+@@ -158,7 +160,7 @@ public class CachingIconView extends ImageView {
+             return () -> setImageDrawable(drawable);
+         }
+ 
+-        return super.setImageResourceAsync(resId);
++        return () -> setImageDrawable(null);
+     }
+ 
+     @Override
+@@ -167,7 +169,7 @@ public class CachingIconView extends ImageView {
+         resetCache();
+         Drawable drawable = loadSizeRestrictedUri(uri);
+         if (drawable == null) {
+-            super.setImageURI(uri);
++            super.setImageURI(null);
+         } else {
+             mInternalSetDrawable = true;
+             super.setImageDrawable(drawable);
+@@ -177,6 +179,14 @@ public class CachingIconView extends ImageView {
+ 
+     @Nullable
+     private Drawable loadSizeRestrictedUri(@Nullable Uri uri) {
++        if (uri != null && ContentResolver.SCHEME_ANDROID_RESOURCE.equals(uri.getScheme())) {
++            try {
++                return loadSizeRestrictedIcon(Icon.createWithResource(uri.getAuthority(),
++                        getContext().getContentResolver().getResourceId(uri).id));
++            } catch (FileNotFoundException e) {
++                return null;
++            }
++        }
+         return LocalImageResolver.resolveImage(uri, getContext(), mMaxDrawableWidth,
+                 mMaxDrawableHeight);
+     }
+@@ -186,7 +196,7 @@ public class CachingIconView extends ImageView {
+         resetCache();
+         Drawable drawable = loadSizeRestrictedUri(uri);
+         if (drawable == null) {
+-            return super.setImageURIAsync(uri);
++            return () -> setImageDrawable(null);
+         } else {
+             return () -> setImageDrawable(drawable);
+         }
+diff --git a/core/java/com/android/internal/widget/LocalImageResolver.java b/core/java/com/android/internal/widget/LocalImageResolver.java
+index 71dbbe06ba73ca9d1e4e3f81e6f111b2c418bbe0..1a79d8390cc413a5142c5cd82723ab0e59c5500e 100644
+--- a/core/java/com/android/internal/widget/LocalImageResolver.java
++++ b/core/java/com/android/internal/widget/LocalImageResolver.java
+@@ -34,6 +34,7 @@ import android.util.Size;
+ import com.android.internal.annotations.VisibleForTesting;
+ 
+ import java.io.IOException;
++import java.nio.ByteBuffer;
+ import java.util.Locale;
+ 
+ /** A class to extract Drawables from a MessagingStyle/ConversationStyle message. */
+@@ -110,29 +111,33 @@ public class LocalImageResolver {
+             case Icon.TYPE_URI:
+             case Icon.TYPE_URI_ADAPTIVE_BITMAP:
+                 Uri uri = getResolvableUri(icon);
+-                if (uri != null) {
+-                    Drawable result = resolveImage(uri, context, maxWidth, maxHeight);
+-                    if (result != null) {
+-                        return tintDrawable(icon, result);
+-                    }
+-                }
+-                break;
++                return uri == null ? null
++                        : tintDrawable(icon, resolveImage(uri, context, maxWidth, maxHeight));
+             case Icon.TYPE_RESOURCE:
+                 Resources res = resolveResourcesForIcon(context, icon);
+-                if (res == null) {
+-                    // We couldn't resolve resources properly, fall back to icon loading.
+-                    return icon.loadDrawable(context);
+-                }
+-
+-                Drawable result = resolveImage(res, icon.getResId(), maxWidth, maxHeight);
+-                if (result != null) {
+-                    return tintDrawable(icon, result);
++                if (res == null) return null;
++                try {
++                    Drawable result = resolveImage(res, icon.getResId(), maxWidth, maxHeight);
++                    if (result != null) return tintDrawable(icon, result);
++                } catch (ImagePolicyException e) {
++                    return null;
+                 }
+                 break;
+             case Icon.TYPE_BITMAP:
+             case Icon.TYPE_ADAPTIVE_BITMAP:
+                 return resolveBitmapImage(icon, context, maxWidth, maxHeight);
+-            case Icon.TYPE_DATA:    // We can't really improve on raw data images.
++            case Icon.TYPE_DATA:
++                byte[] bytes = icon.getDataBytes();
++                int offset = icon.getDataOffset();
++                int length = icon.getDataLength();
++                if (bytes == null || offset < 0 || length < 0
++                        || offset > bytes.length || length > bytes.length - offset) return null;
++                try {
++                    return tintDrawable(icon, resolveImage(ImageDecoder.createSource(
++                            ByteBuffer.wrap(bytes, offset, length)), maxWidth, maxHeight));
++                } catch (ImagePolicyException e) {
++                    return null;
++                }
+             default:
+                 break;
+         }
+@@ -154,9 +159,13 @@ public class LocalImageResolver {
+      */
+     @Nullable
+     public static Drawable resolveImage(Uri uri, Context context, int maxWidth, int maxHeight) {
+-        final ImageDecoder.Source source =
+-                ImageDecoder.createSource(context.getContentResolver(), uri);
+-        return resolveImage(source, maxWidth, maxHeight);
++        if (uri == null) return null;
++        try {
++            return resolveImage(ImageDecoder.createSource(context.getContentResolver(), uri),
++                    maxWidth, maxHeight);
++        } catch (ImagePolicyException e) {
++            return null;
++        }
+     }
+ 
+     /**
+@@ -167,8 +176,12 @@ public class LocalImageResolver {
+     @Nullable
+     public static Drawable resolveImage(@DrawableRes int resId, Context context, int maxWidth,
+             int maxHeight) {
+-        final ImageDecoder.Source source = ImageDecoder.createSource(context.getResources(), resId);
+-        return resolveImage(source, maxWidth, maxHeight);
++        try {
++            return resolveImage(ImageDecoder.createSource(context.getResources(), resId),
++                    maxWidth, maxHeight);
++        } catch (ImagePolicyException e) {
++            return null;
++        }
+     }
+ 
+     @Nullable
+@@ -244,9 +257,8 @@ public class LocalImageResolver {
+                 }
+             });
+ 
+-        // ImageDecoder documentation is misleading a bit - it'll throw NotFoundException
+-        // in some cases despite it not saying so. We also throw a RuntimeException if the
+-        // image size is unreasonable (see checkHeader).
++        } catch (ImagePolicyException e) {
++            throw e;
+         } catch (IOException | RuntimeException e) {
+             Log.d(TAG, "Couldn't use ImageDecoder for drawable, falling back to non-resized load.");
+             return null;
+@@ -271,6 +283,10 @@ public class LocalImageResolver {
+         decoder.setTargetSampleSize(getPowerOfTwoForSampleRatio(ratio));
+     }
+ 
++    private static class ImagePolicyException extends RuntimeException {
++        ImagePolicyException(String message) { super(message); }
++    }
++
+     private static void checkHeader(ImageDecoder.ImageInfo info) {
+         final Size size = info.getSize();
+ 
+@@ -293,14 +309,14 @@ public class LocalImageResolver {
+             }
+         }
+         if (!isAllowedCodec) {
+-            throw new RuntimeException("Image mime type (" + mimeType + ") is not allowed.");
++            throw new ImagePolicyException("Image mime type (" + mimeType + ") is not allowed.");
+         }
+ 
+         if (size.getWidth() > DEFAULT_DECODE_HARD_LIMIT_PX
+                 || size.getHeight() > DEFAULT_DECODE_HARD_LIMIT_PX) {
+             // The image is larger than what we can reasonably expect to decode without filling up
+             // the device memory, so let's bail.
+-            throw new RuntimeException(
++            throw new ImagePolicyException(
+                     "Image dimensions (" + size.getWidth() + "x" + size.getHeight()
+                             + ") exceed the maximum allowed size.");
+         }

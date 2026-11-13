@@ -1,0 +1,217 @@
+diff --git a/src/com/android/mms/service/DownloadRequest.java b/src/com/android/mms/service/DownloadRequest.java
+index a37b0329b9f0d2c8492c7ed7beeacb40f03d06e6..bf2795b529d5d381cf6618a60762ee48a6c54944 100644
+--- a/src/com/android/mms/service/DownloadRequest.java
++++ b/src/com/android/mms/service/DownloadRequest.java
+@@ -257,7 +257,7 @@ public class DownloadRequest extends MmsRequest {
+      */
+     @Override
+     protected boolean transferResponse(Intent fillIn, final byte[] response) {
+-        return mRequestManager.writePduToContentUri(mContentUri, response, mCallingUser);
++        return mRequestManager.writePduToContentUri(mContentUri, response, mCallingUser, mCreatorPkg);
+     }
+ 
+     @Override
+diff --git a/src/com/android/mms/service/MmsRequest.java b/src/com/android/mms/service/MmsRequest.java
+index c35662570a1ffa9c8030e881dfe162ad858c3d27..bf684f2bec97d116a2a306df99395f410476645f 100644
+--- a/src/com/android/mms/service/MmsRequest.java
++++ b/src/com/android/mms/service/MmsRequest.java
+@@ -88,7 +88,7 @@ public abstract class MmsRequest {
+          * @return read pdu (else null in case of error or too big)
+          */
+         public byte[] readPduFromContentUri(final Uri contentUri, final int maxSize,
+-                int callingUser);
++                int callingUser, String callingPkg);
+ 
+         /**
+          * Write pdu to supplied content uri
+@@ -97,7 +97,7 @@ public abstract class MmsRequest {
+          * @param callingUser user id of the calling app
+          * @return true in case of success (else false)
+          */
+-        boolean writePduToContentUri(Uri contentUri, byte[] pdu, int callingUser);
++        boolean writePduToContentUri(Uri contentUri, byte[] pdu, int callingUser, String callingPkg);
+     }
+ 
+     // The reference to the pending requests manager (i.e. the MmsService)
+diff --git a/src/com/android/mms/service/MmsService.java b/src/com/android/mms/service/MmsService.java
+index 1130842f4ab2978952a1c2ed9e4b20f45687cfa8..1d3f4dc29eef582fc8fa06b05cc087a25f6797a7 100644
+--- a/src/com/android/mms/service/MmsService.java
++++ b/src/com/android/mms/service/MmsService.java
+@@ -32,6 +32,8 @@ import android.content.ContentValues;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.SharedPreferences;
++import android.content.pm.PackageManager;
++import android.database.Cursor;
+ import android.database.sqlite.SQLiteException;
+ import android.net.Uri;
+ import android.os.Binder;
+@@ -334,11 +336,11 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+                 // TODO: Should consider ReadRecInd(Read Report)?
+                 if (Flags.messagePromotion()) {
+                     boolean isSendReq = isInternalMmsUri(contentUri)
+-                            || isRawPduSendReq(contentUri, callingUser);
++                            || isRawPduSendReq(contentUri, callingUser, callingPkg);
+                     sendSettingsIntentForFailedMms(!isSendReq, subId);
+                 } else {
+                     sendSettingsIntentForFailedMms(
+-                            !isRawPduSendReq(contentUri, callingUser), subId);
++                            !isRawPduSendReq(contentUri, callingUser, callingPkg), subId);
+                 }
+ 
+                 int resultCode = Flags.mmsDisabledError() ? SmsManager.MMS_ERROR_DATA_DISABLED
+@@ -642,12 +644,12 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+             }
+         }
+ 
+-        private boolean isRawPduSendReq(Uri contentUri, int callingUser) {
++        private boolean isRawPduSendReq(Uri contentUri, int callingUser, String callingPkg) {
+             // X-Mms-Message-Type is at the beginning of the message headers always. 1st byte is
+             // MMS-filed-name and 2nd byte is MMS-value for X-Mms-Message-Type field.
+             // See OMA-TS-MMS_ENC-V1_3-20110913-A, 7. Binary Encoding of ProtocolData Units
+             byte[] pduData = new byte[2];
+-            int bytesRead = readPduBytesFromContentUri(contentUri, pduData, callingUser);
++            int bytesRead = readPduBytesFromContentUri(contentUri, pduData, callingUser, callingPkg);
+ 
+             // Return true for MESSAGE_TYPE_SEND_REQ only. Otherwise false even wrong PDU case.
+             if (bytesRead == 2
+@@ -858,7 +860,7 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+ 
+     private Uri importMms(Uri contentUri, String messageId, long timestampSecs,
+             boolean seen, boolean read, int callingUser, String creator) {
+-        byte[] pduData = readPduFromContentUri(contentUri, MAX_MMS_FILE_SIZE, callingUser);
++        byte[] pduData = readPduFromContentUri(contentUri, MAX_MMS_FILE_SIZE, callingUser, creator);
+         if (pduData == null || pduData.length < 1) {
+             LogUtil.e("importMessage: empty PDU");
+             return null;
+@@ -929,10 +931,11 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+         if (!uriString.startsWith("content://sms/") && !uriString.startsWith("content://mms/")) {
+             return false;
+         }
+-        if (ContentUris.parseId(uri) == -1) {
++        try {
++            return ContentUris.parseId(uri) != -1;
++        } catch (NumberFormatException e) {
+             return false;
+         }
+-        return true;
+     }
+ 
+     private boolean updateMessageStatus(Uri messageUri, ContentValues statusValues) {
+@@ -1058,7 +1061,7 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+     }
+ 
+     private Uri persistMms(Uri contentUri, Uri insertUri, int callingUser, String creator) {
+-        byte[] pduData = readPduFromContentUri(contentUri, MAX_MMS_FILE_SIZE, callingUser);
++        byte[] pduData = readPduFromContentUri(contentUri, MAX_MMS_FILE_SIZE, callingUser, creator);
+         if (pduData == null || pduData.length < 1) {
+             LogUtil.e("persistMms: empty PDU");
+             return null;
+@@ -1149,10 +1152,10 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+      * @return pdu bytes if succeeded else null.
+      */
+     public byte[] readPduFromContentUri(final Uri contentUri, final int maxSize,
+-            int callingUser) {
++            int callingUser, String callingPkg) {
+         // Request one extra byte to make sure file not bigger than maxSize
+         byte[] pduData = new byte[maxSize + 1];
+-        int bytesRead = readPduBytesFromContentUri(contentUri, pduData, callingUser);
++        int bytesRead = readPduBytesFromContentUri(contentUri, pduData, callingUser, callingPkg);
+         if (bytesRead <= 0) {
+             return null;
+         }
+@@ -1171,17 +1174,8 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+      * @return the total number of bytes read into the pduData.
+      */
+     public int readPduBytesFromContentUri(final Uri contentUri, byte[] pduData,
+-            int callingUser) {
+-        if (contentUri == null) {
+-            LogUtil.e("Uri is null");
+-            return 0;
+-        }
+-        int contentUriUserID = ContentProvider.getUserIdFromUri(contentUri, UserHandle.myUserId());
+-        if (callingUser != contentUriUserID) {
+-            LogUtil.e("Uri belongs to a different user. contentUriUserId is: " + contentUriUserID
+-                    + "and calling User ID is:" + callingUser + "; uri: " + contentUri);
+-            return 0;
+-        }
++            int callingUser, String callingPkg) {
++        if (!canAccessPduUri(contentUri, callingPkg, callingUser, false)) return 0;
+         Callable<Integer> copyPduToArray = new Callable<Integer>() {
+             public Integer call() {
+                 // When the message promotion flag is enabled, mms content is already copied in the
+@@ -1258,16 +1252,9 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+      * @param callingUser user id of the calling app
+      * @return true if all bytes successfully written else false
+      */
+-    public boolean writePduToContentUri(final Uri contentUri, final byte[] pdu, int callingUser) {
+-        if (contentUri == null || pdu == null) {
+-            return false;
+-        }
+-        int contentUriUserID = ContentProvider.getUserIdFromUri(contentUri, UserHandle.myUserId());
+-        if (callingUser != contentUriUserID) {
+-            LogUtil.e("Uri belongs to a different user. contentUriUserId is: " + contentUriUserID
+-                    + "and calling User ID is:" + callingUser);
+-            return false;
+-        }
++    public boolean writePduToContentUri(final Uri contentUri, final byte[] pdu, int callingUser,
++            String callingPkg) {
++        if (pdu == null || !canAccessPduUri(contentUri, callingPkg, callingUser, true)) return false;
+         final Callable<Boolean> copyDownloadedPduToOutput = new Callable<Boolean>() {
+             public Boolean call() {
+                 ParcelFileDescriptor.AutoCloseOutputStream outStream = null;
+@@ -1320,4 +1307,41 @@ public class MmsService extends Service implements MmsRequest.RequestManager {
+     private boolean isInternalMmsUri(Uri uri) {
+         return uri != null && "mms".equals(uri.getAuthority());
+     }
++
++    /**
++     * Whether the calling package may read or write the PDU at this content URI. This service
++     * opens the URI with its own identity, so the caller's access is checked here.
++     */
++    private boolean canAccessPduUri(Uri uri, String callingPkg, int callingUser, boolean write) {
++        if (uri == null || !"content".equals(uri.getScheme()) || callingPkg == null
++                || ContentProvider.getUserIdFromUri(uri, UserHandle.myUserId()) != callingUser) {
++            return false;
++        }
++        try {
++            int uid = getPackageManager().getPackageUidAsUser(callingPkg, callingUser);
++            String authority = ContentProvider.getAuthorityWithoutUserId(uri.getAuthority());
++            if ("com.android.voicemail".equals(authority)) {
++                // The voicemail provider shows a caller with the add-voicemail permission only its
++                // own rows, by the calling package. This service is the caller there, so the
++                // general check below would let such an app reach any source's voicemail.
++                String permission = write ? "com.android.voicemail.permission.WRITE_VOICEMAIL"
++                        : "com.android.voicemail.permission.READ_VOICEMAIL";
++                if (checkPermission(permission, -1, uid) == PackageManager.PERMISSION_GRANTED) {
++                    return true;
++                }
++                if (ContentUris.parseId(uri) < 0) return false;
++                try (Cursor row = getContentResolver().query(uri,
++                        new String[]{"source_package"}, null, null, null)) {
++                    return row != null && row.moveToFirst() && callingPkg.equals(row.getString(0));
++                }
++            }
++            int mode = write ? Intent.FLAG_GRANT_WRITE_URI_PERMISSION
++                    : Intent.FLAG_GRANT_READ_URI_PERMISSION;
++            return checkContentUriPermissionFull(uri, -1, uid, mode)
++                    == PackageManager.PERMISSION_GRANTED;
++        } catch (Exception e) {
++            LogUtil.e("Unable to authorize PDU URI", e);
++        }
++        return false;
++    }
+ }
+diff --git a/src/com/android/mms/service/SendRequest.java b/src/com/android/mms/service/SendRequest.java
+index 8fb6dc1df936113acdbfd499037c02f4280177d8..bfeb25ee39ea05a7a0c20472a143eb12ed008cdc 100644
+--- a/src/com/android/mms/service/SendRequest.java
++++ b/src/com/android/mms/service/SendRequest.java
+@@ -373,7 +373,7 @@ public class SendRequest extends MmsRequest {
+             return true;
+         }
+         final int bytesTobeRead = mMmsConfig.getInt(SmsManager.MMS_CONFIG_MAX_MESSAGE_SIZE);
+-        mPduData = mRequestManager.readPduFromContentUri(mPduUri, bytesTobeRead, mCallingUser);
++        mPduData = mRequestManager.readPduFromContentUri(mPduUri, bytesTobeRead, mCallingUser, mCreatorPkg);
+         return (mPduData != null);
+     }
+ 

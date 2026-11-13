@@ -1,0 +1,96 @@
+diff --git a/src/com/android/providers/telephony/MmsProvider.java b/src/com/android/providers/telephony/MmsProvider.java
+index e170d750808f7cbe48fc3540b09d8ab290fcced3..466c0e403e06f9aeac87b38388faea789e7d57b6 100644
+--- a/src/com/android/providers/telephony/MmsProvider.java
++++ b/src/com/android/providers/telephony/MmsProvider.java
+@@ -1083,6 +1083,13 @@ public class MmsProvider extends ContentProvider {
+     /** Internal implementation of the database operation. */
+     public int deleteInternal(Uri uri, String selection,
+             String[] selectionArgs) {
++        try {
++            SqlQueryChecker.checkSelection(selection);
++        } catch (IllegalArgumentException e) {
++            Log.w(TAG, "Rejected invalid mutation selection", e);
++            return 0;
++        }
++
+         final UserHandle callerUserHandle = Binder.getCallingUserHandle();
+         int match = sURLMatcher.match(uri);
+         if (LOCAL_LOGV) {
+@@ -1322,6 +1329,13 @@ public class MmsProvider extends ContentProvider {
+     /** Internal implementation of the database operation. */
+     public int updateInternal(Uri uri, ContentValues values,
+             String selection, String[] selectionArgs) {
++        try {
++            SqlQueryChecker.checkSelection(selection);
++        } catch (IllegalArgumentException e) {
++            Log.w(TAG, "Rejected invalid mutation selection", e);
++            return 0;
++        }
++
+         // The _data column is filled internally in MmsProvider, so this check is just to avoid
+         // it from being inadvertently set. This is not supposed to be a protection against
+         // malicious attack, since sql injection could still be attempted to bypass the check. On
+diff --git a/src/com/android/providers/telephony/MmsSmsProvider.java b/src/com/android/providers/telephony/MmsSmsProvider.java
+index 052eb91138450c8e44f5a639f90381a28be34f55..041c48fce899a3b00c29a100ccce1601d15d7e6c 100644
+--- a/src/com/android/providers/telephony/MmsSmsProvider.java
++++ b/src/com/android/providers/telephony/MmsSmsProvider.java
+@@ -1767,6 +1767,13 @@ public class MmsSmsProvider extends ContentProvider {
+ 
+     /** Internal implementation of the database operation. */
+     public int deleteInternal(Uri uri, String selection, String[] selectionArgs) {
++        try {
++            SqlQueryChecker.checkSelection(selection);
++        } catch (IllegalArgumentException e) {
++            Log.w(LOG_TAG, "Rejected invalid mutation selection", e);
++            return 0;
++        }
++
+         final UserHandle callerUserHandle = Binder.getCallingUserHandle();
+         String selectionBySubIds;
+         final long token = Binder.clearCallingIdentity();
+@@ -1967,6 +1974,13 @@ public class MmsSmsProvider extends ContentProvider {
+     /** Internal implementation of the database operation. */
+     public int updateInternal(Uri uri, ContentValues values,
+             String selection, String[] selectionArgs) {
++        try {
++            SqlQueryChecker.checkSelection(selection);
++        } catch (IllegalArgumentException e) {
++            Log.w(LOG_TAG, "Rejected invalid mutation selection", e);
++            return 0;
++        }
++
+         final int callerUid = Binder.getCallingUid();
+         final UserHandle callerUserHandle = Binder.getCallingUserHandle();
+         final String callerPkg = getCallingPackage();
+diff --git a/src/com/android/providers/telephony/SmsProvider.java b/src/com/android/providers/telephony/SmsProvider.java
+index b165c71ddf22894cfb92a498fe28d390cbc6ee76..3c1e0808335ec007723e97ff4a05261a17c6575a 100644
+--- a/src/com/android/providers/telephony/SmsProvider.java
++++ b/src/com/android/providers/telephony/SmsProvider.java
+@@ -1408,6 +1408,13 @@ public class SmsProvider extends ContentProvider {
+ 
+     /** Internal implementation of the database operation. */
+     public int deleteInternal(Uri url, String where, String[] whereArgs) {
++        try {
++            SqlQueryChecker.checkSelection(where);
++        } catch (IllegalArgumentException e) {
++            Log.w(TAG, "Rejected invalid mutation selection", e);
++            return 0;
++        }
++
+         final UserHandle callerUserHandle = Binder.getCallingUserHandle();
+         final int callerUid = Binder.getCallingUid();
+         final long token = Binder.clearCallingIdentity();
+@@ -1689,6 +1696,13 @@ public class SmsProvider extends ContentProvider {
+ 
+     /** Internal implementation of the database operation. */
+     public int updateInternal(Uri url, ContentValues values, String where, String[] whereArgs) {
++        try {
++            SqlQueryChecker.checkSelection(where);
++        } catch (IllegalArgumentException e) {
++            Log.w(TAG, "Rejected invalid mutation selection", e);
++            return 0;
++        }
++
+         final int callerUid = Binder.getCallingUid();
+         final UserHandle callerUserHandle = Binder.getCallingUserHandle();
+         final String callerPkg = getCallingPackage();

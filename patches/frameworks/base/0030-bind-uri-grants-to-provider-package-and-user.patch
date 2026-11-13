@@ -1,0 +1,86 @@
+diff --git a/services/core/java/com/android/server/uri/UriGrantsManagerService.java b/services/core/java/com/android/server/uri/UriGrantsManagerService.java
+index 895781c5d2b69e24835d66eb01e776ff7d95d4e9..1437b12960619b923b75481714d2f767be9f1508 100644
+--- a/services/core/java/com/android/server/uri/UriGrantsManagerService.java
++++ b/services/core/java/com/android/server/uri/UriGrantsManagerService.java
+@@ -586,9 +586,10 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+         final ArrayMap<GrantUri, UriPermission> perms = mGrantedUriPermissions.get(callingUid);
+         if (perms != null) {
+             for (int i = perms.size() - 1; i >= 0; i--) {
+-                GrantUri grantUri = perms.keyAt(i);
+-                if (grantUri.sourceUserId == userId || !checkUser) {
+-                    if (matchesProvider(grantUri.uri, cpi)) {
++                UriPermission perm = perms.valueAt(i);
++                if (perm.uri.sourceUserId == userId || !checkUser) {
++                    if (Objects.equals(perm.sourcePkg, cpi.packageName)
++                            && matchesProvider(perm.uri.uri, cpi)) {
+                         return true;
+                     }
+                 }
+@@ -1507,7 +1508,7 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+             // Require they hold a strong enough Uri permission
+             final boolean res;
+             synchronized (mLock) {
+-                res = checkUriPermissionLocked(grantUri, callingUid, modeFlags);
++                res = checkUriPermissionLocked(grantUri, callingUid, modeFlags, pi.packageName);
+             }
+             if (!res) {
+                 if (android.Manifest.permission.MANAGE_DOCUMENTS.equals(pi.readPermission)) {
+@@ -1580,7 +1581,7 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+ 
+         // Check if it has explicitly granted permissions to the URI
+         synchronized (mLock) {
+-            return checkUriPermissionLocked(grantUri, uid, modeFlags);
++            return checkUriPermissionLocked(grantUri, uid, modeFlags, pi.packageName);
+         }
+     }
+ 
+@@ -1594,7 +1595,8 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+     }
+ 
+     @GuardedBy("mLock")
+-    private boolean checkUriPermissionLocked(GrantUri grantUri, int uid, final int modeFlags) {
++    private boolean checkUriPermissionLocked(GrantUri grantUri, int uid, final int modeFlags,
++            @Nullable String sourcePackage) {
+         final boolean persistable = (modeFlags & Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION) != 0;
+         final int minStrength = persistable ? UriPermission.STRENGTH_PERSISTABLE
+                 : UriPermission.STRENGTH_OWNED;
+@@ -1607,9 +1609,12 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+         final ArrayMap<GrantUri, UriPermission> perms = mGrantedUriPermissions.get(uid);
+         if (perms == null) return false;
+ 
++        if (sourcePackage == null) return false;
++
+         // First look for exact match
+         final UriPermission exactPerm = perms.get(grantUri);
+-        if (exactPerm != null && exactPerm.getStrength(modeFlags) >= minStrength) {
++        if (exactPerm != null && sourcePackage.equals(exactPerm.sourcePkg)
++                && exactPerm.getStrength(modeFlags) >= minStrength) {
+             return true;
+         }
+ 
+@@ -1617,7 +1622,9 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+         final int N = perms.size();
+         for (int i = 0; i < N; i++) {
+             final UriPermission perm = perms.valueAt(i);
+-            if (perm.uri.prefix && grantUri.uri.isPathPrefixMatch(perm.uri.uri)
++            if (perm.uri.prefix && perm.uri.sourceUserId == grantUri.sourceUserId
++                    && sourcePackage.equals(perm.sourcePkg)
++                    && grantUri.uri.isPathPrefixMatch(perm.uri.uri)
+                     && perm.getStrength(modeFlags) >= minStrength) {
+                 return true;
+             }
+@@ -1818,9 +1825,13 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+                 return UriGrantsManagerService.this.checkContentUriPermissionFullUnlocked(grantUri,
+                         uid, modeFlags);
+             }
++            if (grantUri == null || grantUri.uri == null) return false;
++            final ProviderInfo provider = getProviderInfo(grantUri.uri.getAuthority(),
++                    grantUri.sourceUserId, MATCH_DIRECT_BOOT_AUTO, SYSTEM_UID);
++            final String sourcePackage = provider == null ? null : provider.packageName;
+             synchronized (mLock) {
+                 return UriGrantsManagerService.this.checkUriPermissionLocked(grantUri, uid,
+-                        modeFlags);
++                        modeFlags, sourcePackage);
+             }
+         }
+ 

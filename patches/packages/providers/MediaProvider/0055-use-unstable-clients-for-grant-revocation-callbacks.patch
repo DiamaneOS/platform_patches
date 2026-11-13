@@ -1,0 +1,38 @@
+diff --git a/src/com/android/providers/media/MediaProvider.java b/src/com/android/providers/media/MediaProvider.java
+index c57ed25733a8f06142a75962901d434c2c718958..8220fa44c1ad3db18b7289abd9a9016aa102844e 100644
+--- a/src/com/android/providers/media/MediaProvider.java
++++ b/src/com/android/providers/media/MediaProvider.java
+@@ -1403,11 +1403,11 @@ public class MediaProvider extends ContentProvider {
+         extras.putString(MediaStore.EXTRA_OLD_PATH, pathToBeRevoked);
+ 
+         // Notify ExternalStorageProvider to revoke path-based grants
+-        try {
+-            getContext().getContentResolver().call(
+-                    getExternalStorageProviderAuthority(),
+-                    MediaStore.REVOKE_URI_PERMISSION_CALL,
+-                    /* arg */ null, extras);
++        try (ContentProviderClient client = getContext().getContentResolver()
++                .acquireUnstableContentProviderClient(getExternalStorageProviderAuthority())) {
++            if (client != null) {
++                client.call(MediaStore.REVOKE_URI_PERMISSION_CALL, null, extras);
++            }
+         } catch (Exception e) {
+             Log.w(TAG, "Failed to revoke permissions for " + pathToBeRevoked
+                     + " from ExternalStorageProvider", e);
+@@ -1415,11 +1415,11 @@ public class MediaProvider extends ContentProvider {
+ 
+         // Notify DownloadStorageProvider to revoke path-based grants
+         if (isDownload) {
+-            try {
+-                getContext().getContentResolver().call(
+-                        getDownloadsProviderAuthority(),
+-                        MediaStore.REVOKE_URI_PERMISSION_CALL,
+-                        /* arg */ null, extras);
++            try (ContentProviderClient client = getContext().getContentResolver()
++                    .acquireUnstableContentProviderClient(getDownloadsProviderAuthority())) {
++                if (client != null) {
++                    client.call(MediaStore.REVOKE_URI_PERMISSION_CALL, null, extras);
++                }
+             } catch (Exception e) {
+                 Log.w(TAG, "Failed to revoke permissions for " + pathToBeRevoked
+                         + " from DownloadStorageProvider", e);

@@ -430,6 +430,561 @@
      "100644 5eb14a26e763063d6472ffeb565a5296d55bb01b"
     ]
    }
+  },
+  {
+   "id": "0029",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0029-authenticate-account-session-callbacks.patch",
+   "sha256": "0e1c43b6c8f9b296479f541f62921e67ae5a2b9bf5a4ed938306650587148701",
+   "title": "Authenticate account-session callbacks",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/accounts/AccountManagerService.java": [
+     "100644 308996d8c23505cd1b95c93ea2d2024a70bef538",
+     "100644 02d092acdd6087bb4901cd540b108bad34220ffa"
+    ]
+   }
+  },
+  {
+   "id": "0030",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0030-bind-uri-grants-to-provider-package-and-user.patch",
+   "sha256": "c3deb5bd3f888b726e5aa92fc463199f991f8ea7af93db095d85ef5ac765398e",
+   "title": "Bind URI grants to provider package and user",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/uri/UriGrantsManagerService.java": [
+     "100644 895781c5d2b69e24835d66eb01e776ff7d95d4e9",
+     "100644 1437b12960619b923b75481714d2f767be9f1508"
+    ]
+   }
+  },
+  {
+   "id": "0031",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0031-restrict-process-security-logging-to-internal-callers.patch",
+   "sha256": "32dce80232c6d5d8529b506cdda41134321fbcbc88be601d8d3ae0de654e6a92",
+   "title": "Restrict process security logging to internal callers",
+   "kind": "fix",
+   "files": {
+    "core/java/android/content/pm/IPackageManager.aidl": [
+     "100644 81ef17444ea4b4a6c3f1d3ee71accaabb697278e",
+     "100644 d94ce8e7c5f7fbbc3459de5f0621d89a4a2e3ea1"
+    ],
+    "services/core/java/android/content/pm/PackageManagerInternal.java": [
+     "100644 595494a040969d82c3ef7dd9089fdf38e1959157",
+     "100644 edf4e0d9f39ec63e19f01fe154e25ae76c035af7"
+    ],
+    "services/core/java/com/android/server/am/ProcessList.java": [
+     "100644 b6bc4c3e0d2176a0b412bc49201401cd39686733",
+     "100644 58dfe995874d0695ef69c8fcb28a7973161812c2"
+    ],
+    "services/core/java/com/android/server/pm/PackageManagerInternalBase.java": [
+     "100644 8d56c2f990b2b151763b8dd262c5c4338222c699",
+     "100644 4bff681834272fc627a753871a8c9d71a9c0693c"
+    ],
+    "services/core/java/com/android/server/pm/PackageManagerService.java": [
+     "100644 201d99aa9e9afe6c7558bc733cc3bee77bce97d3",
+     "100644 511a73dd99d6dbafbc42709446118d0a0478903a"
+    ]
+   }
+  },
+  {
+   "id": "0032",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0032-authorize-rollback-enabled-installation-sessions.patch",
+   "sha256": "d11d8afe1b86950abdbf36d8dc431fdd2289e144e78358d21e1df94c7f85deea",
+   "title": "Authorize rollback-enabled installation sessions",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/pm/PackageInstallerService.java": [
+     "100644 605e8f1e11a1706136a61a0ff787725fb25e199d",
+     "100644 879a54267c51e426c20ee573529a826f1746e46c"
+    ]
+   }
+  },
+  {
+   "id": "0033",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0033-deny-background-activity-launch-from-media-button-delivery.patch",
+   "sha256": "f1025a938be5fd7a5e0ca6dc0fea43f94918b05e4e85ff0b78a5ee03b7a62a4f",
+   "title": "Deny background activity launch from media-button delivery",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/media/MediaButtonReceiverHolder.java": [
+     "100644 4c57a72eccfd2ee4c225afcc231a8099eda8bdf4",
+     "100644 6a4ed1ea5489d68488a83239bb9c98dc3f31a83e"
+    ]
+   }
+  },
+  {
+   "id": "0034",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0034-sanitize-sync-extras-before-deriving-operation-identity.patch",
+   "sha256": "d6e70ff69947a1e8f480a80add416bc0927d181f0c7b30cdc439e74e355e9321",
+   "title": "Sanitize sync extras before deriving operation identity",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/content/SyncOperation.java": [
+     "100644 e4054f6f2d9e59157e1b798001920ee6c7f66804",
+     "100644 ee33b12eff5692906025e9e1c437c17b602cd2cd"
+    ]
+   }
+  },
+  {
+   "id": "0035",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0035-expire-widget-foreground-exemptions.patch",
+   "sha256": "969dd70b19047ea48a282833e13ba24be10aeda018962c74b6f8ebd2dec75594",
+   "title": "Expire widget foreground exemptions",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/appop/AppOpsUidStateTrackerImpl.java": [
+     "100644 db90c5c77983eae7a8405fc077fcee868d30d1cd",
+     "100644 099c5d074e5f52ca006f2ff087ceb01d00ee6434"
+    ]
+   }
+  },
+  {
+   "id": "0036",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0036-read-remote-input-mime-types-as-typed-strings.patch",
+   "sha256": "d0fa186f3be344e8328115a5ef44251ab9499e369ae4e6732cd473c567b00064",
+   "title": "Read remote-input MIME types as typed strings",
+   "kind": "fix",
+   "files": {
+    "core/java/android/app/RemoteInput.java": [
+     "100644 145efa961bcbf4cf8bc41f11e31ecb90d76ca5ab",
+     "100644 ce2d848c85ab8945b55b47818d476856f12f10b3"
+    ]
+   }
+  },
+  {
+   "id": "0037",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0037-verify-modifier-input-origin-and-freshness.patch",
+   "sha256": "62d774654f5cccb22d14abace70b0c1bf3f805da5265c000ace50091c8b968c8",
+   "title": "Verify modifier input origin and freshness",
+   "kind": "fix",
+   "files": {
+    "core/java/android/inputmethodservice/IInputMethodSessionWrapper.java": [
+     "100644 9badbf8e2a1b7d3dcee4d6f8862ce0f39e450d40",
+     "100644 2c7ad73c47bb2a2b3d8e3395af247fe6cd62a68d"
+    ]
+   }
+  },
+  {
+   "id": "0038",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0038-validate-parcel-value-framing-and-typed-sets.patch",
+   "sha256": "ab80cf990b109e4fe868ee258762bb3386e69afcfc3851467c5e45eac1a808fe",
+   "title": "Validate parcel value framing and typed sets",
+   "kind": "fix",
+   "files": {
+    "core/java/android/os/Parcel.java": [
+     "100644 f2f97023f261b6159e85973aa8e53861f4751995",
+     "100644 a5e2ed2d6d121299d3272a0e1537e0062d8f9392"
+    ]
+   }
+  },
+  {
+   "id": "0039",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0039-keep-notification-image-loading-within-decoder-policy.patch",
+   "sha256": "2e86eeb259c3721285319ab60c2f94b0bebec942036a8b19f359dcd7347c26cb",
+   "title": "Keep notification image loading within decoder policy",
+   "kind": "fix",
+   "files": {
+    "core/java/com/android/internal/widget/BigPictureNotificationImageView.java": [
+     "100644 7426c92b5a61cc7a1f9d41ecedea2572f7999ca1",
+     "100644 425a5063e199751b87286d2dadb39113f63460a4"
+    ],
+    "core/java/com/android/internal/widget/CachingIconView.java": [
+     "100644 3c3221b172f9f641d7a5711960cd6b4e67012d93",
+     "100644 51b3a6dd76d2ffdb18f62185101dbb12052d5054"
+    ],
+    "core/java/com/android/internal/widget/LocalImageResolver.java": [
+     "100644 71dbbe06ba73ca9d1e4e3f81e6f111b2c418bbe0",
+     "100644 1a79d8390cc413a5142c5cd82723ab0e59c5500e"
+    ]
+   }
+  },
+  {
+   "id": "0040",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0040-check-source-access-before-loading-album-artwork.patch",
+   "sha256": "31ca8f77310466b6313dddde973adf38d895e1dff45ecc7ac7bb81e7ae9e6483",
+   "title": "Check source access before loading album artwork",
+   "kind": "fix",
+   "files": {
+    "packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt": [
+     "100644 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be",
+     "100644 c1b09630a55c3eb774c9d30cc1b2707569d82c19"
+    ]
+   }
+  },
+  {
+   "id": "0041",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0041-gate-volume-panel-visibility-on-keyguard-state.patch",
+   "sha256": "cae514a67ad85231c3bb631d7d56e5ca5243aad7bb8247a267945cfcdd36498b",
+   "title": "Gate volume panel visibility on keyguard state",
+   "kind": "fix",
+   "files": {
+    "packages/SystemUI/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractor.kt": [
+     "100644 e930aca0550509cc1eafffd3655f3d1a1628d801",
+     "100644 9843d5099aa30f505383a5131f170b25f6585064"
+    ],
+    "packages/SystemUI/tests/utils/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractorKosmos.kt": [
+     "100644 6e523648c2af434246015e597157afcbdf461381",
+     "100644 549a1e224ec41d413bf65154b630c9213b7b3b4b"
+    ]
+   }
+  },
+  {
+   "id": "0042",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0042-protect-active-administrator-packages-from-external-state-change.patch",
+   "sha256": "15a05a148a916789b2412a45fb4ca063d1107b602921e0ff13ac9ad70e21d3df",
+   "title": "Protect active administrator packages from external state changes",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/pm/PackageManagerService.java": [
+     "100644 511a73dd99d6dbafbc42709446118d0a0478903a",
+     "100644 f5a890e1d7b69a12281bc5a2ce2ce1c9f68eaedc"
+    ]
+   }
+  },
+  {
+   "id": "0043",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0043-revalidate-overlay-permission-on-default-appops-mode.patch",
+   "sha256": "13df3b19e59dabce00d45a855bafe22ecdf760b82897a961f359770aed59d656",
+   "title": "Revalidate overlay permission on default AppOps mode",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/wm/WindowState.java": [
+     "100644 086b40ad2058d747becc04f13158aaff142b9fd8",
+     "100644 5cf641037f0b997b530199dca1f3e3641f20fd93"
+    ]
+   }
+  },
+  {
+   "id": "0044",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0044-exclude-pinned-only-activity-visibility-from-launch-exemptions.patch",
+   "sha256": "1ffec2498b30b8e44839122058e39edf29cde9f782eca4cbca87f55decbf4f67",
+   "title": "Exclude pinned-only activity visibility from launch exemptions",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/wm/BackgroundActivityStartController.java": [
+     "100644 867fd1263c162fb0f7caf0f7eb2b2ec3279a2711",
+     "100644 929ce354925d4497a63d24ec2b88169d49cf664f"
+    ],
+    "services/core/java/com/android/server/wm/WindowProcessController.java": [
+     "100644 845d861d6c2d602dd6271e37313c575aa0891b2d",
+     "100644 f4d04de88a6214b3e915d57925aea6324dec6df4"
+    ]
+   }
+  },
+  {
+   "id": "0045",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0045-revalidate-presentations-across-display-moves.patch",
+   "sha256": "5476c41110b7e5120c618e849e6d0e6e06af7ed4f2a8d7871ef46afb50156867",
+   "title": "Revalidate presentations across display moves",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/wm/DisplayContent.java": [
+     "100644 c55085d3e41615f1d8c182078ba0319e3d391306",
+     "100644 6ccdae123891e0fcb735ed411966db7b4cdc6393"
+    ],
+    "services/core/java/com/android/server/wm/PresentationController.java": [
+     "100644 3f594a0f18486552f1de9be61782adf29a7bf957",
+     "100644 6808704ad753c761f0cda7c488a4d5ec5b1de1d3"
+    ],
+    "services/core/java/com/android/server/wm/WindowManagerService.java": [
+     "100644 ea99d989a5aafbfa2bacffdcaf36df7e772dffa5",
+     "100644 64ba5e4c7fce4d35ab07207795487a4f81bcb65c"
+    ]
+   }
+  },
+  {
+   "id": "0046",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0046-snapshot-caller-uri-access-outside-the-window-manager-lock.patch",
+   "sha256": "14375379ea9c7aa48e83b8fec8ed71bda76e59d5c2dd893a0bd58ee1cdce3c28",
+   "title": "Snapshot caller URI access outside the window-manager lock",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/wm/ActivityCallerState.java": [
+     "100644 a333a4d4616271e9912ef5eed260c2ef89f4c4bf",
+     "100644 62ebe06a4d37751a2b3e739f890f9b1b4b1b468b"
+    ],
+    "services/core/java/com/android/server/wm/ActivityClientController.java": [
+     "100644 2f4ccfb825441cebf0b09570dcfdb2135c68155b",
+     "100644 d0ac7206efb3eade451d92d98c663813ba9b4702"
+    ],
+    "services/core/java/com/android/server/wm/ActivityRecord.java": [
+     "100644 78f2ea5b95dce7d87d38553229817a9506005126",
+     "100644 eea3f89b414d00bb1793a80318c90ba1202b12bc"
+    ],
+    "services/core/java/com/android/server/wm/ActivityStartController.java": [
+     "100644 a5453c2ce8ff12119d784b3b0902e8a3f8455d7f",
+     "100644 dcc99e6fb37c186339a8e94d62ac719aff8b7b26"
+    ],
+    "services/core/java/com/android/server/wm/ActivityStarter.java": [
+     "100644 eb065bfe1502c26a61225e546c04246695b3b88e",
+     "100644 853f2f100868203232ebed95866205e846cf9799"
+    ],
+    "services/core/java/com/android/server/wm/ActivityTaskManagerService.java": [
+     "100644 51f16802c9d980a4a80abf6e23cffcebad4c64b2",
+     "100644 e9f1c5d0bd77775e2ce4612c0372894949155a18"
+    ],
+    "services/core/java/com/android/server/wm/Task.java": [
+     "100644 23c7366cb589fb8b7a935ad48cd2d745f78f93ef",
+     "100644 4f5e3d72c24cf834fa1d8860b70a45c7d8ed73f9"
+    ]
+   }
+  },
+  {
+   "id": "0047",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0047-apply-recipient-uri-requirements-to-activity-batches.patch",
+   "sha256": "2c3d472deee0f32d231632d56e494c537fee7b1575a9283b1c7c40066e917c03",
+   "title": "Apply recipient URI requirements to activity batches",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/uri/UriGrantsManagerInternal.java": [
+     "100644 49825f16ca940d0ba9a6b9b27227d339df65e3c5",
+     "100644 02764e2334109ef3d9fa8105ef2b3b078b683d66"
+    ],
+    "services/core/java/com/android/server/uri/UriGrantsManagerService.java": [
+     "100644 1437b12960619b923b75481714d2f767be9f1508",
+     "100644 8bbc0d3ac662fc112744cf56d2b17e99a43e1d1b"
+    ],
+    "services/core/java/com/android/server/wm/ActivityStartController.java": [
+     "100644 dcc99e6fb37c186339a8e94d62ac719aff8b7b26",
+     "100644 d30d1b51a1f99d1789d64ac481759a37c158a87d"
+    ]
+   }
+  },
+  {
+   "id": "0048",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0048-bind-accessibility-drag-actions-to-an-authorized-window.patch",
+   "sha256": "ef0e7aeb57dc53a42b5e09cfb10a4d31b1bdda7491381ef959c0aada42292989",
+   "title": "Bind accessibility drag actions to an authorized window",
+   "kind": "fix",
+   "files": {
+    "services/accessibility/java/com/android/server/accessibility/AbstractAccessibilityServiceConnection.java": [
+     "100644 b5cb564e19986d67e6c44ba5349aeea8f1243771",
+     "100644 fc131c6f8b8673c16d1936483beb9a18f1d553c7"
+    ],
+    "services/core/java/com/android/server/wm/AccessibilityController.java": [
+     "100644 7065d3dd28b08575d2196a21dffa5ab203b22f32",
+     "100644 dd2546084e934c75438a705740b0a13ac8038e27"
+    ],
+    "services/core/java/com/android/server/wm/DragDropController.java": [
+     "100644 3b38403089af8da7b2d7ffa096ffe947af8b01c2",
+     "100644 6a40564f8082151d4ec1f3f67965c3016c617004"
+    ],
+    "services/core/java/com/android/server/wm/WindowManagerInternal.java": [
+     "100644 e12ad800ab474c82cd245079bbe8d8e2e665a730",
+     "100644 397582f5fb6296e45881ee540361b58fece54633"
+    ]
+   }
+  },
+  {
+   "id": "0049",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0049-adapt-the-existing-panel-fixture-to-asynchronous-state-delivery.patch",
+   "sha256": "9d081213e4d4d4fe0e7b487fda4185dd525877603c344c797954d8c888aa699f",
+   "title": "Adapt the existing panel fixture to asynchronous state delivery",
+   "kind": "fix",
+   "files": {
+    "packages/SystemUI/multivalentTests/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractorTest.kt": [
+     "100644 d44724f67457f76a5dcbac7ca61ab5c6de46d910",
+     "100644 b9aa013709c47e1a3d4222e89fba87cd3edf9c44"
+    ]
+   }
+  },
+  {
+   "id": "0050",
+   "project": "frameworks/av",
+   "file": "patches/frameworks/av/0050-convert-small-and-odd-yuv-dimensions-safely.patch",
+   "sha256": "907b326e3fa12d7aab24ecd4c263c25e766d722c3aaa2b1fcf353bd40e732f89",
+   "title": "Convert small and odd YUV dimensions safely",
+   "kind": "fix",
+   "files": {
+    "media/codec2/components/base/SimpleC2Component.cpp": [
+     "100644 e58f9016a7bc7580649cf80bae0432c5196bb8ad",
+     "100644 5342e9ff82dbdee899069fc417207e9898baabd6"
+    ]
+   }
+  },
+  {
+   "id": "0051",
+   "project": "frameworks/av",
+   "file": "patches/frameworks/av/0051-validate-buffer-pool-transaction-identities.patch",
+   "sha256": "231c23db082f7cc73047a4e8ec64c83c7a18b4de9cc75c5984fa2c5baf3b0b12",
+   "title": "Validate buffer pool transaction identities",
+   "kind": "fix",
+   "files": {
+    "media/module/bufferpool/2.0/AccessorImpl.cpp": [
+     "100644 3d7f0c7bf1840924e8243a77c914e01eebef00f5",
+     "100644 7067aff2aee0f4e03856c02611dd09bc7084f799"
+    ]
+   }
+  },
+  {
+   "id": "0052",
+   "project": "hardware/interfaces",
+   "file": "patches/hardware/interfaces/0052-validate-buffer-pool-transaction-identities.patch",
+   "sha256": "241bf12e15c6c88400dd59f7fd4ee76c6ff2474aaf92e891c1d4ffbdba85d6f4",
+   "title": "Validate buffer pool transaction identities",
+   "kind": "fix",
+   "files": {
+    "media/bufferpool/aidl/default/BufferPool.cpp": [
+     "100644 57716db21cf8e94f700e6a0054e7a66c057a0033",
+     "100644 4a7e6d15ccb40015c377335c3ac3cdf1b6ef820a"
+    ]
+   }
+  },
+  {
+   "id": "0053",
+   "project": "packages/modules/Nfc",
+   "file": "patches/packages/modules/Nfc/0053-require-administrative-test-authority-for-nfc-injection.patch",
+   "sha256": "fde87bdbc23b093ee0035f58b403090a62cf221dc3d6cce705213592c5ad83a6",
+   "title": "Require administrative test authority for NFC injection",
+   "kind": "fix",
+   "files": {
+    "NfcNci/src/com/android/nfc/NfcInjector.java": [
+     "100644 143c25df418048aee65a2fcca1221fa119bb70ac",
+     "100644 ac133533b187986755b6efe4703ab05f8f849897"
+    ],
+    "NfcNci/src/com/android/nfc/NfcService.java": [
+     "100644 c04257c8763723b59637a32d785827f560d8066e",
+     "100644 567b6a5580f732ad4c55ba630569fba14c2e67a8"
+    ]
+   }
+  },
+  {
+   "id": "0054",
+   "project": "packages/modules/Nfc",
+   "file": "patches/packages/modules/Nfc/0054-bound-nfc-discovery-production-and-consumption.patch",
+   "sha256": "63ed8d3e42288693883da2f2f84dcd4ce7418c11e35b8976e45a2c9f5bae4efc",
+   "title": "Bound NFC discovery production and consumption",
+   "kind": "fix",
+   "files": {
+    "NfcNci/nci/jni/RoutingManager.cpp": [
+     "100755 2c79810452c5d4c7aaa8055f38fe944a7c36c02e",
+     "100755 2a3cbc6a43809bc901e62caca19b430c20a86748"
+    ],
+    "libnfc-nci/src/nfa/ee/nfa_ee_act.cc": [
+     "100644 be9cb09d9814b5a624aa6caeae78f11ea344e5a1",
+     "100644 9ee91839c639e7f9a825659b43e65a5071567798"
+    ]
+   }
+  },
+  {
+   "id": "0055",
+   "project": "packages/providers/MediaProvider",
+   "file": "patches/packages/providers/MediaProvider/0055-use-unstable-clients-for-grant-revocation-callbacks.patch",
+   "sha256": "0345f31d87f1c30042a3ebe61c6df5f36a2db1b21b0cd716369fe1ac6e5f761b",
+   "title": "Use unstable clients for grant revocation callbacks",
+   "kind": "fix",
+   "files": {
+    "src/com/android/providers/media/MediaProvider.java": [
+     "100644 c57ed25733a8f06142a75962901d434c2c718958",
+     "100644 8220fa44c1ad3db18b7289abd9a9016aa102844e"
+    ]
+   }
+  },
+  {
+   "id": "0056",
+   "project": "packages/providers/MediaProvider",
+   "file": "patches/packages/providers/MediaProvider/0056-protect-photo-selection-from-untrusted-overlays.patch",
+   "sha256": "c7678e2b61b8ca4d9e3e0a421d8030e4b8b680cbe1ab19b41f1306d7be057b85",
+   "title": "Protect photo selection from untrusted overlays",
+   "kind": "fix",
+   "files": {
+    "photopicker/AndroidManifest.xml": [
+     "100644 211db220418ef98845694057105b30ddf843974c",
+     "100644 5f4879ea6082eb59954800aa6627be9f036ddedf"
+    ],
+    "photopicker/src/com/android/photopicker/MainActivity.kt": [
+     "100644 6c6c19b194393326c3dbc648544cce5f98b9075f",
+     "100644 62639b421055502b7db14c4b8754499d9bacb794"
+    ],
+    "src/com/android/providers/media/photopicker/PhotoPickerActivity.java": [
+     "100644 2d74aa85725953c2b971415f5f140ad18b8762fd",
+     "100644 b8a81c6dd60651b0226c80c8e330cb17333ec1c2"
+    ]
+   }
+  },
+  {
+   "id": "0057",
+   "project": "packages/providers/TelephonyProvider",
+   "file": "patches/packages/providers/TelephonyProvider/0057-validate-sms-and-mms-mutation-selections.patch",
+   "sha256": "200e9fd2675779afbd19571d4565d2163969a9257311a2e87ff4067cb78c2c07",
+   "title": "Validate SMS and MMS mutation selections",
+   "kind": "fix",
+   "files": {
+    "src/com/android/providers/telephony/MmsProvider.java": [
+     "100644 e170d750808f7cbe48fc3540b09d8ab290fcced3",
+     "100644 466c0e403e06f9aeac87b38388faea789e7d57b6"
+    ],
+    "src/com/android/providers/telephony/MmsSmsProvider.java": [
+     "100644 052eb91138450c8e44f5a639f90381a28be34f55",
+     "100644 041c48fce899a3b00c29a100ccce1601d15d7e6c"
+    ],
+    "src/com/android/providers/telephony/SmsProvider.java": [
+     "100644 b165c71ddf22894cfb92a498fe28d390cbc6ee76",
+     "100644 3c1e0808335ec007723e97ff4a05261a17c6575a"
+    ]
+   }
+  },
+  {
+   "id": "0058",
+   "project": "packages/services/Mms",
+   "file": "patches/packages/services/Mms/0058-authorize-mms-pdu-access-for-the-requesting-package.patch",
+   "sha256": "f0b1cd8faace3eedafc25fa39fb892c2352268a2de4682dbbba782497b61ba9c",
+   "title": "Authorize MMS PDU access for the requesting package",
+   "kind": "fix",
+   "files": {
+    "src/com/android/mms/service/DownloadRequest.java": [
+     "100644 a37b0329b9f0d2c8492c7ed7beeacb40f03d06e6",
+     "100644 bf2795b529d5d381cf6618a60762ee48a6c54944"
+    ],
+    "src/com/android/mms/service/MmsRequest.java": [
+     "100644 c35662570a1ffa9c8030e881dfe162ad858c3d27",
+     "100644 bf684f2bec97d116a2a306df99395f410476645f"
+    ],
+    "src/com/android/mms/service/MmsService.java": [
+     "100644 1130842f4ab2978952a1c2ed9e4b20f45687cfa8",
+     "100644 1d3f4dc29eef582fc8fa06b05cc087a25f6797a7"
+    ],
+    "src/com/android/mms/service/SendRequest.java": [
+     "100644 8fb6dc1df936113acdbfd499037c02f4280177d8",
+     "100644 bfeb25ee39ea05a7a0c20472a143eb12ed008cdc"
+    ]
+   }
+  },
+  {
+   "id": "0059",
+   "project": "external/libopenapv",
+   "file": "patches/external/libopenapv/0059-refuse-apv-frames-that-do-not-fit-the-output-images.patch",
+   "sha256": "87cad42b3ab65fb1b1ba801b4481432ba2fdce864695484f87bcdfab7356646c",
+   "title": "Refuse APV frames that do not fit the output images",
+   "kind": "fix",
+   "files": {
+    "src/oapv.c": [
+     "100644 dc3bf38a869e10f08dcd5ee53f706c74201797d4",
+     "100644 ba27241067f7999727893906b43459e050d9c75c"
+    ]
+   },
+   "upstream": "openapv upstream has both checks since its 1.x releases"
   }
  ]
 }

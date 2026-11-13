@@ -1,0 +1,40 @@
+diff --git a/photopicker/AndroidManifest.xml b/photopicker/AndroidManifest.xml
+index 211db220418ef98845694057105b30ddf843974c..5f4879ea6082eb59954800aa6627be9f036ddedf 100644
+--- a/photopicker/AndroidManifest.xml
++++ b/photopicker/AndroidManifest.xml
+@@ -42,6 +42,8 @@
+   -->
+   <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+ 
++  <uses-permission android:name="android.permission.HIDE_NON_SYSTEM_OVERLAY_WINDOWS"/>
++
+   <application
+           android:name="com.android.photopicker.PhotopickerApplication"
+           android:icon="@mipmap/photopicker_app_icon"
+diff --git a/photopicker/src/com/android/photopicker/MainActivity.kt b/photopicker/src/com/android/photopicker/MainActivity.kt
+index 6c6c19b194393326c3dbc648544cce5f98b9075f..62639b421055502b7db14c4b8754499d9bacb794 100644
+--- a/photopicker/src/com/android/photopicker/MainActivity.kt
++++ b/photopicker/src/com/android/photopicker/MainActivity.kt
+@@ -175,6 +175,9 @@ class MainActivity : Hilt_MainActivity() {
+     @OptIn(ExperimentalFoundationApi::class)
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
++        window.addSystemFlags(
++            android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
++        )
+ 
+         // [ACTION_GET_CONTENT]: Check to see if Photopicker should handle this session, or if the
+         // user should instead be referred to [com.android.documentsui]. This is necessary because
+diff --git a/src/com/android/providers/media/photopicker/PhotoPickerActivity.java b/src/com/android/providers/media/photopicker/PhotoPickerActivity.java
+index 2d74aa85725953c2b971415f5f140ad18b8762fd..b8a81c6dd60651b0226c80c8e330cb17333ec1c2 100644
+--- a/src/com/android/providers/media/photopicker/PhotoPickerActivity.java
++++ b/src/com/android/providers/media/photopicker/PhotoPickerActivity.java
+@@ -177,6 +177,8 @@ public class PhotoPickerActivity extends AppCompatActivity {
+         EdgeToEdge.enable(this);
+ 
+         super.onCreate(savedInstanceState);
++        getWindow().addSystemFlags(
++                android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS);
+ 
+         setContentView(R.layout.activity_photo_picker);
+         mToolbar = findViewById(R.id.toolbar);

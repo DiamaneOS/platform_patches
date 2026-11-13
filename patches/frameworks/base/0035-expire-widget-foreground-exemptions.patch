@@ -1,0 +1,58 @@
+diff --git a/services/core/java/com/android/server/appop/AppOpsUidStateTrackerImpl.java b/services/core/java/com/android/server/appop/AppOpsUidStateTrackerImpl.java
+index db90c5c77983eae7a8405fc077fcee868d30d1cd..099c5d074e5f52ca006f2ff087ceb01d00ee6434 100644
+--- a/services/core/java/com/android/server/appop/AppOpsUidStateTrackerImpl.java
++++ b/services/core/java/com/android/server/appop/AppOpsUidStateTrackerImpl.java
+@@ -74,6 +74,7 @@ class AppOpsUidStateTrackerImpl implements AppOpsUidStateTracker {
+     private SparseIntArray mCapability = new SparseIntArray();
+     private SparseIntArray mPendingCapability = new SparseIntArray();
+     private SparseBooleanArray mAppWidgetVisible = new SparseBooleanArray();
++    private final SparseLongArray mWidgetExpiry = new SparseLongArray();
+     private SparseBooleanArray mPendingAppWidgetVisible = new SparseBooleanArray();
+     private SparseLongArray mPendingCommitTime = new SparseLongArray();
+ 
+@@ -210,8 +211,14 @@ class AppOpsUidStateTrackerImpl implements AppOpsUidStateTracker {
+         for (int i = 0; i < numUids; i++) {
+             int uid = uidPackageNames.keyAt(i);
+             mPendingAppWidgetVisible.put(uid, visible);
+-
+             commitUidPendingState(uid);
++            if (visible) {
++                mWidgetExpiry.put(uid, mClock.elapsedRealtime() + 5000);
++                mExecutor.executeDelayed(PooledLambda.obtainRunnable(
++                        AppOpsUidStateTrackerImpl::expireWidgetExemption, this, uid), 5001);
++            } else {
++                mWidgetExpiry.delete(uid);
++            }
+         }
+     }
+ 
+@@ -377,6 +384,7 @@ class AppOpsUidStateTrackerImpl implements AppOpsUidStateTracker {
+             mUidStates.delete(uid);
+             mCapability.delete(uid);
+             mAppWidgetVisible.delete(uid);
++            mWidgetExpiry.delete(uid);
+             for (int i = 0; i < mUidStateChangedCallbacks.size(); i++) {
+                 UidStateChangedCallback cb = mUidStateChangedCallbacks.keyAt(i);
+                 Executor executor = mUidStateChangedCallbacks.valueAt(i);
+@@ -401,8 +409,20 @@ class AppOpsUidStateTrackerImpl implements AppOpsUidStateTracker {
+         return mCapability.get(uid, ActivityManager.PROCESS_CAPABILITY_NONE);
+     }
+ 
++    private void expireWidgetExemption(int uid) {
++        long deadline = mWidgetExpiry.get(uid, 0);
++        if (deadline != 0 && mClock.elapsedRealtime() >= deadline) {
++            mWidgetExpiry.delete(uid);
++            if (mAppWidgetVisible.get(uid, false)) {
++                mPendingAppWidgetVisible.put(uid, false);
++                commitUidPendingState(uid);
++            }
++        }
++    }
++
+     private boolean getUidAppWidgetVisible(int uid) {
+-        return mAppWidgetVisible.get(uid, false);
++        return mAppWidgetVisible.get(uid, false)
++                && mClock.elapsedRealtime() < mWidgetExpiry.get(uid, 0);
+     }
+ 
+     private static class ProcStateChangedEvent extends EventLogger.Event {

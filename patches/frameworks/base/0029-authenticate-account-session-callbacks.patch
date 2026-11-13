@@ -1,0 +1,222 @@
+diff --git a/services/core/java/com/android/server/accounts/AccountManagerService.java b/services/core/java/com/android/server/accounts/AccountManagerService.java
+index 308996d8c23505cd1b95c93ea2d2024a70bef538..02d092acdd6087bb4901cd540b108bad34220ffa 100644
+--- a/services/core/java/com/android/server/accounts/AccountManagerService.java
++++ b/services/core/java/com/android/server/accounts/AccountManagerService.java
+@@ -1853,14 +1853,14 @@ public class AccountManagerService
+                 }
+ 
+                 @Override
+-                public void onResult(Bundle result) {
++                public void onResultAvailable(Bundle result) {
+                     Bundle.setDefusable(result, true);
+                     if (result != null
+                             && result.getBoolean(AccountManager.KEY_BOOLEAN_RESULT, false)) {
+                         // Create a Session for the target user and pass in the bundle
+                         completeCloningAccount(response, result, account, toAccounts, userFrom);
+                     } else {
+-                        super.onResult(result);
++                        super.onResultAvailable(result);
+                     }
+                 }
+             }.bind();
+@@ -1946,22 +1946,17 @@ public class AccountManagerService
+                 }
+ 
+                 @Override
+-                public void onResult(Bundle result) {
++                public void onResultAvailable(Bundle result) {
+                     Bundle.setDefusable(result, true);
+                     // TODO: Anything to do if if succedded?
+                     // TODO: If it failed: Show error notification? Should we remove the shadow
+                     // account to avoid retries?
+                     // TODO: what we do with the visibility?
+ 
+-                    super.onResult(result);
++                    super.onResultAvailable(result);
+                 }
+ 
+-                @Override
+-                public void onError(int errorCode, String errorMessage) {
+-                    super.onError(errorCode,  errorMessage);
+-                    // TODO: Show error notification to user
+-                    // TODO: Should we remove the shadow account so that it doesn't keep trying?
+-                }
++
+ 
+             }.bind();
+         } finally {
+@@ -2210,7 +2205,7 @@ public class AccountManagerService
+         }
+ 
+         @Override
+-        public void onResult(Bundle result) {
++        public void onResultAvailable(Bundle result) {
+             Bundle.setDefusable(result, true);
+             IAccountManagerResponse response = getResponseAndClose();
+             if (response != null) {
+@@ -2572,7 +2567,7 @@ public class AccountManagerService
+         }
+ 
+         @Override
+-        public void onResult(Bundle result) {
++        public void onResultAvailable(Bundle result) {
+             Bundle.setDefusable(result, true);
+             if (result != null && result.containsKey(AccountManager.KEY_BOOLEAN_RESULT)
+                     && !result.containsKey(AccountManager.KEY_INTENT)) {
+@@ -2593,7 +2588,7 @@ public class AccountManagerService
+                     }
+                 }
+             }
+-            super.onResult(result);
++            super.onResultAvailable(result);
+         }
+     }
+ 
+@@ -3085,16 +3080,16 @@ public class AccountManagerService
+                 }
+ 
+                 @Override
+-                public void onResult(Bundle result) {
++                public void onResultAvailable(Bundle result) {
+                     Bundle.setDefusable(result, true);
+                     if (result != null) {
+                         String label = result.getString(AccountManager.KEY_AUTH_TOKEN_LABEL);
+                         Bundle bundle = new Bundle();
+                         bundle.putString(AccountManager.KEY_AUTH_TOKEN_LABEL, label);
+-                        super.onResult(bundle);
++                        super.onResultAvailable(bundle);
+                         return;
+                     } else {
+-                        super.onResult(result);
++                        super.onResultAvailable(result);
+                     }
+                 }
+             }.bind();
+@@ -3262,7 +3257,7 @@ public class AccountManagerService
+                 }
+ 
+                 @Override
+-                public void onResult(Bundle result) {
++                public void onResultAvailable(Bundle result) {
+                     Bundle.setDefusable(result, true);
+                     if (result != null) {
+                         if (result.containsKey(AccountManager.KEY_AUTH_TOKEN_LABEL)) {
+@@ -3276,7 +3271,7 @@ public class AccountManagerService
+                             mCanStartAccountManagerActivity = true;
+                             Bundle bundle = new Bundle();
+                             bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+-                            onResult(bundle);
++                            onResultAvailable(bundle);
+                             return;
+                         }
+                         String authToken = result.getString(AccountManager.KEY_AUTHTOKEN);
+@@ -3351,7 +3346,7 @@ public class AccountManagerService
+                             }
+                         }
+                     }
+-                    super.onResult(result);
++                    super.onResultAvailable(result);
+                 }
+             }.bind();
+         } finally {
+@@ -3751,7 +3746,7 @@ public class AccountManagerService
+         }
+ 
+         @Override
+-        public void onResult(Bundle result) {
++        public void onResultAvailable(Bundle result) {
+             Bundle.setDefusable(result, true);
+             mNumResults++;
+             Intent intent = null;
+@@ -4200,7 +4195,7 @@ public class AccountManagerService
+                 }
+ 
+                 @Override
+-                public void onResult(Bundle result) {
++                public void onResultAvailable(Bundle result) {
+                     Bundle.setDefusable(result, true);
+                     IAccountManagerResponse response = getResponseAndClose();
+                     if (response == null) {
+@@ -4513,7 +4508,7 @@ public class AccountManagerService
+         }
+ 
+         @Override
+-        public void onResult(Bundle result) {
++        public void onResultAvailable(Bundle result) {
+             Bundle.setDefusable(result, true);
+             mNumResults++;
+             if (result == null) {
+@@ -5098,7 +5093,7 @@ public class AccountManagerService
+         protected boolean mCanStartAccountManagerActivity = false;
+         protected final UserAccounts mAccounts;
+ 
+-        private int mAuthenticatorUid;
++        private volatile int mAuthenticatorUid;
+         private long mBindingStartTime;
+ 
+         public Session(UserAccounts accounts, IAccountManagerResponse response, String accountType,
+@@ -5383,7 +5378,13 @@ public class AccountManagerService
+         }
+ 
+         @Override
+-        public void onResult(Bundle result) {
++        public final void onResult(Bundle result) {
++            if (!callerIsAuthenticatorOrSystem()) return;
++            Bundle.setDefusable(result, true);
++            onResultAvailable(result);
++        }
++
++        protected void onResultAvailable(Bundle result) {
+             Bundle.setDefusable(result, true);
+             mNumResults++;
+             Intent intent = null;
+@@ -5482,12 +5483,14 @@ public class AccountManagerService
+         }
+ 
+         @Override
+-        public void onRequestContinued() {
++        public final void onRequestContinued() {
++            if (!callerIsAuthenticatorOrSystem()) return;
+             mNumRequestContinued++;
+         }
+ 
+         @Override
+-        public void onError(int errorCode, String errorMessage) {
++        public final void onError(int errorCode, String errorMessage) {
++            if (!callerIsAuthenticatorOrSystem()) return;
+             mNumErrors++;
+             IAccountManagerResponse response = getResponseAndClose();
+             if (response != null) {
+@@ -5509,6 +5512,16 @@ public class AccountManagerService
+             }
+         }
+ 
++        private boolean callerIsAuthenticatorOrSystem() {
++            final int uid = Binder.getCallingUid();
++            if (UserHandle.isSameApp(uid, Process.SYSTEM_UID) || uid == mAuthenticatorUid) {
++                return true;
++            }
++            Slog.w(TAG, "Dropping a session callback from uid " + uid + ", the authenticator of "
++                    + mAccountType + " is uid " + mAuthenticatorUid);
++            return false;
++        }
++
+         /**
+          * find the component name for the authenticator and initiate a bind
+          * if no authenticator or the bind fails then return false, otherwise return true
+@@ -5531,6 +5544,7 @@ public class AccountManagerService
+                 return false;
+             }
+ 
++            mAuthenticatorUid = authenticatorInfo.uid;
+             Intent intent = new Intent();
+             intent.setAction(AccountManager.ACTION_AUTHENTICATOR_INTENT);
+             intent.setComponent(authenticatorInfo.componentName);
+@@ -5548,7 +5562,6 @@ public class AccountManagerService
+                 mContext.unbindService(this);
+                 return false;
+             }
+-            mAuthenticatorUid = authenticatorInfo.uid;
+             mBindingStartTime = SystemClock.uptimeMillis();
+             return true;
+         }

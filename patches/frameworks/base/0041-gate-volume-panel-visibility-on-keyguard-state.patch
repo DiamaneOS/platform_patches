@@ -1,0 +1,68 @@
+diff --git a/packages/SystemUI/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractor.kt b/packages/SystemUI/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractor.kt
+index e930aca0550509cc1eafffd3655f3d1a1628d801..9843d5099aa30f505383a5131f170b25f6585064 100644
+--- a/packages/SystemUI/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractor.kt
++++ b/packages/SystemUI/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractor.kt
+@@ -17,22 +17,41 @@
+ package com.android.systemui.volume.panel.domain.interactor
+ 
+ import com.android.systemui.dagger.SysUISingleton
++import com.android.systemui.dagger.qualifiers.Application
++import com.android.systemui.keyguard.domain.interactor.KeyguardInteractor
+ import com.android.systemui.volume.panel.data.repository.VolumePanelGlobalStateRepository
+ import com.android.systemui.volume.panel.shared.model.VolumePanelGlobalState
+ import javax.inject.Inject
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.flow.SharingStarted
+ import kotlinx.coroutines.flow.StateFlow
++import kotlinx.coroutines.flow.combine
++import kotlinx.coroutines.flow.launchIn
++import kotlinx.coroutines.flow.onEach
++import kotlinx.coroutines.flow.stateIn
+ 
+ @SysUISingleton
+ class VolumePanelGlobalStateInteractor
+ @Inject
+ constructor(
+     private val repository: VolumePanelGlobalStateRepository,
++    private val keyguardInteractor: KeyguardInteractor,
++    @Application applicationScope: CoroutineScope,
+ ) {
++    val globalState: StateFlow<VolumePanelGlobalState> =
++        combine(repository.globalState, keyguardInteractor.isKeyguardShowing) { state, locked ->
++            state.copy(isVisible = state.isVisible && !locked)
++        }.stateIn(applicationScope, SharingStarted.Eagerly, VolumePanelGlobalState(false))
+ 
+-    val globalState: StateFlow<VolumePanelGlobalState>
+-        get() = repository.globalState
++    init {
++        keyguardInteractor.isKeyguardShowing.onEach { locked ->
++            if (locked) setVisible(false)
++        }.launchIn(applicationScope)
++    }
+ 
+     fun setVisible(isVisible: Boolean) {
+-        repository.updateVolumePanelState { it.copy(isVisible = isVisible) }
++        if (!isVisible || !keyguardInteractor.isKeyguardShowing.value) {
++            repository.updateVolumePanelState { it.copy(isVisible = isVisible) }
++        }
+     }
+ }
+diff --git a/packages/SystemUI/tests/utils/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractorKosmos.kt b/packages/SystemUI/tests/utils/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractorKosmos.kt
+index 6e523648c2af434246015e597157afcbdf461381..549a1e224ec41d413bf65154b630c9213b7b3b4b 100644
+--- a/packages/SystemUI/tests/utils/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractorKosmos.kt
++++ b/packages/SystemUI/tests/utils/src/com/android/systemui/volume/panel/domain/interactor/VolumePanelGlobalStateInteractorKosmos.kt
+@@ -17,7 +17,13 @@
+ package com.android.systemui.volume.panel.domain.interactor
+ 
+ import com.android.systemui.kosmos.Kosmos
++import com.android.systemui.kosmos.applicationCoroutineScope
++import com.android.systemui.keyguard.domain.interactor.keyguardInteractor
+ import com.android.systemui.volume.panel.data.repository.volumePanelGlobalStateRepository
+ 
+ val Kosmos.volumePanelGlobalStateInteractor: VolumePanelGlobalStateInteractor by
+-    Kosmos.Fixture { VolumePanelGlobalStateInteractor(volumePanelGlobalStateRepository) }
++    Kosmos.Fixture {
++        VolumePanelGlobalStateInteractor(
++            volumePanelGlobalStateRepository, keyguardInteractor, applicationCoroutineScope,
++        )
++    }

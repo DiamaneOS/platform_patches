@@ -1,0 +1,33 @@
+diff --git a/services/core/java/com/android/server/pm/PackageManagerService.java b/services/core/java/com/android/server/pm/PackageManagerService.java
+index 201d99aa9e9afe6c7558bc733cc3bee77bce97d3..f1dd89b41e719b14e81fdb61f924edc2d502b9e3 100644
+--- a/services/core/java/com/android/server/pm/PackageManagerService.java
++++ b/services/core/java/com/android/server/pm/PackageManagerService.java
+@@ -4177,6 +4177,18 @@ public class PackageManagerService implements PackageSender, TestUtilityService
+         Arrays.fill(updateAllowed, true);
+ 
+         final Map<String, PackageSetting> pkgSettings = new ArrayMap<>(targetSize);
++        final ArraySet<String> adminPackages = new ArraySet<>();
++        final ArraySet<String> examinedPackages = new ArraySet<>();
++        final String[] callerPackages = preLockSnapshot.getPackagesForUid(callingUid);
++        for (ComponentEnabledSetting setting : settings) {
++            final String pkg = setting.getPackageName();
++            if (allowedByPermission && callingUid != Process.SYSTEM_UID
++                    && examinedPackages.add(pkg)
++                    && !ArrayUtils.contains(callerPackages, pkg)
++                    && Binder.withCleanCallingIdentity(() -> isPackageDeviceAdmin(pkg, userId))) {
++                adminPackages.add(pkg);
++            }
++        }
+         // reader
+         synchronized (mLock) {
+             final Computer snapshot = snapshotComputer();
+@@ -4208,7 +4220,8 @@ public class PackageManagerService implements PackageSender, TestUtilityService
+                 }
+                 // Don't allow changing protected packages.
+                 if (!isCallerTargetApp
+-                        && mProtectedPackages.isPackageStateProtected(userId, packageName)) {
++                        && (mProtectedPackages.isPackageStateProtected(userId, packageName)
++                            || adminPackages.contains(packageName))) {
+                     throw new SecurityException(
+                             "Cannot disable a protected package: " + packageName);
+                 }

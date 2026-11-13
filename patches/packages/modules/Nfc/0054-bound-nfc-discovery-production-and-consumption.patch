@@ -1,0 +1,40 @@
+diff --git a/NfcNci/nci/jni/RoutingManager.cpp b/NfcNci/nci/jni/RoutingManager.cpp
+index 2c79810452c5d4c7aaa8055f38fe944a7c36c02e..2a3cbc6a43809bc901e62caca19b430c20a86748 100644
+--- a/NfcNci/nci/jni/RoutingManager.cpp
++++ b/NfcNci/nci/jni/RoutingManager.cpp
+@@ -1148,7 +1148,8 @@ tNFA_TECHNOLOGY_MASK RoutingManager::updateEeTechRouteSetting() {
+ 
+   tNFA_STATUS nfaStat;
+ 
+-  for (uint8_t i = 0; i < localEeInfo.num_ee; i++) {
++  for (uint8_t i = 0; i < localEeInfo.num_ee &&
++       i < sizeof(localEeInfo.ee_disc_info) / sizeof(localEeInfo.ee_disc_info[0]); i++) {
+     tNFA_HANDLE eeHandle = localEeInfo.ee_disc_info[i].ee_handle;
+     tNFA_TECHNOLOGY_MASK seTechMask = 0;
+ 
+@@ -1340,7 +1341,9 @@ void RoutingManager::nfaEeCallback(tNFA_EE_EVT event,
+       sEeInfoMutex.lock();
+       memcpy(&routingManager.mEeInfo, &eventData->discover_req,
+              sizeof(routingManager.mEeInfo));
+-      for (int i = 0; i < eventData->discover_req.num_ee; i++) {
++      for (int i = 0; i < eventData->discover_req.num_ee &&
++           i < static_cast<int>(sizeof(eventData->discover_req.ee_disc_info) /
++                                sizeof(eventData->discover_req.ee_disc_info[0])); i++) {
+         LOG(DEBUG) << StringPrintf(
+             "%s: NFA_EE_DISCOVER_REQ_EVT; nfceeId=0x%X; la_proto=0x%X, "
+             "lb_proto=0x%x, lf_proto=0x%x",
+diff --git a/libnfc-nci/src/nfa/ee/nfa_ee_act.cc b/libnfc-nci/src/nfa/ee/nfa_ee_act.cc
+index be9cb09d9814b5a624aa6caeae78f11ea344e5a1..9ee91839c639e7f9a825659b43e65a5071567798 100644
+--- a/libnfc-nci/src/nfa/ee/nfa_ee_act.cc
++++ b/libnfc-nci/src/nfa/ee/nfa_ee_act.cc
+@@ -2366,7 +2366,9 @@ static void nfa_ee_build_discover_req_evt(tNFA_EE_DISCOVER_REQ* p_evt_data) {
+   p_cb = nfa_ee_cb.ecb;
+   p_info = p_evt_data->ee_disc_info;
+ 
+-  for (xx = 0; xx < nfa_ee_cb.cur_ee && xx < NFA_EE_NUM_ECBS; xx++, p_cb++) {
++  for (xx = 0; xx < nfa_ee_cb.cur_ee && xx < NFA_EE_NUM_ECBS &&
++       p_evt_data->num_ee < sizeof(p_evt_data->ee_disc_info) /
++                                   sizeof(p_evt_data->ee_disc_info[0]); xx++, p_cb++) {
+     if ((p_cb->ee_status & NFA_EE_STATUS_INT_MASK) ||
+         ((p_cb->ee_status != NFA_EE_STATUS_ACTIVE) &&
+          (p_cb->ee_status !=

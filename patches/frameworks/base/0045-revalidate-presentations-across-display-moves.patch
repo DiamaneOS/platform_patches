@@ -1,0 +1,110 @@
+diff --git a/services/core/java/com/android/server/wm/DisplayContent.java b/services/core/java/com/android/server/wm/DisplayContent.java
+index c55085d3e41615f1d8c182078ba0319e3d391306..6ccdae123891e0fcb735ed411966db7b4cdc6393 100644
+--- a/services/core/java/com/android/server/wm/DisplayContent.java
++++ b/services/core/java/com/android/server/wm/DisplayContent.java
+@@ -1852,6 +1852,12 @@ class DisplayContent extends RootDisplayArea implements WindowManagerPolicy.Disp
+         if (prevDc == this) {
+             return;
+         }
++        final WindowState win = token.getTopChild();
++        if (win != null && win.isPresentation()
++                && (!hasAccess(win.getOwningUid())
++                    || !mWmService.mPresentationController.canPresent(win, this))) {
++            return;
++        }
+         if (prevDc != null) {
+             if (prevDc.mTokenMap.remove(token.token) != null && token.asActivityRecord() == null) {
+                 // Removed the token from the map, but made sure it's not an app token before
+diff --git a/services/core/java/com/android/server/wm/PresentationController.java b/services/core/java/com/android/server/wm/PresentationController.java
+index 3f594a0f18486552f1de9be61782adf29a7bf957..6808704ad753c761f0cda7c488a4d5ec5b1de1d3 100644
+--- a/services/core/java/com/android/server/wm/PresentationController.java
++++ b/services/core/java/com/android/server/wm/PresentationController.java
+@@ -118,7 +118,8 @@ class PresentationController implements DisplayManager.DisplayListener {
+         for (int i = 0; i < displayContent.mWmService.mRoot.mChildren.size(); i++) {
+             final DisplayContent dc = displayContent.mWmService.mRoot.mChildren.get(i);
+             if (displayContent.mDisplayId != dc.mDisplayId
+-                    && !mPresentations.contains(dc.mDisplayId)) {
++                    && (!mPresentations.contains(dc.mDisplayId)
++                        || mPresentations.get(dc.mDisplayId).mWin == win)) {
+                 allDisplaysArePresenting = false;
+                 break;
+             }
+@@ -202,21 +203,37 @@ class PresentationController implements DisplayManager.DisplayListener {
+         win.mWmService.mDisplayManagerInternal.onPresentation(displayId, /*isShown=*/ true);
+ 
+         final WindowContainerListener presentationWindowListener = new WindowContainerListener() {
++            private int mDisplayId = displayId;
++
+             @Override
+-            public void onRemoved() {
+-                if (!hasPresentationWindow(displayId)) {
+-                    ProtoLog.e(WM_ERROR, "Failed to remove presentation on"
+-                            + "non-presenting display %d: %s", displayId, win);
++            public void onDisplayChanged(DisplayContent dc) {
++                final int nextDisplay = dc.getDisplayId();
++                final Presentation presentation = mPresentations.get(mDisplayId);
++                if (nextDisplay == mDisplayId || presentation == null
++                        || presentation.mWin != win) return;
++                if (!dc.hasAccess(win.getOwningUid()) || !canPresent(win, dc)) {
++                    removePresentation(mDisplayId, "presentation display no longer authorized");
+                     return;
+                 }
+-                final Presentation presentation = mPresentations.get(displayId);
++                mPresentations.remove(mDisplayId);
++                win.mWmService.mDisplayManagerInternal.onPresentation(mDisplayId, false);
++                mPresentations.put(nextDisplay, presentation);
++                win.mWmService.mDisplayManagerInternal.onPresentation(nextDisplay, true);
++                mDisplayId = nextDisplay;
++            }
++
++            @Override
++            public void onRemoved() {
++                final Presentation presentation = mPresentations.get(mDisplayId);
++                if (presentation == null || presentation.mWin != win) return;
+                 win.mToken.unregisterWindowContainerListener(presentation.mPresentationListener);
+                 if (presentation.mHostTask != null) {
+                     presentation.mHostTask.unregisterWindowContainerListener(
+                             presentation.mHostTaskListener);
+                 }
+-                mPresentations.remove(displayId);
+-                win.mWmService.mDisplayManagerInternal.onPresentation(displayId, false /*isShown*/);
++                mPresentations.remove(mDisplayId);
++                win.mWmService.mDisplayManagerInternal.onPresentation(mDisplayId, false);
++                mDisplayId = android.view.Display.INVALID_DISPLAY;
+             }
+         };
+         win.mToken.registerWindowContainerListener(presentationWindowListener);
+@@ -227,9 +244,11 @@ class PresentationController implements DisplayManager.DisplayListener {
+         if (hostTask != null) {
+             hostTaskListener = new WindowContainerListener() {
+                 public void onDisplayChanged(DisplayContent dc) {
+-                    final Presentation presentation = mPresentations.get(dc.getDisplayId());
+-                    if (presentation != null && !canPresent(presentation.mWin, dc)) {
+-                        removePresentation(dc.mDisplayId, "host task moved to display "
++                    final Presentation presentation = getPresentation(win);
++                    final DisplayContent winDisplay = win.getDisplayContent();
++                    if (presentation != null && winDisplay != null
++                            && !canPresent(win, winDisplay)) {
++                        removePresentation(winDisplay.getDisplayId(), "host task moved to display "
+                                 + dc.getDisplayId());
+                     }
+                 }
+diff --git a/services/core/java/com/android/server/wm/WindowManagerService.java b/services/core/java/com/android/server/wm/WindowManagerService.java
+index ea99d989a5aafbfa2bacffdcaf36df7e772dffa5..64ba5e4c7fce4d35ab07207795487a4f81bcb65c 100644
+--- a/services/core/java/com/android/server/wm/WindowManagerService.java
++++ b/services/core/java/com/android/server/wm/WindowManagerService.java
+@@ -3432,6 +3432,14 @@ public class WindowManagerService extends IWindowManager.Stub
+         // If the WindowContext associate a WindowToken created by the WindowContext, reparent the
+         // WindowToken as well.
+         final WindowToken token = container != null ? container.asWindowToken() : null;
++        final int windowType = token != null ? token.windowType
++                : mWindowContextListenerController.getWindowType(clientToken);
++        final WindowState win = token != null ? token.getTopChild() : null;
++        if (!display.hasAccess(callingUid)
++                || ((windowType == TYPE_PRESENTATION || windowType == TYPE_PRIVATE_PRESENTATION)
++                    && !mPresentationController.canPresent(win, display, windowType, callingUid))) {
++            return false;
++        }
+         // TODO(b/404532651): Checks if we should reparent system managed WindowToken as well.
+         if (token != null && token.isFromClient()) {
+             final int displayId = display.getDisplayId();

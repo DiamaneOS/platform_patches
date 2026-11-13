@@ -1,0 +1,64 @@
+diff --git a/services/core/java/com/android/server/uri/UriGrantsManagerInternal.java b/services/core/java/com/android/server/uri/UriGrantsManagerInternal.java
+index 49825f16ca940d0ba9a6b9b27227d339df65e3c5..02764e2334109ef3d9fa8105ef2b3b078b683d66 100644
+--- a/services/core/java/com/android/server/uri/UriGrantsManagerInternal.java
++++ b/services/core/java/com/android/server/uri/UriGrantsManagerInternal.java
+@@ -75,6 +75,16 @@ public interface UriGrantsManagerInternal {
+             @RequiredContentUriPermission int requireContentUriPermissionFromCaller,
+             int requestHashCode);
+ 
++    /**
++     * Same as {@link #checkGrantUriPermissionFromIntent(Intent, int, String, int, int, int)} for a
++     * check that has no activity launch request of its own, like the one made ahead of a batch
++     * of starts. It enforces {@code requireContentUriPermissionFromCaller} and collects nothing
++     * for the ContentOrFileUriEventReported message.
++     */
++    NeededUriGrants checkGrantUriPermissionFromIntent(Intent intent, int callingUid,
++            String targetPkg, int targetUserId,
++            @RequiredContentUriPermission int requireContentUriPermissionFromCaller);
++
+     /**
+      * Notify that an activity launch request has been completed and perform the following actions:
+      * - If the activity launch was unsuccessful, then clean up all the collected the content URIs
+diff --git a/services/core/java/com/android/server/uri/UriGrantsManagerService.java b/services/core/java/com/android/server/uri/UriGrantsManagerService.java
+index 895781c5d2b69e24835d66eb01e776ff7d95d4e9..71aeda9e9c81a1719c70712a41325534e6910881 100644
+--- a/services/core/java/com/android/server/uri/UriGrantsManagerService.java
++++ b/services/core/java/com/android/server/uri/UriGrantsManagerService.java
+@@ -1848,6 +1848,14 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+                     targetUserId, requireContentUriPermissionFromCaller, requestHashCode);
+         }
+ 
++        @Override
++        public NeededUriGrants checkGrantUriPermissionFromIntent(Intent intent, int callingUid,
++                String targetPkg, int targetUserId, int requireContentUriPermissionFromCaller) {
++            return internalCheckGrantUriPermissionFromIntent(intent, callingUid, targetPkg,
++                    targetUserId, requireContentUriPermissionFromCaller,
++                    /* requestHashCode */ null);
++        }
++
+         @Override
+         public void notifyActivityLaunchRequestCompleted(int requestHashCode,
+                 boolean isSuccessfulLaunch, String intentAction, int callingUid,
+diff --git a/services/core/java/com/android/server/wm/ActivityStartController.java b/services/core/java/com/android/server/wm/ActivityStartController.java
+index dcc99e6fb37c186339a8e94d62ac719aff8b7b26..d30d1b51a1f99d1789d64ac481759a37c158a87d 100644
+--- a/services/core/java/com/android/server/wm/ActivityStartController.java
++++ b/services/core/java/com/android/server/wm/ActivityStartController.java
+@@ -486,7 +486,8 @@ public class ActivityStartController {
+                         intentGrants = mSupervisor.mService.mUgmInternal
+                                 .checkGrantUriPermissionFromIntent(intent, filterCallingUid,
+                                         aInfo.applicationInfo.packageName,
+-                                        UserHandle.getUserId(aInfo.getUid()));
++                                        UserHandle.getUserId(aInfo.getUid()),
++                                        aInfo.requireContentUriPermissionFromCaller);
+                     } catch (SecurityException e) {
+                         Slog.d(TAG, "Not allowed to start activity since no uri permission.");
+                         return START_CANCELED;
+@@ -497,7 +498,8 @@ public class ActivityStartController {
+                             NeededUriGrants creatorIntentGrants = mSupervisor.mService.mUgmInternal
+                                     .checkGrantUriPermissionFromIntent(intent, creatorUid,
+                                             aInfo.applicationInfo.packageName,
+-                                            UserHandle.getUserId(aInfo.getUid()));
++                                            UserHandle.getUserId(aInfo.getUid()),
++                                            aInfo.requireContentUriPermissionFromCaller);
+                             // Only both calling UID and creator UID has permission to grant uri,
+                             // then we grant uri permission to intentGrants. Otherwise, we clear
+                             // intentGrants.

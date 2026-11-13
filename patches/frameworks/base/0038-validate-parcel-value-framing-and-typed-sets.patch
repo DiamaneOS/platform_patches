@@ -1,0 +1,89 @@
+diff --git a/core/java/android/os/Parcel.java b/core/java/android/os/Parcel.java
+index f2f97023f261b6159e85973aa8e53861f4751995..a5e2ed2d6d121299d3272a0e1537e0062d8f9392 100644
+--- a/core/java/android/os/Parcel.java
++++ b/core/java/android/os/Parcel.java
+@@ -42,7 +42,6 @@ import android.util.ArrayMap;
+ import android.util.ArraySet;
+ import android.util.ExceptionUtils;
+ import android.util.Log;
+-import android.util.MathUtils;
+ import android.util.Pair;
+ import android.util.Size;
+ import android.util.SizeF;
+@@ -4775,19 +4774,24 @@ public final class Parcel {
+         final T object;
+         if (isLengthPrefixed(type)) {
+             int length = readInt();
++            if (length < 0) return null;
++            checkValueLength(length);
+             int start = dataPosition();
+             object = readValue(type, loader, clazz, itemTypes);
+             int actual = dataPosition() - start;
+             if (actual != length) {
+                 boolean failOnMismatch = failOnParcelSizeMismatch()
+                         && CompatChanges.isChangeEnabled(PARCEL_HARDENING);
+-                String msg = "Unparcelling of " + object + " of type " + Parcel.valueTypeToString(
++                String msg = "Unparcelling of "
++                        + (object == null ? "null" : object.getClass().getName())
++                        + " of type " + Parcel.valueTypeToString(
+                         type) + "  consumed " + actual + " bytes, but " + length + " expected."
+                         + (failOnMismatch ? " [throwing]" : " [ignored]");
+                 Slog.wtfStack(TAG, msg);
+                 if (failOnMismatch) {
+                     throw new BadParcelableException(msg);
+                 }
++                setDataPosition(start + length);
+             }
+         } else {
+             object = readValue(type, loader, clazz, itemTypes);
+@@ -4829,7 +4833,8 @@ public final class Parcel {
+             if (objectLength < 0) {
+                 return null;
+             }
+-            int end = MathUtils.addOrThrow(dataPosition(), objectLength);
++            checkValueLength(objectLength);
++            int end = dataPosition() + objectLength;
+             int valueLength = end - start;
+             setDataPosition(end);
+             return new LazyValue(this, start, valueLength, type, loaderProvider);
+@@ -4838,6 +4843,13 @@ public final class Parcel {
+         }
+     }
+ 
++    private void checkValueLength(int length) {
++        if (length <= 0 || (length & 3) != 0 || length > dataAvail()) {
++            throw new BadParcelableException("Invalid value payload length " + length
++                    + " with " + dataAvail() + " bytes remaining");
++        }
++    }
++
+     @Nullable
+     private static ClassLoader getClassLoader(@Nullable ClassLoaderProvider loaderProvider) {
+         return loaderProvider == null ? null : loaderProvider.getClassLoader();
+@@ -5805,14 +5817,24 @@ public final class Parcel {
+      */
+     @UnsupportedAppUsage
+     public @Nullable ArraySet<? extends Object> readArraySet(@Nullable ClassLoader loader) {
++        return readArraySetInternal(loader, null);
++    }
++
++    /** @hide */
++    public <T> @Nullable ArraySet<T> readArraySet(@Nullable ClassLoader loader,
++            @NonNull Class<T> clazz) {
++        return readArraySetInternal(loader, Objects.requireNonNull(clazz));
++    }
++
++    private <T> ArraySet<T> readArraySetInternal(ClassLoader loader, Class<T> clazz) {
+         final int size = readInt();
+         if (size < 0) {
+             return null;
+         }
+         ensureWithinMemoryLimit(SIZE_COMPLEX_TYPE, size);
+-        ArraySet<Object> result = new ArraySet<>(size);
++        ArraySet<T> result = new ArraySet<>(size);
+         for (int i = 0; i < size; i++) {
+-            Object value = readValue(loader);
++            T value = readValue(loader, clazz);
+             result.append(value);
+         }
+         return result;

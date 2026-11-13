@@ -1,0 +1,73 @@
+diff --git a/services/core/java/com/android/server/content/SyncOperation.java b/services/core/java/com/android/server/content/SyncOperation.java
+index e4054f6f2d9e59157e1b798001920ee6c7f66804..ee33b12eff5692906025e9e1c437c17b602cd2cd 100644
+--- a/services/core/java/com/android/server/content/SyncOperation.java
++++ b/services/core/java/com/android/server/content/SyncOperation.java
+@@ -25,6 +25,7 @@ import android.os.Bundle;
+ import android.os.PersistableBundle;
+ import android.os.SystemClock;
+ import android.os.UserHandle;
++import android.text.TextUtils;
+ import android.util.Slog;
+ 
+ /**
+@@ -175,16 +176,24 @@ public class SyncOperation {
+             int reason, int source, Bundle extras, boolean allowParallelSyncs,
+             boolean isPeriodic, int sourcePeriodicId, long periodMillis,
+             long flexMillis, @SyncExemption int syncExemptionFlag, boolean validateExtras) {
+-        this(info, owningUid, owningPackage, reason, source, extras, allowParallelSyncs,
++        // The extras are cleaned before the operation is built, so its key and its stored extras
++        // come from the same bundle.
++        this(info, owningUid, owningPackage, reason, source,
++                sanitizeExtrasIfAsked(extras, owningPackage, validateExtras), allowParallelSyncs,
+                 isPeriodic, sourcePeriodicId, periodMillis, flexMillis, syncExemptionFlag);
+-        if (validateExtras
+-                && android.content.flags.Flags.syncoperationEnforceBundleSanitization()) {
+-            try {
+-                this.mImmutableExtras = sanitizeAndCheckSyncExtras(extras, owningPackage);
+-            } catch (IllegalArgumentException e) {
+-                Slog.e(TAG, "Invalid extras for SyncOperation: " + e.getMessage());
+-                throw e;
+-            }
++    }
++
++    private static Bundle sanitizeExtrasIfAsked(Bundle extras, String owningPackage,
++            boolean validateExtras) {
++        if (!validateExtras
++                || !android.content.flags.Flags.syncoperationEnforceBundleSanitization()) {
++            return extras;
++        }
++        try {
++            return sanitizeAndCheckSyncExtras(extras, owningPackage);
++        } catch (IllegalArgumentException e) {
++            Slog.e(TAG, "Invalid extras for SyncOperation: " + e.getMessage());
++            throw e;
+         }
+     }
+ 
+@@ -624,7 +633,7 @@ public class SyncOperation {
+             Object value = extras.get(key);
+ 
+             if (value == null) {
+-                sanitizedExtras.putParcelable(key, null);
++                sanitizedExtras.putString(key, null);
+                 continue;
+             }
+ 
+@@ -638,7 +647,7 @@ public class SyncOperation {
+                 String s = (String) value;
+                 if (s.length() > MAX_SYNC_EXTRA_STRING_LENGTH) {
+                     Slog.w(TAG, "Truncating String extra " + key + " for " + owningPackage);
+-                    s = s.substring(0, MAX_SYNC_EXTRA_STRING_LENGTH);
++                    s = (String) TextUtils.trimToSize(s, MAX_SYNC_EXTRA_STRING_LENGTH);
+                 }
+                 sanitizedExtras.putString(key, s);
+             } else if (value instanceof String[]) {
+@@ -652,7 +661,7 @@ public class SyncOperation {
+                     String s = arr[i];
+                     if ((s != null) && (s.length() > MAX_SYNC_EXTRA_STRING_LENGTH)) {
+                         Slog.w(TAG, "Truncating String extra " + key + " for " + owningPackage);
+-                        sanitizedArr[i] = s.substring(0, MAX_SYNC_EXTRA_STRING_LENGTH);
++                        sanitizedArr[i] = (String) TextUtils.trimToSize(s, MAX_SYNC_EXTRA_STRING_LENGTH);
+                     } else {
+                         sanitizedArr[i] = s;
+                     }

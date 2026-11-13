@@ -1,0 +1,35 @@
+diff --git a/src/oapv.c b/src/oapv.c
+index dc3bf38a869e10f08dcd5ee53f706c74201797d4..ba27241067f7999727893906b43459e050d9c75c 100644
+--- a/src/oapv.c
++++ b/src/oapv.c
+@@ -1552,10 +1552,20 @@ static int dec_set_tile_info(oapvd_tile_t* tile, int w_pel, int h_pel, int tile_
+ 
+ static int dec_frm_prepare(oapvd_ctx_t *ctx, oapv_imgb_t *imgb)
+ {
++    oapv_assert_rv(imgb != NULL, OAPV_ERR_INVALID_ARGUMENT);
++
+     if (imgb->w[0] < ctx->fh.fi.frame_width || imgb->h[0] < ctx->fh.fi.frame_height) {
+         return OAPV_ERR_INVALID_ARGUMENT;
+     }
+ 
++    // The output image must have the chroma format of the frame (OAPV_CF_PLANAR2 counts as
++    // 4:2:2). The planes and the block writers below are picked by the image, the number of
++    // components by the frame, so a frame with more components than the image has planes
++    // would be written through unset pointers.
++    if (color_format_to_chroma_format_idc(OAPV_CS_GET_FORMAT(imgb->cs)) != ctx->fh.fi.chroma_format_idc) {
++        return OAPV_ERR_UNSUPPORTED_COLORSPACE;
++    }
++
+     ctx->imgb = imgb;
+     imgb_addref(ctx->imgb); // increase reference count
+ 
+@@ -1991,6 +2001,9 @@ int oapvd_decode(oapvd_t did, oapv_bitb_t *bitb, oapv_frms_t *ofrms, oapvm_t mid
+            pbuh.pbu_type == OAPV_PBU_TYPE_ALPHA_FRAME) {
+ 
+             oapv_assert_gv(nfrms < OAPV_MAX_NUM_FRAMES, ret, OAPV_ERR_REACHED_MAX, ERR);
++            // The caller made images for ofrms->num_frms frames, the count it got from
++            // oapvd_info(). An access unit can carry more frames than its info unit lists.
++            oapv_assert_gv(nfrms < ofrms->num_frms, ret, OAPV_ERR_INVALID_ARGUMENT, ERR);
+ 
+             ret = oapvd_vlc_frame_header(bs, &ctx->fh);
+             oapv_assert_g(OAPV_SUCCEEDED(ret), ERR);

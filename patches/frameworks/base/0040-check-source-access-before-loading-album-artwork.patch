@@ -1,0 +1,64 @@
+diff --git a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt
+index 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be..c1b09630a55c3eb774c9d30cc1b2707569d82c19 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt
++++ b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt
+@@ -22,7 +22,6 @@ import android.app.Notification
+ import android.app.Notification.EXTRA_SUBSTITUTE_APP_NAME
+ import android.app.PendingIntent
+ import android.app.StatusBarManager
+-import android.app.UriGrantsManager
+ import android.content.ContentProvider
+ import android.content.ContentResolver
+ import android.content.Context
+@@ -205,7 +204,9 @@ constructor(
+             coroutineContext.ensureActive()
+ 
+             // Album art
+-            var artworkBitmap = metadata?.let { loadBitmapFromUri(it, sbn.user) }
++            var artworkBitmap = metadata?.let {
++                loadBitmapFromUri(it, sbn.user.identifier, sbn.uid, sbn.packageName)
++            }
+             if (artworkBitmap == null) {
+                 artworkBitmap = metadata?.getBitmap(MediaMetadata.METADATA_KEY_ART)
+             }
+@@ -442,11 +443,13 @@ constructor(
+     }
+ 
+     /** Load a bitmap from the various Art metadata URIs */
+-    private suspend fun loadBitmapFromUri(metadata: MediaMetadata, user: UserHandle): Bitmap? {
++    private suspend fun loadBitmapFromUri(
++        metadata: MediaMetadata, userId: Int, appUid: Int, packageName: String,
++    ): Bitmap? {
+         for (uri in ART_URIS) {
+             val uriString = metadata.getString(uri)
+             if (!TextUtils.isEmpty(uriString)) {
+-                val albumArt = loadBitmapFromUriAsUser(Uri.parse(uriString), user)
++                val albumArt = loadBitmapFromUriChecked(Uri.parse(uriString), userId, appUid, packageName)
+                 // If we got cancelled during slow album art load, cancel the rest of the process.
+                 coroutineContext.ensureActive()
+                 if (albumArt != null) {
+@@ -496,14 +499,16 @@ constructor(
+         packageName: String,
+     ): Bitmap? {
+         try {
+-            val ugm = UriGrantsManager.getService()
+-            ugm.checkGrantUriPermission_ignoreNonSystem(
+-                appUid,
+-                packageName,
+-                ContentProvider.getUriWithoutUserId(uri),
+-                Intent.FLAG_GRANT_READ_URI_PERMISSION,
+-                ContentProvider.getUserIdFromUri(uri, userId),
+-            )
++            if (uri.scheme != ContentResolver.SCHEME_ANDROID_RESOURCE) {
++                if (uri.scheme != ContentResolver.SCHEME_CONTENT) return null
++                val qualifiedUri = ContentProvider.maybeAddUserId(uri, userId)
++                if (context.checkContentUriPermissionFull(
++                        qualifiedUri, -1, appUid, Intent.FLAG_GRANT_READ_URI_PERMISSION,
++                    ) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
++                    Log.w(TAG, "Artwork URI denied for $packageName")
++                    return null
++                }
++            }
+             return loadBitmapFromUriAsUser(uri, UserHandle.of(userId))
+         } catch (e: SecurityException) {
+             Log.e(TAG, "Failed to get URI permission: $e")

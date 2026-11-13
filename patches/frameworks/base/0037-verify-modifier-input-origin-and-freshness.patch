@@ -1,0 +1,42 @@
+diff --git a/core/java/android/inputmethodservice/IInputMethodSessionWrapper.java b/core/java/android/inputmethodservice/IInputMethodSessionWrapper.java
+index 9badbf8e2a1b7d3dcee4d6f8862ce0f39e450d40..2c7ad73c47bb2a2b3d8e3395af247fe6cd62a68d 100644
+--- a/core/java/android/inputmethodservice/IInputMethodSessionWrapper.java
++++ b/core/java/android/inputmethodservice/IInputMethodSessionWrapper.java
+@@ -23,6 +23,7 @@ import android.content.Context;
+ import android.graphics.Rect;
+ import android.hardware.input.InputManager;
+ import android.os.Bundle;
++import android.os.Build;
+ import android.os.Looper;
+ import android.os.Message;
+ import android.os.SystemClock;
+@@ -34,6 +35,7 @@ import android.view.InputEvent;
+ import android.view.InputEventReceiver;
+ import android.view.KeyEvent;
+ import android.view.MotionEvent;
++import android.view.VerifiedInputEvent;
+ import android.view.inputmethod.CompletionInfo;
+ import android.view.inputmethod.CursorAnchorInfo;
+ import android.view.inputmethod.EditorInfo;
+@@ -242,7 +244,8 @@ class IInputMethodSessionWrapper extends IInputMethodSession.Stub
+     private final class ImeInputEventReceiver extends InputEventReceiver
+             implements InputMethodSession.EventCallback {
+         // Time after which a KeyEvent is invalid
+-        private static final long KEY_EVENT_ALLOW_PERIOD_MS = 100L;
++        private static final long KEY_EVENT_ALLOW_PERIOD_NANOS =
++                100_000_000L * Build.HW_TIMEOUT_MULTIPLIER;
+         private final SparseArray<InputEvent> mPendingEvents = new SparseArray<InputEvent>();
+ 
+         public ImeInputEventReceiver(InputChannel inputChannel, Looper looper) {
+@@ -262,8 +265,9 @@ class IInputMethodSessionWrapper extends IInputMethodSession.Stub
+                 // they originated from system.
+                 InputManager im = mContext.getSystemService(InputManager.class);
+                 Objects.requireNonNull(im);
+-                final long age = SystemClock.uptimeMillis() - keyEvent.getEventTime();
+-                if (age >= KEY_EVENT_ALLOW_PERIOD_MS && im.verifyInputEvent(keyEvent) == null) {
++                final VerifiedInputEvent verified = im.verifyInputEvent(keyEvent);
++                if (verified == null || SystemClock.uptimeNanos() - verified.getEventTimeNanos()
++                        >= KEY_EVENT_ALLOW_PERIOD_NANOS) {
+                     Log.w(TAG, "Unverified or Invalid KeyEvent injected into IME. Dropping "
+                             + keyEvent);
+                     finishInputEvent(event, false /* handled */);

@@ -1,0 +1,164 @@
+diff --git a/media/codec2/components/base/SimpleC2Component.cpp b/media/codec2/components/base/SimpleC2Component.cpp
+index e58f9016a7bc7580649cf80bae0432c5196bb8ad..5342e9ff82dbdee899069fc417207e9898baabd6 100644
+--- a/media/codec2/components/base/SimpleC2Component.cpp
++++ b/media/codec2/components/base/SimpleC2Component.cpp
+@@ -84,64 +84,13 @@ void convertYUV420Planar8ToYV12(uint8_t *dstY, uint8_t *dstU, uint8_t *dstV, con
+ void convertYUV420Planar16ToY410(uint32_t *dst, const uint16_t *srcY, const uint16_t *srcU,
+                                  const uint16_t *srcV, size_t srcYStride, size_t srcUStride,
+                                  size_t srcVStride, size_t dstStride, size_t width, size_t height) {
+-    // Converting two lines at a time, slightly faster
+-    for (size_t y = 0; y < height; y += 2) {
+-        uint32_t *dstTop = (uint32_t *)dst;
+-        uint32_t *dstBot = (uint32_t *)(dst + dstStride);
+-        uint16_t *ySrcTop = (uint16_t *)srcY;
+-        uint16_t *ySrcBot = (uint16_t *)(srcY + srcYStride);
+-        uint16_t *uSrc = (uint16_t *)srcU;
+-        uint16_t *vSrc = (uint16_t *)srcV;
+-
+-        uint32_t u01, v01, y01, y23, y45, y67, uv0, uv1;
+-        size_t x = 0;
+-        for (; x < width - 3; x += 4) {
+-            u01 = *((uint32_t *)uSrc);
+-            uSrc += 2;
+-            v01 = *((uint32_t *)vSrc);
+-            vSrc += 2;
+-
+-            y01 = *((uint32_t *)ySrcTop);
+-            ySrcTop += 2;
+-            y23 = *((uint32_t *)ySrcTop);
+-            ySrcTop += 2;
+-            y45 = *((uint32_t *)ySrcBot);
+-            ySrcBot += 2;
+-            y67 = *((uint32_t *)ySrcBot);
+-            ySrcBot += 2;
+-
+-            uv0 = (u01 & 0x3FF) | ((v01 & 0x3FF) << 20);
+-            uv1 = (u01 >> 16) | ((v01 >> 16) << 20);
+-
+-            *dstTop++ = 3 << 30 | ((y01 & 0x3FF) << 10) | uv0;
+-            *dstTop++ = 3 << 30 | ((y01 >> 16) << 10) | uv0;
+-            *dstTop++ = 3 << 30 | ((y23 & 0x3FF) << 10) | uv1;
+-            *dstTop++ = 3 << 30 | ((y23 >> 16) << 10) | uv1;
+-
+-            *dstBot++ = 3 << 30 | ((y45 & 0x3FF) << 10) | uv0;
+-            *dstBot++ = 3 << 30 | ((y45 >> 16) << 10) | uv0;
+-            *dstBot++ = 3 << 30 | ((y67 & 0x3FF) << 10) | uv1;
+-            *dstBot++ = 3 << 30 | ((y67 >> 16) << 10) | uv1;
+-        }
+-
+-        // There should be at most 2 more pixels to process. Note that we don't
+-        // need to consider odd case as the buffer is always aligned to even.
+-        if (x < width) {
+-            u01 = *uSrc;
+-            v01 = *vSrc;
+-            y01 = *((uint32_t *)ySrcTop);
+-            y45 = *((uint32_t *)ySrcBot);
+-            uv0 = (u01 & 0x3FF) | ((v01 & 0x3FF) << 20);
+-            *dstTop++ = ((y01 & 0x3FF) << 10) | uv0;
+-            *dstTop++ = ((y01 >> 16) << 10) | uv0;
+-            *dstBot++ = ((y45 & 0x3FF) << 10) | uv0;
+-            *dstBot++ = ((y45 >> 16) << 10) | uv0;
++    for (size_t y = 0; y < height; ++y) {
++        for (size_t x = 0; x < width; ++x) {
++            const uint32_t luma = srcY[y * srcYStride + x] & 0x3ff;
++            const uint32_t u = srcU[(y / 2) * srcUStride + x / 2] & 0x3ff;
++            const uint32_t v = srcV[(y / 2) * srcVStride + x / 2] & 0x3ff;
++            dst[y * dstStride + x] = (3U << 30) | (v << 20) | (luma << 10) | u;
+         }
+-
+-        srcY += srcYStride * 2;
+-        srcU += srcUStride;
+-        srcV += srcVStride;
+-        dst += dstStride * 2;
+     }
+ }
+ 
+@@ -264,78 +213,20 @@ void convertYUV420Planar16ToRGBA1010102(
+     int32_t _r_v = coeffs._r_v;
+     int32_t _c16 = coeffs._c16;
+ 
+-    // Converting two lines at a time, slightly faster
+-    for (size_t y = 0; y < height; y += 2) {
+-        uint32_t *dstTop = (uint32_t *)dst;
+-        uint32_t *dstBot = (uint32_t *)(dst + dstStride);
+-        uint16_t *ySrcTop = (uint16_t *)srcY;
+-        uint16_t *ySrcBot = (uint16_t *)(srcY + srcYStride);
+-        uint16_t *uSrc = (uint16_t *)srcU;
+-        uint16_t *vSrc = (uint16_t *)srcV;
+-
+-        for (size_t x = 0; x < width; x += 2) {
+-            int32_t u, v, y00, y01, y10, y11;
+-            u = *uSrc - 512;
+-            uSrc += 1;
+-            v = *vSrc - 512;
+-            vSrc += 1;
+-
+-            y00 = *ySrcTop - _c16;
+-            ySrcTop += 1;
+-            y01 = *ySrcTop - _c16;
+-            ySrcTop += 1;
+-            y10 = *ySrcBot - _c16;
+-            ySrcBot += 1;
+-            y11 = *ySrcBot - _c16;
+-            ySrcBot += 1;
+-
+-            int32_t u_b = u * _b_u;
+-            int32_t u_g = u * _neg_g_u;
+-            int32_t v_g = v * _neg_g_v;
+-            int32_t v_r = v * _r_v;
+-
+-            int32_t yMult, b, g, r;
+-            yMult = y00 * _y + 512;
+-            b = (yMult + u_b) / 1024;
+-            g = (yMult + v_g + u_g) / 1024;
+-            r = (yMult + v_r) / 1024;
+-            b = CLIP3(0, b, 1023);
+-            g = CLIP3(0, g, 1023);
+-            r = CLIP3(0, r, 1023);
+-            *dstTop++ = 3 << 30 | (b << 20) | (g << 10) | r;
+-
+-            yMult = y01 * _y + 512;
+-            b = (yMult + u_b) / 1024;
+-            g = (yMult + v_g + u_g) / 1024;
+-            r = (yMult + v_r) / 1024;
+-            b = CLIP3(0, b, 1023);
+-            g = CLIP3(0, g, 1023);
+-            r = CLIP3(0, r, 1023);
+-            *dstTop++ = 3 << 30 | (b << 20) | (g << 10) | r;
+-
+-            yMult = y10 * _y + 512;
+-            b = (yMult + u_b) / 1024;
+-            g = (yMult + v_g + u_g) / 1024;
+-            r = (yMult + v_r) / 1024;
+-            b = CLIP3(0, b, 1023);
+-            g = CLIP3(0, g, 1023);
+-            r = CLIP3(0, r, 1023);
+-            *dstBot++ = 3 << 30 | (b << 20) | (g << 10) | r;
+-
+-            yMult = y11 * _y + 512;
+-            b = (yMult + u_b) / 1024;
+-            g = (yMult + v_g + u_g) / 1024;
+-            r = (yMult + v_r) / 1024;
++    for (size_t y = 0; y < height; ++y) {
++        for (size_t x = 0; x < width; ++x) {
++            const int32_t u = int32_t(srcU[(y / 2) * srcUStride + x / 2]) - 512;
++            const int32_t v = int32_t(srcV[(y / 2) * srcVStride + x / 2]) - 512;
++            const int32_t yMult = (int32_t(srcY[y * srcYStride + x]) - _c16) * _y + 512;
++            int32_t b = (yMult + u * _b_u) / 1024;
++            int32_t g = (yMult + v * _neg_g_v + u * _neg_g_u) / 1024;
++            int32_t r = (yMult + v * _r_v) / 1024;
+             b = CLIP3(0, b, 1023);
+             g = CLIP3(0, g, 1023);
+             r = CLIP3(0, r, 1023);
+-            *dstBot++ = 3 << 30 | (b << 20) | (g << 10) | r;
++            dst[y * dstStride + x] = (3U << 30) | (uint32_t(b) << 20)
++                    | (uint32_t(g) << 10) | uint32_t(r);
+         }
+-
+-        srcY += srcYStride * 2;
+-        srcU += srcUStride;
+-        srcV += srcVStride;
+-        dst += dstStride * 2;
+     }
+ }
+ 
