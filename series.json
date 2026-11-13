@@ -985,6 +985,518 @@
     ]
    },
    "upstream": "openapv upstream has both checks since its 1.x releases"
+  },
+  {
+   "id": "0060",
+   "project": "external/dng_sdk",
+   "file": "patches/external/dng_sdk/0060-update-dng-sdk-to-build-2768-with-android-adaptations.patch",
+   "sha256": "67818f737c73baf42d8bdeb278d325b9aa736b7f0b57a36a38009181f64c32e2",
+   "title": "Update DNG SDK to build 2768 with Android adaptations",
+   "kind": "import",
+   "files": {
+    "README.version": [
+     "100644 efc65ae6f9accf202f82a680867a46425f1c1deb",
+     "100644 dafa76720adb77e5c519053bee54650101ea1903"
+    ],
+    "source/dng_1d_function.cpp": [
+     "100644 a166281993d081b8e1ee288f67aebe0a5021a218",
+     "100644 32939a399eebb0cc2184737ae89038e04662dc64"
+    ],
+    "source/dng_1d_function.h": [
+     "100644 bec72f672123c4c2dfe922dac2091fb3b4a851d4",
+     "100644 8e712b36b33021bafd2ff0271b07dd5f18e1131b"
+    ],
+    "source/dng_1d_table.cpp": [
+     "100644 3e366b75e44fd72e773138c5a0c6ffff888269ba",
+     "100644 6e0c846757f4510790ed807d3d046e8c0a7683bd"
+    ],
+    "source/dng_1d_table.h": [
+     "100644 a05fb26ce31e0566776dd61401f9dd9aa16fb4b7",
+     "100644 c3fb23ba6d279ad78b92d1652b051b3626ae5429"
+    ],
+    "source/dng_abort_sniffer.cpp": [
+     "100644 a7f1d32cfe8a468e4cf4c00baa988059daa56e8b",
+     "100644 88c279b6a5822aa47f77e4b8c1fc98925e072de8"
+    ],
+    "source/dng_abort_sniffer.h": [
+     "100644 497fb1eb86a6da6dbac662f23efe52e5d56e9b2b",
+     "100644 8126282dfe46438c11084efc80a697bad85fe915"
+    ],
+    "source/dng_area_task.cpp": [
+     "100644 21a94011c015e4e3934d1a6df3981f53fdddae84",
+     "100644 8f87ac6fc52bff79e650f836a7821d955d5ac57b"
+    ],
+    "source/dng_bad_pixels.cpp": [
+     "100644 4a58fcdf3a520296a3cb39edf2b3e98de2c59565",
+     "100644 b65b63466016d54542cf34f4d477f3a467c3ebfe"
+    ],
+    "source/dng_big_table.cpp": [
+     "100644 e1716f88b617a53b2ed4232fb3006c1b17625937",
+     "100644 c081172efc25dba52b35f61fbb3fbd4a125a32b5"
+    ],
+    "source/dng_big_table.h": [
+     "100644 a669fcb686461a28890559c326e1b740ffdaa48d",
+     "100644 df79e3546bbbd10efe334e26d2bf915c91add61f"
+    ],
+    "source/dng_bmff.cpp": [
+     "100644 584cc8ff271c7ce5978d7b35feeea2900d2b8be4",
+     "100644 70c8bdb007056c33d4481184dd9e53630dea4fdb"
+    ],
+    "source/dng_camera_profile.cpp": [
+     "100644 6c716b2a4c1a6d18c72b1fb642f7960626539324",
+     "100644 4c29afd413b73718df7d6815886d9bbbfbebf750"
+    ],
+    "source/dng_date_time.cpp": [
+     "100644 702318c84461c69609fb20a72c817e34fbf83994",
+     "100644 e5f9ca1f702bdde5aba8410fc7671f9f35aaf451"
+    ],
+    "source/dng_date_time.h": [
+     "100644 677a155442e9daeb82abfd8ad13bc45d8c0b9ec7",
+     "100644 1af94fdfec0f303f3fbabb9ccfa88b5aeb76b80c"
+    ],
+    "source/dng_exceptions.cpp": [
+     "100644 9fdef872b65c93dab460e38dc77f4090ee70a4b2",
+     "100644 de266fe1aaf392da9addbb7f666c2da3f6a51e51"
+    ],
+    "source/dng_exceptions.h": [
+     "100644 68107b270f382caf7e82a37982c040baba1ef57b",
+     "100644 87c9da0e62aacede1c6a282bbec421e3c4cf9254"
+    ],
+    "source/dng_exif.cpp": [
+     "100644 36ffeedfde28a247cfe0760b9ec87dd984c8be16",
+     "100644 d0115fbe3639071db817cfc89cf2a516eb80bcec"
+    ],
+    "source/dng_exif.h": [
+     "100644 e37966744a8632693544ccd93cb493cbfdecd95b",
+     "100644 f4499be099e91dd70853766884abfbd2ede31ac5"
+    ],
+    "source/dng_file_stream.cpp": [
+     "100644 86b20e2c53644c03a4d5e531f0129e305db2e286",
+     "100644 470f5ddee65ecd15a480dd9e50f5ed28b3b991da"
+    ],
+    "source/dng_fingerprint.cpp": [
+     "100644 6113ca702570399bc2d297632167f65a4e1f906f",
+     "100644 f40d37af837e1e83e463b85c07c5635096aae9cb"
+    ],
+    "source/dng_fingerprint.h": [
+     "100644 3d8fb7516429ddc8257460501c39b13b36f18e7d",
+     "100644 06a58478885cd24c7d29cd4e607e6732c93ff809"
+    ],
+    "source/dng_flags.h": [
+     "100644 607799d7058b741bd40e687a1abe397f720421fa",
+     "100644 15ddb46876b87f0ded1d0fd932e73a4ca16386cb"
+    ],
+    "source/dng_gain_map.cpp": [
+     "100644 799ba02a1473ec0340d25e5d63ea7a74b6ebefeb",
+     "100644 34f9e75e92643cce82be0370bc96e7db9de27cbc"
+    ],
+    "source/dng_gain_map.h": [
+     "100644 6a69a340ec37a4f2c9582acc335183d854dcbe20",
+     "100644 685093f7a41a162cec6614de161fd3e29db7c9ad"
+    ],
+    "source/dng_hue_sat_map.cpp": [
+     "100644 54bee538d506a8a465d08f795d7a611e5f6bd2f0",
+     "100644 25d2fff1ba007626d36f820d16439cb3ffc8d3de"
+    ],
+    "source/dng_ifd.cpp": [
+     "100644 5e20dca41c533fa6311d13ebcb10fc72dcd1dcfa",
+     "100644 f1203490988f55b3d10ab0da2f6c103383dcc040"
+    ],
+    "source/dng_image.cpp": [
+     "100644 9f2c4b617446d09ccf28dd940042a1294a16b452",
+     "100644 66482ba50a6fcadd83671dbe41a56f72ab37b33f"
+    ],
+    "source/dng_image_writer.cpp": [
+     "100644 4452d579ad2b7e89cac74c113e8f7374b1db1bff",
+     "100644 f635d2a7de65bf40a33670d063f1c0ec3754c165"
+    ],
+    "source/dng_image_writer.h": [
+     "100644 36d6bb3e89b387dbf0712945f402f32526af6f07",
+     "100644 0406844a1fbf050d4c315ff9582f257076e2f9cb"
+    ],
+    "source/dng_info.cpp": [
+     "100644 07dd90c6da37f147d93bf8f788d0fe2ce844f496",
+     "100644 ed33b48058ba299bd3288863a23aad1e5c3c8e4a"
+    ],
+    "source/dng_jpeg_image.cpp": [
+     "100644 940f824ee3c5d7a95e07ca048dd2000fcadc3d52",
+     "100644 dc86673e99d3b05c995b8d9eed0a078f23af02ae"
+    ],
+    "source/dng_jpeg_image.h": [
+     "100644 3aaf409b0286d9878512fe8c26cdc61545182220",
+     "100644 f10b38bbae885be2f923bd851c5a8c6227542ffa"
+    ],
+    "source/dng_jxl.cpp": [
+     "100644 82338e93eb97dcb10fd5eb3170ab7f56daecef75",
+     "100644 e9e6531b14cdaa4664a1fbeb53be7a9e9bdd556d"
+    ],
+    "source/dng_jxl.h": [
+     "100644 cc17814319d9bb98dd73450b9a48c12fea829c4f",
+     "100644 ebbf8a7a50fb760fbdb7c6f5e27aca10966e8324"
+    ],
+    "source/dng_lens_correction.cpp": [
+     "100644 372076f35f8fc14335e46bf03903141f0ebf87b6",
+     "100644 26b4886ea4406764aeb8434dfb9c215565f7b21d"
+    ],
+    "source/dng_linearization_info.cpp": [
+     "100644 a58873af4e8a25da580a5251a88567a459601e65",
+     "100644 d9e24d28571b6d035a9aa7affe085efe669d0438"
+    ],
+    "source/dng_local_string.cpp": [
+     "100644 3559edd80f7a2b55c776e39ae2ecc7190cefad95",
+     "100644 bad92b847e1bc4d243d8f4c5220233eb682bb898"
+    ],
+    "source/dng_lossless_jpeg_shared.cpp": [
+     "100644 586e4455827d4bcd5dde88f5fc5ece5c3000fb8b",
+     "100644 ca17b10fed5def10b617111cf3465f41d673bcaf"
+    ],
+    "source/dng_memory.cpp": [
+     "100644 c9f5c8a464011a497e8e5ee2573a0834c54b710d",
+     "100644 74a58c51b7542674c410933c9c46ed0442b7fe3a"
+    ],
+    "source/dng_memory.h": [
+     "100644 f92e1e01a98837dd12b83f5c6ed21ef5e888d860",
+     "100644 b170dc6016159a4caa2da9eb7f83fe07ed19fe11"
+    ],
+    "source/dng_memory_stream.cpp": [
+     "100644 f6b5e97c06c9e63a332ef4c1a4fd5687d150c017",
+     "100644 10a23a0892adf71d198f64244aaeca50f5ee51c9"
+    ],
+    "source/dng_memory_stream.h": [
+     "100644 a12bbea984250f83bd8e4908638513d754d24c7f",
+     "100644 299f310e695d2c92e3fd3e4a6bc9dcd18145fadd"
+    ],
+    "source/dng_misc_opcodes.cpp": [
+     "100644 5e52388203d55e74d6fab50d3a6e6272ba6d78d8",
+     "100644 00c11249950cd9f0194479da61f076d04440f847"
+    ],
+    "source/dng_mosaic_info.cpp": [
+     "100644 00617df25ddbfabb36c44da6fd9c09ec5ae74b95",
+     "100644 3adb8f9e79c280a67fa9b22fa60387948cf73a19"
+    ],
+    "source/dng_mutex.cpp": [
+     "100644 ddffd3e8eebac47352ad690cb2858e5da7eb5635",
+     "100644 0e6114b099a5f4c63f40c06b5d23b3d9c5b72c1b"
+    ],
+    "source/dng_negative.cpp": [
+     "100644 007e911d00e78e9d336253406e7d32f3b0369af5",
+     "100644 d76665a978980b4e60d04ffd5680cc4640f210dc"
+    ],
+    "source/dng_negative.h": [
+     "100644 b989c04d571b51931e68f71b3e95c40dd6b4109e",
+     "100644 dd64e8da7edf15dcb1652da5cdf8baf22d9cc20b"
+    ],
+    "source/dng_opcode_list.cpp": [
+     "100644 df768e493919214f734223f225f29128198043ff",
+     "100644 552f43c13e23d9fa0070e41c85fdc6029ff46cfd"
+    ],
+    "source/dng_parse_utils.cpp": [
+     "100644 86f5de6ec3d128ff63e8c6152a1715991b3f39d0",
+     "100644 2e2e3955f25379659c0eb2dd28a3cd267287886d"
+    ],
+    "source/dng_parse_utils.h": [
+     "100644 a8fa1fe55bd94d5337fae811263f43c15f5ae35e",
+     "100644 70afae5dbf08bebbe8cc8d5351b98717c5f24fa4"
+    ],
+    "source/dng_pixel_buffer.cpp": [
+     "100644 1c65ee0ebdfe15ab1bbb605c9f7838d844866d02",
+     "100644 71513ecc15483235c5394d76a6e99c50a57c566f"
+    ],
+    "source/dng_pixel_buffer.h": [
+     "100644 deddf48ae5efddb24b6048410f55f586e33cb06f",
+     "100644 5c67139556758908e5f11d30953426d74984c9e0"
+    ],
+    "source/dng_point.h": [
+     "100644 3b37b27e1271e64fd950b3fe1579d52f72f7d462",
+     "100644 4e3f6fd1ce62b17543f533b442fdfab9582c7c07"
+    ],
+    "source/dng_preview.cpp": [
+     "100644 bc1cc50705060d0e0c417281bc906313cb5e262f",
+     "100644 79690d65e864746e227a7ad551e339d700700736"
+    ],
+    "source/dng_pthread.cpp": [
+     "100644 fb82cbf413a5a33f6d62a5b4001ca46735594cff",
+     "100644 848a64b2d42903c64528f071a698e7e21453eb55"
+    ],
+    "source/dng_rational.cpp": [
+     "100644 4b3e3d331e4917de8bd114e5710305820eb99e20",
+     "100644 408efe583c23d5353f74c28a08487b2e294bdd21"
+    ],
+    "source/dng_read_image.cpp": [
+     "100644 b48cda44b7273272a08606170e395676d9ce37ba",
+     "100644 9ef78b4d6e63c7435fc92c4000101bf23b246062"
+    ],
+    "source/dng_rect.h": [
+     "100644 26845a3b976095f0276a7c73afb1feb839a7e1c0",
+     "100644 2a985bbe325b221f8825524711f5f22f3e74027f"
+    ],
+    "source/dng_ref_counted_block.cpp": [
+     "100644 32be356a9b1390f5825bba287a57f77f72cfe550",
+     "100644 fb2686a90e9b23230f795569b75c5e8f5501ee94"
+    ],
+    "source/dng_reference.cpp": [
+     "100644 d71cf4b27f8778b1f05024c3f7f4dce62b8ac46d",
+     "100644 a0173064e22c6395e85df01cd4e9642a89023644"
+    ],
+    "source/dng_render.cpp": [
+     "100644 bb11e175b6beb6a0b1f7135ebfb518ca4319efe4",
+     "100644 a5721c2eedbdc0c8c1e178a193adfcfd3af8d2ab"
+    ],
+    "source/dng_resample.cpp": [
+     "100644 c87ac6c8a1d20af018e6bbceffdbcec3508387b8",
+     "100644 8f431f65f50037a3cffd15c11b7561bbacc6fb8e"
+    ],
+    "source/dng_safe_arithmetic.cpp": [
+     "100644 b253742e4e02232f0b2e31516959a2dba60f7ec8",
+     "100644 ccea5c0d55e4ec3859b60f49c2230a9b1dfb4ee2"
+    ],
+    "source/dng_safe_arithmetic.h": [
+     "100644 064c767d28ebb14b34adfd73d5955691c90cabe6",
+     "100644 8d0ac73b625ed5beb170e137f8c2c1430357587e"
+    ],
+    "source/dng_shared.cpp": [
+     "100644 57e08ded6d43e30b078b005eb3bbfe4f01e58432",
+     "100644 9b375ad061ff3698ac4b90118c303891d07c88db"
+    ],
+    "source/dng_shared.h": [
+     "100644 4d0e7f0ae7b938b63165baf7635b22b29420f2b9",
+     "100644 e4c8d7a8ee084dab12274f034261de2ceaf251ae"
+    ],
+    "source/dng_simple_image.cpp": [
+     "100644 0595ba8a1c5701a43b9cae7f12feba584994312d",
+     "100644 8279d413d62697b3ec495d4fa5f66c89ec6a271a"
+    ],
+    "source/dng_spline.cpp": [
+     "100644 4f583b79ce50956fb371e55589cb6e5cd1f2bb22",
+     "100644 edcf409a64ca6205158b9055b18ff201d8f4529d"
+    ],
+    "source/dng_spline.h": [
+     "100644 b3f0c975df1b34c90b6065122f4b6729e6e69ef2",
+     "100644 352045269e6ec453dd604539fbb4e5d2c87b9eff"
+    ],
+    "source/dng_stream.cpp": [
+     "100644 cfb7d2044f6d9c232c83b9e23f12f8eae02a7601",
+     "100644 e917b612ba68a183df8ed73fc13f0553eb1122f8"
+    ],
+    "source/dng_stream.h": [
+     "100644 c8f37e2fb8aa8e2bf0b94b03b7577d87f65ca06b",
+     "100644 c4869740987865b2b9c00f8f176d463a432e2599"
+    ],
+    "source/dng_string.cpp": [
+     "100644 aca34055e20f26629716bc395d5bd1b6e193d3a1",
+     "100644 a885d1956a89a722f8cb169da3a1c122f6915953"
+    ],
+    "source/dng_tag_codes.h": [
+     "100644 a231409f11ff1712aa82565a03bb3345cc9a73b4",
+     "100644 8cb88fe6336a20cfebf28d40d09b5273f9525bfc"
+    ],
+    "source/dng_tag_values.h": [
+     "100644 0e6df48260a12bee9ad9010730ef5d5806f15499",
+     "100644 e2a5afa93fd8221525cddc75df2b87a8a233df67"
+    ],
+    "source/dng_temperature.cpp": [
+     "100644 877c5e9d4a0ddf5cda1c0abca6581a188a8323e7",
+     "100644 77ee342118138f57b423628d6efc818f9803be1d"
+    ],
+    "source/dng_temperature.h": [
+     "100644 459508cf8a4784c8c647c209b94fdf5782ff76ad",
+     "100644 b645d80bde51d36aabe567dc5852e9110b5d67ed"
+    ],
+    "source/dng_tile_iterator.cpp": [
+     "100644 ba8182cbe62b86d0fdff785651d5caf62003c9f9",
+     "100644 868ae4f1a43b88b783fa9fdbab416d10aa2fcb64"
+    ],
+    "source/dng_tone_curve.cpp": [
+     "100644 1e76bcfabe5a0cd9008fce5f7ea2db6d6bbb1dc1",
+     "100644 852d2ad621b61098c4f1b9d6050905c1118f9575"
+    ],
+    "source/dng_update_meta.cpp": [
+     "100644 be1a09b39184cbf4052241530b47a667043575c3",
+     "100644 8bd50b9eb4f527418dbd0909cc980dd1c0ae48f0"
+    ],
+    "source/dng_utils.cpp": [
+     "100644 df1d76e885c1977f4dfb62be62d942a0f14c1a72",
+     "100644 fb73b26e37ec6b069f98031f20894386ca385f20"
+    ],
+    "source/dng_utils.h": [
+     "100644 5f43eae4b45d4a8d1382ce565e865c563f4d7608",
+     "100644 6b0f6b8f84ca1fafe6cd6e6c4ffe314f64e5ecda"
+    ],
+    "source/dng_xmp.cpp": [
+     "100644 746a38f67b5ca2b978b34f459cbdc40b1a4a33cb",
+     "100644 240ec896b6ff00ea01b0e332332fce85724b81ec"
+    ],
+    "source/dng_xmp_sdk.cpp": [
+     "100644 f4f765f35ba1a7bb39e1648ac616e7d3e19ef2b8",
+     "100644 79a1b37b38188b9584bdb4459609605a3de721d7"
+    ],
+    "source/dng_xmp_sdk.h": [
+     "100644 bbb8f43dadfcc81b20a0903a215adddb72e55cff",
+     "100644 5798a7f9aa5c0ada0587c3102b28ce8fcb0dd9dd"
+    ]
+   },
+   "upstream": "Adobe DNG SDK 1.7.1, build 2768"
+  },
+  {
+   "id": "0061",
+   "project": "external/dng_sdk",
+   "file": "patches/external/dng_sdk/0061-bound-xmp-element-nesting-before-toolkit-parsing.patch",
+   "sha256": "eb46408e89a8b89d99f6b590e24602fa460f9d9d81f2c26af2e736fc2afb07e4",
+   "title": "Bound XMP element nesting before toolkit parsing",
+   "kind": "fix",
+   "files": {
+    "source/dng_xmp_limits.h": [
+     null,
+     "100644 d94d9723f99d154718673ad00ba5595762c54c5b"
+    ],
+    "source/dng_xmp_sdk.cpp": [
+     "100644 79a1b37b38188b9584bdb4459609605a3de721d7",
+     "100644 6999a996dc260e22415ba021665501be5d46f932"
+    ]
+   }
+  },
+  {
+   "id": "0062",
+   "project": "external/pdfium",
+   "file": "patches/external/pdfium/0062-integrate-little-cms-2-19-with-complete-overflow-guards.patch",
+   "sha256": "99978cc68f985d34544c5f545b69cbd1b845c38e4ffee356523e2ae0ad3f368a",
+   "title": "Integrate Little CMS 2.19 with complete overflow guards",
+   "kind": "import",
+   "files": {
+    "third_party/lcms/0000-cmserr-changes.patch": [
+     "100644 13a854a29591c2bb76c5a69b593732aed3d6d08e",
+     "100644 0283b529d22fc537b9ed81145fcb0bfb39337bc7"
+    ],
+    "third_party/lcms/0030-const-data.patch": [
+     "100644 0c42ddeb11c8ba67483a46da0ee61921be6b5257",
+     null
+    ],
+    "third_party/lcms/0034-dead-code.patch": [
+     "100644 d02e60bc5aeea34a342e1f0fd08da6e5a24e6ccb",
+     null
+    ],
+    "third_party/lcms/0037-theoretical-overflow.patch": [
+     null,
+     "100644 1bc5e19958cf4f63159832ffbe2f39dc6ebb8f31"
+    ],
+    "third_party/lcms/README.pdfium": [
+     "100644 2a279325d3796fcedbf8bee95b26f26855d35d91",
+     "100644 bd20ebe7e3f110173bd6d04d2bc30e19967e12cc"
+    ],
+    "third_party/lcms/include/lcms2.h": [
+     "100644 75451bf59774e93176ae20d94da83aeb0ad2384e",
+     "100644 6c52a8d1326a664b8f7b02a52c97203e391971cf"
+    ],
+    "third_party/lcms/include/lcms2_plugin.h": [
+     "100644 906defb52118d6b42baa613d9019dc76faadf9d9",
+     "100644 948777e4be5b496385b7bc63230ccae7d2fbccac"
+    ],
+    "third_party/lcms/src/cmsalpha.c": [
+     "100644 7c6a6d292c6df720818b9f802320a44ccea93f8f",
+     "100644 18c84def1a2b10210330c6b06474981d1d5716ec"
+    ],
+    "third_party/lcms/src/cmscam02.c": [
+     "100644 3f080a190cc6bb17d3a2c59d94ce7782a48972db",
+     "100644 830965d3d6b1616e82f955563f745780675a5887"
+    ],
+    "third_party/lcms/src/cmscgats.c": [
+     "100644 71692641ac80dd84708b888562626b8be3d0ce76",
+     "100644 55a1f305cd0533b2ea520cd93a7abf0efcadab88"
+    ],
+    "third_party/lcms/src/cmscnvrt.c": [
+     "100644 de63975427da1c09a9d9fdbf7df18fdf45a4a0c1",
+     "100644 895c07895472efc3909e23b5bdb46d1d9fe490aa"
+    ],
+    "third_party/lcms/src/cmsgamma.c": [
+     "100644 0c8d0f3823cb4ca73fb461d83c3de00afa459402",
+     "100644 6bae5fdc49c951373f2fe6f306e7a6df10d3c637"
+    ],
+    "third_party/lcms/src/cmsgmt.c": [
+     "100644 5109bfaefbbebc5841c2a6356903222d5c93e513",
+     "100644 e4ead4ec7a193c321d9a576e31adb6d839dcc150"
+    ],
+    "third_party/lcms/src/cmshalf.c": [
+     "100644 043ee530b46a60f21736a93149359ae4a998d841",
+     "100644 43a3f9b38adf335a6b6d2c207c3891574444b855"
+    ],
+    "third_party/lcms/src/cmsintrp.c": [
+     "100644 2b5c634f42d228c0e8571642dfd04623245fd626",
+     "100644 a9934b78ae95365dad569c299bcd33f7f516db8f"
+    ],
+    "third_party/lcms/src/cmsio0.c": [
+     "100644 c45022f8a690ab3089184d11e51d9db40c6db65e",
+     "100644 4b14aae8ec8d09b882e79dd5da96319a2682ae92"
+    ],
+    "third_party/lcms/src/cmsio1.c": [
+     "100644 b923739f60f15e36b92563578aeccf48c7250046",
+     "100644 09898262b9c9f51b7d100c97472042c9a9f84e24"
+    ],
+    "third_party/lcms/src/cmslut.c": [
+     "100644 22a16b327ff7e9813ec9618ac5acf76f3cb4fb70",
+     "100644 56b0acdbc919642a21275e7187c71d1138b4875e"
+    ],
+    "third_party/lcms/src/cmsmd5.c": [
+     "100644 cd6ce97d2bc234b55cac78a9f3e010997615f150",
+     "100644 b12f6168f4a5288743329bd2e2c86108cc720dc4"
+    ],
+    "third_party/lcms/src/cmsmtrx.c": [
+     "100644 5f5a3c892d6175394a8ee1af6624f141a4a1335d",
+     "100644 0eeed97b52b422689d8b71e2b4f2984b1fde9154"
+    ],
+    "third_party/lcms/src/cmsnamed.c": [
+     "100644 54d1abf913b315497f45ebe48cd3404215412475",
+     "100644 445eb6ecd47057a1c5bf51a0e316c96893867127"
+    ],
+    "third_party/lcms/src/cmsopt.c": [
+     "100644 a5475709bc29815cc50e0af3d33ca19c08f6f622",
+     "100644 c58a89373d38e4e533896ad7cc36a8a257fb12e9"
+    ],
+    "third_party/lcms/src/cmspack.c": [
+     "100644 7b92846938b34a90015bc7163c99240098cf05a0",
+     "100644 d675cb168463d659c32771a5f188f77a6d8c9104"
+    ],
+    "third_party/lcms/src/cmspcs.c": [
+     "100644 e11f87c23a597406f9a57260ae8626afa4f61e2f",
+     "100644 88ee09eae532bda69ed83233a09e0e78bc7b5f53"
+    ],
+    "third_party/lcms/src/cmsplugin.c": [
+     "100644 3876506dacdf1f0c06eded832abcb9cd7a971df5",
+     "100644 21465f38a152e79d651464db495985f4b160a21c"
+    ],
+    "third_party/lcms/src/cmsps2.c": [
+     "100644 9aeea36d4fc52e8be1dc74da9636913fbf2ca3d6",
+     "100644 f5889151a0874e7e44585d4fc2c8bcf444500d1e"
+    ],
+    "third_party/lcms/src/cmssamp.c": [
+     "100644 4888f1ea88b52fe2d92b5927a6bfb331492112bc",
+     "100644 2b49e5245747fd2d8e122501f8ef5d59cd76b961"
+    ],
+    "third_party/lcms/src/cmssm.c": [
+     "100644 5c1e430a8cb9d0ce5521b090fed6b2c1416ed354",
+     "100644 264d34d59b7e32cea94fbce5ede72cd19d5c49d5"
+    ],
+    "third_party/lcms/src/cmstypes.c": [
+     "100644 ec1909f8d33fe77cfccbaf9778e33c8610a02b7d",
+     "100644 4bf475d73697be28bf091c31160a79cd066758b4"
+    ],
+    "third_party/lcms/src/cmsvirt.c": [
+     "100644 951a8ee29de8e38cfbb6556b8b961fb554d01128",
+     "100644 f38554a60e8e003a3434080be24ee8c4e4270dab"
+    ],
+    "third_party/lcms/src/cmswtpnt.c": [
+     "100644 a73eaa7e366e7194e30d9a8c1380f113b7658c97",
+     "100644 8630286bc25681c90f38978c683c368e4f5940a5"
+    ],
+    "third_party/lcms/src/cmsxform.c": [
+     "100644 c70b7cbce173ee3ed6027c75b93f4c6ed70c6efc",
+     "100644 934328bc806a8812acfd52df9ab6f96c13908769"
+    ],
+    "third_party/lcms/src/lcms2_internal.h": [
+     "100644 937c6e593376062b2d008acbb32d704e4b9a4ec9",
+     "100644 954e34069f8302f9a56fa5bca2dba394508ea4db"
+    ]
+   },
+   "upstream": "Little CMS 2.19, as in PDFium fcb63e51"
   }
  ]
 }
