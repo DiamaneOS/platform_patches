@@ -1,0 +1,63 @@
+diff --git a/core/java/android/app/ActivityManagerInternal.java b/core/java/android/app/ActivityManagerInternal.java
+index cc9a8b092203e26ae32c3fc2ea16e6cbc30cee14..6062f7cbeb6f5210b00b1c1d66084fea1973c182 100644
+--- a/core/java/android/app/ActivityManagerInternal.java
++++ b/core/java/android/app/ActivityManagerInternal.java
+@@ -1468,6 +1468,13 @@ public abstract class ActivityManagerInternal {
+      */
+     public abstract void addCreatorToken(Intent intent, String creatorPackage);
+ 
++    /**
++     * Adds nested-intent creator tokens using an identity already authorized by the caller.
++     * This overload is for trusted in-process callers acting on behalf of another UID.
++     * @hide
++     */
++    public abstract void addCreatorToken(Intent intent, String creatorPackage, int creatorUid);
++
+     /**
+      * Returns whether {@code clientUid} has a service binding or provider client to
+      * {@code uid}.
+diff --git a/services/core/java/com/android/server/am/ActivityManagerService.java b/services/core/java/com/android/server/am/ActivityManagerService.java
+index e07dbc3f76a3cbfd1c1edf3f5291b45f872d6a86..6a62bed623d60f7448c020403ce952bbf35cde44 100644
+--- a/services/core/java/com/android/server/am/ActivityManagerService.java
++++ b/services/core/java/com/android/server/am/ActivityManagerService.java
+@@ -19404,6 +19404,11 @@ public class ActivityManagerService extends IActivityManager.Stub
+             ActivityManagerService.this.addCreatorToken(intent, creatorPackage);
+         }
+ 
++        @Override
++        public void addCreatorToken(Intent intent, String creatorPackage, int creatorUid) {
++            ActivityManagerService.this.addCreatorToken(intent, creatorPackage, creatorUid);
++        }
++
+         @Override
+         public boolean hasServiceBindingOrProviderUse(int uid, int clientUid) {
+             synchronized (mGlobalLock) {
+@@ -21198,10 +21203,13 @@ public class ActivityManagerService extends IActivityManager.Stub
+      * @param intent The given intent
+      */
+     public void addCreatorToken(@Nullable Intent intent, String creatorPackage) {
++        addCreatorToken(intent, creatorPackage, Binder.getCallingUid());
++    }
++
++    private void addCreatorToken(@Nullable Intent intent, String creatorPackage, int callingUid) {
+         if (!preventIntentRedirect()) return;
+         if (intent == null) return;
+ 
+-        int callingUid = Binder.getCallingUid();
+         if (((intent.getExtendedFlags() & Intent.EXTENDED_FLAG_NESTED_INTENT_KEYS_COLLECTED) == 0)
+                 && intent.getExtras() != null && intent.getExtras().hasIntent()) {
+             Slog.wtf(
+diff --git a/services/core/java/com/android/server/wm/ActivityTaskManagerService.java b/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
+index e9f1c5d0bd77775e2ce4612c0372894949155a18..f564a36e7c8bb61c452ca5c8dc47f8e108fb4bfd 100644
+--- a/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
++++ b/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
+@@ -1805,6 +1805,9 @@ public class ActivityTaskManagerService extends IActivityTaskManager.Stub {
+             userId = UserHandle.getUserId(sourceRecord.app.mUid);
+         }
+ 
++        // Preserve the authorized original caller when labeling forwarded nested intents.
++        mAmInternal.addCreatorToken(intent, targetPackage, targetUid);
++
+         // TODO: Switch to user app stacks here.
+         try {
+             return getActivityStartController().obtainStarter(intent, "startActivityAsCaller")

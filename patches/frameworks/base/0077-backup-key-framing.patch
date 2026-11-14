@@ -1,0 +1,52 @@
+diff --git a/libs/androidfw/BackupData.cpp b/libs/androidfw/BackupData.cpp
+index fec0e772674d590c91abb5c43bafffb3d2d3d9ee..4836d57601ecf3bd5a2a8b720d2bda7edfda44da 100644
+--- a/libs/androidfw/BackupData.cpp
++++ b/libs/androidfw/BackupData.cpp
+@@ -255,10 +255,12 @@ BackupDataReader::ReadNextHeader(bool* done, int* type)
+         case BACKUP_HEADER_ENTITY_V1:
+         {
+             m_header.entity.keyLen = fromlel(m_header.entity.keyLen);
+-            if (m_header.entity.keyLen <= 0) {
+-                ALOGD("Entity header at %d has keyLen<=0: 0x%08x\n", (int)m_pos,
++            if (m_header.entity.keyLen <= 0 || m_header.entity.keyLen > 0xffff) {
++                ALOGE("Entity header at %d has invalid keyLen: 0x%08x", (int)m_pos,
+                         (int)m_header.entity.keyLen);
++                android_errorWriteLog(0x534e4554, "512108201");
+                 m_status = EINVAL;
++                return m_status;
+             }
+             m_header.entity.dataSize = fromlel(m_header.entity.dataSize);
+             m_entityCount++;
+@@ -270,8 +272,31 @@ BackupDataReader::ReadNextHeader(bool* done, int* type)
+                 m_status = ENOMEM;
+                 return m_status;
+             }
++            buf[size] = '\0';
+             int amt = read(m_fd, buf, size+1);
+-            CHECK_SIZE(amt, (int)size+1);
++            if (amt != (int)size+1) {
++                // A short read leaves part of the key buffer unset, and CHECK_SIZE would
++                // take its status from a stale errno that can be 0. Drop the key and fail.
++                const int readErrno = errno;
++                buf[0] = '\0';
++                m_key.unlockBuffer(0);
++                if (amt == 0) {
++                    m_status = EIO;
++                    m_done = true;
++                } else {
++                    m_status = (amt < 0 && readErrno != 0) ? readErrno : EIO;
++                }
++                return m_status;
++            }
++            if (buf[size] != '\0') {
++                ALOGW("Entity header at %d has non-null-terminated key of length %zu",
++                        (int)m_pos, size);
++                android_errorWriteLog(0x534e4554, "512108201");
++                buf[size] = '\0';
++                m_key.unlockBuffer(size);
++                m_status = EINVAL;
++                return m_status;
++            }
+             m_key.unlockBuffer(size);
+             m_pos += size+1;
+             SKIP_PADDING();

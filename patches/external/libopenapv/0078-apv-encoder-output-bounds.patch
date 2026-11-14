@@ -1,0 +1,365 @@
+diff --git a/src/oapv.c b/src/oapv.c
+index ba27241067f7999727893906b43459e050d9c75c..9a9745fe553bebb004248770dbfd954e45eb4db8 100644
+--- a/src/oapv.c
++++ b/src/oapv.c
+@@ -777,6 +777,7 @@ static int enc_tile_comp(oapv_bs_t *bs, oapve_tile_t *tile, oapve_ctx_t *ctx, oa
+     s16 *o16 = NULL, *r16 = NULL;
+ 
+     u8  *bs_cur = oapv_bsw_sink(bs);
++    oapv_assert_rv(bs_cur != NULL, BSW_ERROR(bs));
+     oapv_assert_rv(bsw_is_align8(bs), OAPV_ERR_MALFORMED_BITSTREAM);
+ 
+     mb_w = OAPV_MB_W >> ctx->comp_sft[c][0];
+@@ -797,6 +798,7 @@ static int enc_tile_comp(oapv_bs_t *bs, oapve_tile_t *tile, oapve_ctx_t *ctx, oa
+                     ctx->fn_enc_blk(ctx, core, OAPV_LOG2_BLK_W, OAPV_LOG2_BLK_H, c);
+                     oapve_vlc_dc_coef(bs, core->dc_diff, &core->kparam_dc[c]);
+                     oapve_vlc_ac_coef(bs, core->coef, &core->kparam_ac[c]);
++                    oapv_assert_rv(BSW_ERROR(bs) == OAPV_OK, BSW_ERROR(bs));
+                     DUMP_COEF(core->dc_diff, core->coef + 1, OAPV_BLK_D - 1, blk_x, blk_y, c);
+ 
+                     if(rec != NULL) {
+@@ -810,10 +812,13 @@ static int enc_tile_comp(oapv_bs_t *bs, oapve_tile_t *tile, oapve_ctx_t *ctx, oa
+ 
+     /* byte align */
+     while(!bsw_is_align8(bs)) {
+-        oapv_bsw_write1(bs, 0);
++        int ret = oapv_bsw_write1(bs, 0);
++        oapv_assert_rv(OAPV_SUCCEEDED(ret), ret);
+     }
+ 
+-    int enc_bytes = (u8*)oapv_bsw_sink(bs) - bs_cur;
++    u8 *bs_end = oapv_bsw_sink(bs);
++    oapv_assert_rv(bs_end != NULL, BSW_ERROR(bs));
++    int enc_bytes = bs_end - bs_cur;
+     oapv_assert(enc_bytes > 0);
+ 
+     oapv_bsw_deinit(bs);
+@@ -904,10 +909,14 @@ static int enc_tile(oapve_ctx_t *ctx, oapve_core_t *core, oapve_tile_t *tile)
+             }
+         }
+ 
+-        tile->th.tile_data_size[c] = enc_tile_comp(&bs, tile, ctx, core, c, s_org, org, s_rec, rec);
++        int comp_size = enc_tile_comp(&bs, tile, ctx, core, c, s_org, org, s_rec, rec);
++        oapv_assert_rv(OAPV_SUCCEEDED(comp_size), comp_size);
++        tile->th.tile_data_size[c] = comp_size;
+     }
+ 
+-    u32 remained_bs_size = (int)((u8*)oapv_bsw_sink(&bs) - bs.beg);
++    u8 *bs_end = oapv_bsw_sink(&bs);
++    oapv_assert_rv(bs_end != NULL, BSW_ERROR(&bs));
++    u32 remained_bs_size = (int)(bs_end - bs.beg);
+     if(remained_bs_size > tile->bs_buf_max) {
+         return OAPV_ERR_OUT_OF_BS_BUF;
+     }
+@@ -923,7 +932,7 @@ static int enc_tile(oapve_ctx_t *ctx, oapve_core_t *core, oapve_tile_t *tile)
+     oapve_vlc_tile_header(ctx, &bs_th, &tile->th);
+     DUMP_LOAD(1);
+     oapv_bsw_deinit(&bs_th);
+-    return OAPV_OK;
++    return BSW_ERROR(&bs_th);
+ }
+ 
+ static int enc_thread_tile(void *arg)
+@@ -1126,6 +1135,7 @@ static int enc_frame(oapve_ctx_t *ctx, oapv_bs_t *bs)
+     oapve_vlc_frame_header(bs, ctx, &ctx->fh);
+ 
+     u8 *bs_tile_pos = oapv_bsw_sink(bs);
++    oapv_assert_rv(bs_tile_pos != NULL, BSW_ERROR(bs));
+ 
+     /* rc init */
+     u64 cost_sum = 0;
+@@ -1161,16 +1171,27 @@ static int enc_frame(oapve_ctx_t *ctx, oapv_bs_t *bs)
+                    (void *)ctx->core[tidx]);
+     }
+     ret = enc_thread_tile((void *)ctx->core[tidx]);
+-    oapv_assert_g(OAPV_SUCCEEDED(ret), ERR);
+ 
+     for(thread_num1 = 0; thread_num1 < parallel_task - 1; thread_num1++) {
+-        res = tpool->join(ctx->thread_id[thread_num1], &ret);
+-        oapv_assert_gv(res == TPOOL_SUCCESS, ret, OAPV_ERR_FAILED_SYSCALL, ERR);
+-        oapv_assert_g(OAPV_SUCCEEDED(ret), ERR);
++        int worker_ret = OAPV_OK;
++        res = tpool->join(ctx->thread_id[thread_num1], &worker_ret);
++        if(res != TPOOL_SUCCESS && OAPV_SUCCEEDED(ret)) {
++            ret = OAPV_ERR_FAILED_SYSCALL;
++        }
++        else if(OAPV_FAILED(worker_ret) && OAPV_SUCCEEDED(ret)) {
++            ret = worker_ret;
++        }
+     }
++    oapv_assert_g(OAPV_SUCCEEDED(ret), ERR);
+     /****************************************************/
+ 
+     for(int i = 0; i < ctx->num_tiles; i++) {
++        uintptr_t tile_pos = (uintptr_t)bs_tile_pos;
++        uintptr_t output_end = (uintptr_t)bs->end;
++        oapv_assert_rv(bs_tile_pos != NULL && ctx->tile[i].bs_size >= 0 &&
++                       tile_pos <= output_end &&
++                       (uintptr_t)ctx->tile[i].bs_size <= output_end - tile_pos,
++                       OAPV_ERR_OUT_OF_BS_BUF);
+         oapv_mcpy(bs_tile_pos, ctx->tile[i].bs_buf, ctx->tile[i].bs_size);
+         bs_tile_pos = bs_tile_pos + ctx->tile[i].bs_size;
+         ctx->fh.tile_size[i] = ctx->tile[i].bs_size - OAPV_TILE_SIZE_LEN;
+@@ -1181,6 +1202,7 @@ static int enc_frame(oapve_ctx_t *ctx, oapv_bs_t *bs)
+     if(ctx->fh.tile_size_present_in_fh_flag) {
+         oapve_vlc_frame_header(&bs_fh, ctx, &ctx->fh);
+         oapv_bsw_sink(&bs_fh); // make sure write bits to bs buffer
++        oapv_assert_rv(BSW_ERROR(&bs_fh) == OAPV_OK, BSW_ERROR(&bs_fh));
+     }
+     if(ctx->param->rc_type != 0) {
+         oapve_rc_update_after_pic(ctx, cost_sum);
+@@ -1300,12 +1322,21 @@ int oapve_encode(oapve_t eid, oapv_frms_t *ifrms, oapvm_t mid, oapv_bitb_t *bitb
+     ctx = enc_id_to_ctx(eid);
+     oapv_assert_rv(ctx != NULL && bitb->addr && bitb->bsize > 0, OAPV_ERR_INVALID_ARGUMENT);
+ 
++    for(i = 0; i < ifrms->num_frms; i++) {
++        if(ctx->use_frm_hash &&
++           (ifrms->frm[i].pbu_type == OAPV_PBU_TYPE_PRIMARY_FRAME ||
++            ifrms->frm[i].pbu_type == OAPV_PBU_TYPE_NON_PRIMARY_FRAME)) {
++            oapv_assert_rv(mid != NULL, OAPV_ERR_INVALID_ARGUMENT);
++        }
++    }
++
+     bs = &bsw;
+ 
+     oapv_bsw_init(bs, bitb->addr, bitb->bsize, NULL);
+     oapv_mset(stat, 0, sizeof(oapve_stat_t));
+ 
+     bs_pos_au_beg = oapv_bsw_sink(bs);
++    oapv_assert_rv(bs_pos_au_beg != NULL, BSW_ERROR(bs));
+ 
+     if(ctx->au_bs_fmt == OAPV_CFG_VAL_AU_BS_FMT_RBAU) {
+         oapv_bsw_write(bs, 0, 32); // raw bitstream byte size (skip)
+@@ -1320,15 +1351,27 @@ int oapve_encode(oapve_t eid, oapv_frms_t *ifrms, oapvm_t mid, oapv_bitb_t *bitb
+ 
+         // write headers
+         bs_pos_pbu_beg = oapv_bsw_sink(bs);            /* store pbu pos to calculate size */
++        if(bs_pos_pbu_beg == NULL) {
++            enc_frm_finish(ctx, stat);
++            return BSW_ERROR(bs);
++        }
+         DUMP_SAVE(0);
+         oapv_bsw_write(bs, 0, 32); /* skip pbu_size syntax (later re-write) */
+         oapve_vlc_pbu_header(bs, frm->pbu_type, frm->group_id);
+         // encode a frame
+         ret = enc_frame(ctx, bs);
+-        oapv_assert_rv(OAPV_SUCCEEDED(ret), ret);
++        if(OAPV_FAILED(ret)) {
++            enc_frm_finish(ctx, stat);
++            return ret;
++        }
+ 
+         // rewrite pbu_size
+-        int pbu_size = ((u8 *)oapv_bsw_sink(bs)) - bs_pos_pbu_beg - 4;
++        u8 *bs_pos_pbu_end = oapv_bsw_sink(bs);
++        if(bs_pos_pbu_end == NULL) {
++            enc_frm_finish(ctx, stat);
++            return BSW_ERROR(bs);
++        }
++        int pbu_size = bs_pos_pbu_end - bs_pos_pbu_beg - 4;
+         DUMP_SAVE(1);
+         DUMP_LOAD(0);
+         oapv_bsw_write_direct(bs_pos_pbu_beg, pbu_size, 32);
+@@ -1342,7 +1385,6 @@ int oapve_encode(oapve_t eid, oapv_frms_t *ifrms, oapvm_t mid, oapv_bitb_t *bitb
+         if(ctx->use_frm_hash) {
+             if(frm->pbu_type == OAPV_PBU_TYPE_PRIMARY_FRAME ||
+                frm->pbu_type == OAPV_PBU_TYPE_NON_PRIMARY_FRAME) {
+-                oapv_assert_rv(mid != NULL, OAPV_ERR_INVALID_ARGUMENT);
+                 ret = oapv_set_md5_pld(mid, frm->group_id, ctx->imgb_r);
+                 oapv_assert_rv(OAPV_SUCCEEDED(ret), ret);
+             }
+@@ -1361,13 +1403,17 @@ int oapve_encode(oapve_t eid, oapv_frms_t *ifrms, oapvm_t mid, oapv_bitb_t *bitb
+         for(i = 0; i < num_md; i++) {
+             int group_id = md_list->md_arr[i].group_id;
+             bs_pos_pbu_beg = oapv_bsw_sink(bs);            /* store pbu pos to calculate size */
++            oapv_assert_rv(bs_pos_pbu_beg != NULL, BSW_ERROR(bs));
+             DUMP_SAVE(0);
+             oapv_bsw_write(bs, 0, 32); /* skip pbu_size syntax (later re-write) */
+             oapve_vlc_pbu_header(bs, OAPV_PBU_TYPE_METADATA, group_id);
+-            oapve_vlc_metadata(&md_list->md_arr[i], bs);
++            ret = oapve_vlc_metadata(&md_list->md_arr[i], bs);
++            oapv_assert_rv(OAPV_SUCCEEDED(ret), ret);
+ 
+             // rewrite pbu_size
+-            int pbu_size = ((u8 *)oapv_bsw_sink(bs)) - bs_pos_pbu_beg - 4;
++            u8 *bs_pos_pbu_end = oapv_bsw_sink(bs);
++            oapv_assert_rv(bs_pos_pbu_end != NULL, BSW_ERROR(bs));
++            int pbu_size = bs_pos_pbu_end - bs_pos_pbu_beg - 4;
+             DUMP_SAVE(1);
+             DUMP_LOAD(0);
+             oapv_bsw_write_direct(bs_pos_pbu_beg, pbu_size, 32);
+@@ -1377,11 +1423,14 @@ int oapve_encode(oapve_t eid, oapv_frms_t *ifrms, oapvm_t mid, oapv_bitb_t *bitb
+     }
+ 
+     if(ctx->au_bs_fmt == OAPV_CFG_VAL_AU_BS_FMT_RBAU) {
+-        u32 au_size = (u32)((u8 *)oapv_bsw_sink(bs) - bs_pos_au_beg) - 4;
++        u8 *bs_pos_au_end = oapv_bsw_sink(bs);
++        oapv_assert_rv(bs_pos_au_end != NULL, BSW_ERROR(bs));
++        u32 au_size = (u32)(bs_pos_au_end - bs_pos_au_beg) - 4;
+         oapv_bsw_write_direct(bs_pos_au_beg, au_size, 32);
+     }
+ 
+     oapv_bsw_deinit(bs); /* de-init BSW */
++    oapv_assert_rv(BSW_ERROR(bs) == OAPV_OK, BSW_ERROR(bs));
+     stat->write = bsw_get_write_byte(bs);
+ 
+     return OAPV_OK;
+diff --git a/src/oapv_bs.c b/src/oapv_bs.c
+index f830fb3bd5737af81327ccd87838026756bf055d..c75280b06b0a665eb0fc7221b5bddb3402ce8fef 100644
+--- a/src/oapv_bs.c
++++ b/src/oapv_bs.c
+@@ -41,10 +41,13 @@
+ 
+ static int bsw_flush(oapv_bs_t *bs, int bytes)
+ {
++    if(BSW_ERROR(bs)) return BSW_ERROR(bs);
+     if(bytes == 0)
+         bytes = BSW_GET_SINK_BYTE(bs);
+ 
+-    oapv_assert_rv(bs->cur + bytes <= bs->end, -1);
++    if(bytes < 0 || !bsw_has_space(bs, (size_t)bytes)) {
++        return BSW_ERROR(bs) = OAPV_ERR_OUT_OF_BS_BUF;
++    }
+ 
+     while(bytes--) {
+         *bs->cur++ = (bs->code >> 56) & 0xFF;
+@@ -56,6 +59,20 @@ static int bsw_flush(oapv_bs_t *bs, int bytes)
+     return 0;
+ }
+ 
++static int bsw_flush_checked(oapv_bs_t *bs, int bytes)
++{
++    if(BSW_ERROR(bs)) return BSW_ERROR(bs);
++    int pending = bytes == 0 ? BSW_GET_SINK_BYTE(bs) : bytes;
++    if(pending < 0 || !bsw_has_space(bs, (size_t)pending)) {
++        return BSW_ERROR(bs) = OAPV_ERR_OUT_OF_BS_BUF;
++    }
++    int ret = bs->fn_flush(bs, bytes);
++    if(ret != 0) {
++        BSW_ERROR(bs) = ret < 0 ? ret : OAPV_ERR_OUT_OF_BS_BUF;
++    }
++    return BSW_ERROR(bs);
++}
++
+ void oapv_bsw_init(oapv_bs_t *bs, u8 *buf, int size, oapv_bs_fn_flush_t fn_flush)
+ {
+     bs->size = size;
+@@ -64,18 +81,18 @@ void oapv_bsw_init(oapv_bs_t *bs, u8 *buf, int size, oapv_bs_fn_flush_t fn_flush
+     bs->end = buf + size;
+     bs->code = 0;
+     bs->leftbits = 64;
++    BSW_ERROR(bs) = OAPV_OK;
+     bs->fn_flush = (fn_flush == NULL ? bsw_flush : fn_flush);
+ }
+ 
+ void oapv_bsw_deinit(oapv_bs_t *bs)
+ {
+-    bs->fn_flush(bs, 0);
++    bsw_flush_checked(bs, 0);
+ }
+ 
+ void *oapv_bsw_sink(oapv_bs_t *bs)
+ {
+-    oapv_assert_rv(bs->cur + BSW_GET_SINK_BYTE(bs) < bs->end, NULL);
+-    bs->fn_flush(bs, 0);
++    if(bsw_flush_checked(bs, 0) != OAPV_OK) return NULL;
+     bs->code = 0;
+     bs->leftbits = 64;
+     return (void *)bs->cur;
+@@ -99,13 +116,14 @@ int oapv_bsw_write_direct(void *addr, u32 val, int len)
+ int oapv_bsw_write1(oapv_bs_t *bs, int val)
+ {
+     oapv_assert(bs);
++    if(BSW_ERROR(bs)) return BSW_ERROR(bs);
+ 
+     bs->leftbits--;
+     bs->code |= ((u64)(val & 0x1) << bs->leftbits);
+ 
+     if(bs->leftbits == 0) {
+-        oapv_assert_rv(bs->cur < bs->end, -1);
+-        bs->fn_flush(bs, 0);
++        int ret = bsw_flush_checked(bs, 0);
++        if(ret != OAPV_OK) return ret;
+ 
+         bs->code = 0;
+         bs->leftbits = 64;
+@@ -120,6 +138,7 @@ int oapv_bsw_write(oapv_bs_t *bs, u32 val, int len)
+     u64 code_t;
+ 
+     oapv_assert(bs);
++    if(BSW_ERROR(bs)) return BSW_ERROR(bs);
+ 
+     leftbits = bs->leftbits;
+     code_t = ((u64)val) << (64 - len);
+@@ -129,7 +148,8 @@ int oapv_bsw_write(oapv_bs_t *bs, u32 val, int len)
+         bs->leftbits -= len;
+     }
+     else {
+-        bs->fn_flush(bs, 8);
++        int ret = bsw_flush_checked(bs, 8);
++        if(ret != OAPV_OK) return ret;
+         bs->code = code_t << leftbits;
+         bs->leftbits = 64 - (len - leftbits);
+     }
+diff --git a/src/oapv_bs.h b/src/oapv_bs.h
+index 40f1a901a34ca192bb626067bb1822d8a2052d56..c88aab8963c3478ef58b1ebe2fcbd9f0493a1f4d 100644
+--- a/src/oapv_bs.h
++++ b/src/oapv_bs.h
+@@ -54,6 +54,16 @@ struct oapv_bs {
+ #if ENABLE_ENCODER
+ ///////////////////////////////////////////////////////////////////////////////
+ 
++/* The encoder reserves the otherwise unused ndata[0] for a sticky writer error. */
++#define BSW_ERROR(bs) ((bs)->ndata[0])
++
++static inline bool bsw_has_space(oapv_bs_t *bs, size_t bytes)
++{
++    uintptr_t cur = (uintptr_t)bs->cur;
++    uintptr_t end = (uintptr_t)bs->end;
++    return cur >= (uintptr_t)bs->beg && cur <= end && bytes <= end - cur;
++}
++
+ /* move current write position to a specific bitstream address */
+ #define BSW_MOVE_CUR(bs, addr) \
+     (bs)->cur = addr; \
+diff --git a/src/oapv_vlc.c b/src/oapv_vlc.c
+index d77df1558957233b3759da75d029cd65269414be..4716973651b61cac40fb807cbd5feec1958f69df 100644
+--- a/src/oapv_vlc.c
++++ b/src/oapv_vlc.c
+@@ -46,6 +46,7 @@
+     }
+ 
+ #define BSW_FLUSH_8BYTE(bs) {                     \
++        if(!BSW_ERROR(bs) && bsw_has_space(bs, 8)) { \
+         *(bs)->cur++ = ((bs)->code >> 56) & 0xFF; \
+         *(bs)->cur++ = ((bs)->code >> 48) & 0xFF; \
+         *(bs)->cur++ = ((bs)->code >> 40) & 0xFF; \
+@@ -54,6 +55,9 @@
+         *(bs)->cur++ = ((bs)->code >> 16) & 0xFF; \
+         *(bs)->cur++ = ((bs)->code >> 8) & 0xFF;  \
+         *(bs)->cur++ = ((bs)->code) & 0xFF;       \
++        } else if(!BSW_ERROR(bs)) {              \
++            BSW_ERROR(bs) = OAPV_ERR_OUT_OF_BS_BUF; \
++        }                                       \
+         (bs)->code = 0;                           \
+         (bs)->leftbits = 64;                      \
+     }
+@@ -465,6 +469,7 @@ int oapve_vlc_metadata(oapv_md_t *md, oapv_bs_t *bs)
+ {
+     u8 *bs_pos_md;
+     bs_pos_md = oapv_bsw_sink(bs);
++    oapv_assert_rv(bs_pos_md != NULL, BSW_ERROR(bs));
+ 
+     oapv_bsw_write(bs, 0, 32); // raw bitstream byte size (skip)
+     DUMP_SAVE(0);
+@@ -499,7 +504,9 @@ int oapve_vlc_metadata(oapv_md_t *md, oapv_bs_t *bs)
+ 
+         mdp = mdp->next;
+     }
+-    u32 md_size = (u32)((u8 *)oapv_bsw_sink(bs) - bs_pos_md) - 4;
++    u8 *bs_pos_md_end = oapv_bsw_sink(bs);
++    oapv_assert_rv(bs_pos_md_end != NULL, BSW_ERROR(bs));
++    u32 md_size = (u32)(bs_pos_md_end - bs_pos_md) - 4;
+     oapv_bsw_write_direct(bs_pos_md, md_size, 32);
+     DUMP_SAVE(1);
+     DUMP_LOAD(0);

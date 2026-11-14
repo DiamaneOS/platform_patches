@@ -1,0 +1,52 @@
+diff --git a/media/module/extractors/mp4/SampleIterator.cpp b/media/module/extractors/mp4/SampleIterator.cpp
+index 85fbf9757d13cc798272a87f5d624cec75a69a09..bdd4f615ff52efb08b8a56cf64f4db2e2f0eb7a3 100644
+--- a/media/module/extractors/mp4/SampleIterator.cpp
++++ b/media/module/extractors/mp4/SampleIterator.cpp
+@@ -32,6 +32,7 @@ namespace android {
+ SampleIterator::SampleIterator(SampleTable *table)
+     : mTable(table),
+       mInitialized(false),
++      mCurrentChunkIndex(0),
+       mTimeToSampleIndex(0),
+       mTTSSampleIndex(0),
+       mTTSSampleTime(0),
+@@ -77,6 +78,7 @@ status_t SampleIterator::seekTo(uint32_t sampleIndex) {
+         status_t err;
+         if ((err = findChunkRange(sampleIndex)) != OK) {
+             ALOGE("findChunkRange failed");
++            mInitialized = false;
+             return err;
+         }
+     }
+@@ -85,6 +87,7 @@ status_t SampleIterator::seekTo(uint32_t sampleIndex) {
+ 
+     if (mSamplesPerChunk == 0) {
+         ALOGE("b/22802344");
++        mInitialized = false;
+         return ERROR_MALFORMED;
+     }
+ 
+@@ -96,6 +99,7 @@ status_t SampleIterator::seekTo(uint32_t sampleIndex) {
+         status_t err;
+         if ((err = getChunkOffset(chunk, &mCurrentChunkOffset)) != OK) {
+             ALOGE("getChunkOffset return error");
++            mInitialized = false;
+             return err;
+         }
+ 
+@@ -117,6 +121,7 @@ status_t SampleIterator::seekTo(uint32_t sampleIndex) {
+                     break;
+                 } else{
+                     mCurrentChunkSampleSizes.clear();
++                    mInitialized = false;
+                     return err;
+                 }
+             }
+@@ -148,6 +153,7 @@ status_t SampleIterator::seekTo(uint32_t sampleIndex) {
+     if ((err = findSampleTimeAndDuration(
+             sampleIndex, &mCurrentSampleTime, &mCurrentSampleDuration)) != OK) {
+         ALOGE("findSampleTime return error");
++        mInitialized = false;
+         return err;
+     }
+ 

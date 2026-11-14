@@ -1,0 +1,16 @@
+diff --git a/core/java/android/util/apk/ApkSignatureVerifier.java b/core/java/android/util/apk/ApkSignatureVerifier.java
+index b2fac165851a4970a56cc825c757bc51838660d7..94e6e211637cd8c95a09bec8c36cafbe4ff8e9df 100644
+--- a/core/java/android/util/apk/ApkSignatureVerifier.java
++++ b/core/java/android/util/apk/ApkSignatureVerifier.java
+@@ -272,6 +272,11 @@ public class ApkSignatureVerifier {
+                     // certificate and digest
+                     ApkSignatureSchemeV3Verifier.VerifiedSigner v3Signer =
+                             ApkSignatureSchemeV3Verifier.unsafeGetCertsWithoutVerification(apkPath);
++                    if (android.security.Flags.apkPqcHybridSigning()
++                            && v3Signer.blockId == APK_SIGNATURE_SCHEME_V32_BLOCK_ID) {
++                        throw new SecurityException(
++                                "APK Signature Scheme v4 cannot be used with a v3.2 hybrid signature");
++                    }
+                     nonstreamingDigests = v3Signer.contentDigests;
+                     nonstreamingCerts = new Certificate[][]{v3Signer.certs};
+                     if (v3Signer.por != null) {

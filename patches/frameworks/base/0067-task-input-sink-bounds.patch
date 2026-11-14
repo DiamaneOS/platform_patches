@@ -1,0 +1,104 @@
+diff --git a/services/core/java/com/android/server/wm/Task.java b/services/core/java/com/android/server/wm/Task.java
+index 4f5e3d72c24cf834fa1d8860b70a45c7d8ed73f9..3233b9090025dbe31937dc8d70d26710cb7b6631 100644
+--- a/services/core/java/com/android/server/wm/Task.java
++++ b/services/core/java/com/android/server/wm/Task.java
+@@ -2547,6 +2547,9 @@ class Task extends TaskFragment {
+         mLastSurfaceSize.x = 0;
+         mLastSurfaceSize.y = 0;
+         updateSurfaceSize(t);
++        if (mTaskInputSink != null) {
++            mTaskInputSink.onSurfaceMigrated(t);
++        }
+     }
+ 
+     void updateSurfaceSize(SurfaceControl.Transaction transaction) {
+diff --git a/services/core/java/com/android/server/wm/TaskInputSink.java b/services/core/java/com/android/server/wm/TaskInputSink.java
+index 1fdbb4ecda54e57d189e4e08e5209d334631b8c5..06c22da986abe2dccd26a45fa9e70bb22138d0d5 100644
+--- a/services/core/java/com/android/server/wm/TaskInputSink.java
++++ b/services/core/java/com/android/server/wm/TaskInputSink.java
+@@ -16,11 +16,14 @@
+ 
+ package com.android.server.wm;
+ 
++import android.graphics.Rect;
+ import android.os.InputConfig;
+ import android.view.InputWindowHandle;
+ import android.view.SurfaceControl;
+ import android.view.WindowManager;
+ 
++import com.android.internal.annotations.VisibleForTesting;
++
+ /**
+  * Creates a InputWindowHandle that catches all touches that would otherwise pass through a
+  * Task.
+@@ -32,6 +35,8 @@ class TaskInputSink {
+ 
+     private InputWindowHandleWrapper mInputWindowHandleWrapper;
+     private SurfaceControl mSurfaceControl;
++    private int mLastCropWidth = -1;
++    private int mLastCropHeight = -1;
+ 
+     TaskInputSink(Task task) {
+         mTask = task;
+@@ -40,15 +45,49 @@ class TaskInputSink {
+     }
+ 
+     void applyChangesToSurfaceIfChanged(SurfaceControl.Transaction transaction) {
++        final Rect bounds = mTask.getBounds();
++        if (bounds.isEmpty()) {
++            return;
++        }
+         InputWindowHandleWrapper inputWindowHandleWrapper = getInputWindowHandleWrapper();
+         if (mSurfaceControl == null) {
+             mSurfaceControl = createSurface(transaction);
++            resetCropCache();
++            inputWindowHandleWrapper.forceChange();
+         }
++        updateCrop(transaction, bounds.width(), bounds.height());
+         if (inputWindowHandleWrapper.isChanged()) {
+             inputWindowHandleWrapper.applyChangesToSurface(transaction, mSurfaceControl);
+         }
+     }
+ 
++    private void updateCrop(SurfaceControl.Transaction transaction, int width, int height) {
++        if (width == mLastCropWidth && height == mLastCropHeight) {
++            return;
++        }
++        transaction.setWindowCrop(mSurfaceControl, width, height);
++        mLastCropWidth = width;
++        mLastCropHeight = height;
++    }
++
++    private void resetCropCache() {
++        mLastCropWidth = -1;
++        mLastCropHeight = -1;
++    }
++
++    @VisibleForTesting
++    SurfaceControl getSurfaceControl() {
++        return mSurfaceControl;
++    }
++
++    void onSurfaceMigrated(SurfaceControl.Transaction transaction) {
++        if (mSurfaceControl != null) {
++            transaction.remove(mSurfaceControl);
++            mSurfaceControl = null;
++        }
++        resetCropCache();
++    }
++
+     private SurfaceControl createSurface(SurfaceControl.Transaction t) {
+         SurfaceControl surfaceControl = mTask.makeChildSurface(null)
+                 .setName(mName)
+@@ -91,9 +130,10 @@ class TaskInputSink {
+ 
+     void releaseSurfaceControl() {
+         if (mSurfaceControl != null) {
+-            mSurfaceControl.release();
++            mTask.getPendingTransaction().remove(mSurfaceControl);
+             mSurfaceControl = null;
+         }
++        resetCropCache();
+     }
+ 
+ }

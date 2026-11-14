@@ -1,0 +1,114 @@
+diff --git a/ranging/service/java/com/android/server/ranging/RangingServiceImpl.java b/ranging/service/java/com/android/server/ranging/RangingServiceImpl.java
+index 35e9460ae91fc016b92ef8855aa244d48b13a35c..572103070416c483c9d72307b4634d54542d7598 100644
+--- a/ranging/service/java/com/android/server/ranging/RangingServiceImpl.java
++++ b/ranging/service/java/com/android/server/ranging/RangingServiceImpl.java
+@@ -37,6 +37,7 @@ import android.ranging.raw.RawResponderRangingConfig;
+ 
+ import java.io.FileDescriptor;
+ import java.io.PrintWriter;
++import java.util.Objects;
+ 
+ public class RangingServiceImpl extends IRangingAdapter.Stub {
+ 
+@@ -75,6 +76,7 @@ public class RangingServiceImpl extends IRangingAdapter.Stub {
+     @Override
+     public void startRanging(AttributionSource attributionSource, SessionHandle sessionHandle,
+             RangingPreference rangingPreference, IRangingCallbacks callbacks) {
++        enforceSessionHandleOwner(sessionHandle, attributionSource);
+         mRangingInjector.enforceRangingPermissionForPreflight(attributionSource);
+         mRangingInjector.getRangingServiceManager().startRanging(attributionSource, sessionHandle,
+                 rangingPreference, callbacks);
+@@ -83,6 +85,7 @@ public class RangingServiceImpl extends IRangingAdapter.Stub {
+     @Override
+     public void reconfigureRangingInterval(SessionHandle sessionHandle, int intervalSkipCount) {
+         enforceRangingPermission();
++        enforceSessionHandleOwner(sessionHandle);
+         mRangingInjector.getRangingServiceManager().reconfigureInterval(sessionHandle,
+                 intervalSkipCount);
+     }
+@@ -90,48 +93,56 @@ public class RangingServiceImpl extends IRangingAdapter.Stub {
+     @Override
+     public void addRawDevice(SessionHandle sessionHandle, RawResponderRangingConfig rangingParams) {
+         enforceRangingPermission();
++        enforceSessionHandleOwner(sessionHandle);
+         mRangingInjector.getRangingServiceManager().addRawPeer(sessionHandle, rangingParams);
+     }
+ 
+     @Override
+     public void addOobDevice(SessionHandle sessionHandle, OobResponderRangingConfig rangingParams) {
+         enforceRangingPermission();
++        enforceSessionHandleOwner(sessionHandle);
+         throw new IllegalArgumentException("Dynamic addition of oob peer not supported yet");
+     }
+ 
+     @Override
+     public void removeDevice(SessionHandle sessionHandle, RangingDevice rangingDevice) {
+         enforceRangingPermission();
++        enforceSessionHandleOwner(sessionHandle);
+         mRangingInjector.getRangingServiceManager().removePeer(sessionHandle, rangingDevice);
+     }
+ 
+     @Override
+     public void stopRanging(SessionHandle sessionHandle) {
+         enforceRangingPermission();
++        enforceSessionHandleOwner(sessionHandle);
+         mRangingInjector.getRangingServiceManager().stopRanging(sessionHandle);
+     }
+ 
+     @Override
+     public void oobDataReceived(OobHandle oobHandle, byte[] data) {
+         enforceRangingPermission();
++        enforceOobHandleOwner(oobHandle);
+         mRangingInjector.getRangingServiceManager().oobDataReceived(oobHandle, data);
+     }
+ 
+     @Override
+     public void deviceOobDisconnected(OobHandle oobHandle) {
+         enforceRangingPermission();
++        enforceOobHandleOwner(oobHandle);
+         mRangingInjector.getRangingServiceManager().deviceOobDisconnected(oobHandle);
+     }
+ 
+     @Override
+     public void deviceOobReconnected(OobHandle oobHandle) {
+         enforceRangingPermission();
++        enforceOobHandleOwner(oobHandle);
+         mRangingInjector.getRangingServiceManager().deviceOobReconnected(oobHandle);
+     }
+ 
+     @Override
+     public void deviceOobClosed(OobHandle oobHandle) {
+         enforceRangingPermission();
++        enforceOobHandleOwner(oobHandle);
+         mRangingInjector.getRangingServiceManager().deviceOobClosed(oobHandle);
+     }
+ 
+@@ -142,6 +153,28 @@ public class RangingServiceImpl extends IRangingAdapter.Stub {
+                 oobSendDataListener);
+     }
+ 
++    private void enforceSessionHandleOwner(SessionHandle handle) {
++        Objects.requireNonNull(handle, "SessionHandle cannot be null");
++        if (handle.getUid() != Binder.getCallingUid()
++                || handle.getPid() != Binder.getCallingPid()) {
++            throw new SecurityException("SessionHandle does not belong to the caller");
++        }
++    }
++
++    private void enforceSessionHandleOwner(SessionHandle handle, AttributionSource source) {
++        Objects.requireNonNull(source, "AttributionSource cannot be null");
++        enforceSessionHandleOwner(handle);
++        if (source.getUid() != Binder.getCallingUid()
++                || !Objects.equals(handle.getPackageName(), source.getPackageName())) {
++            throw new SecurityException("SessionHandle does not match the caller attribution");
++        }
++    }
++
++    private void enforceOobHandleOwner(OobHandle handle) {
++        Objects.requireNonNull(handle, "OobHandle cannot be null");
++        enforceSessionHandleOwner(handle.getSessionHandle());
++    }
++
+     private void enforceRangingPermission() {
+         mContext.enforceCallingOrSelfPermission(android.Manifest.permission.RANGING,
+                 "RangingService");

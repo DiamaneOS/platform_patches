@@ -1,0 +1,84 @@
+diff --git a/packages/SystemUI/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentController.java b/packages/SystemUI/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentController.java
+index e8d1cfd137085ebbe06cede3a62d272b9e492c42..319138ff30a51cf64edf92c112c2c4262f15ac4b 100644
+--- a/packages/SystemUI/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentController.java
++++ b/packages/SystemUI/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentController.java
+@@ -91,6 +91,7 @@ import com.android.systemui.flags.FeatureFlags;
+ import com.android.systemui.flags.Flags;
+ import com.android.systemui.plugins.ActivityStarter;
+ import com.android.systemui.qs.flags.QsWifiConfig;
++import com.android.systemui.qs.shared.QSSettingsPackageRepository;
+ import com.android.systemui.res.R;
+ import com.android.systemui.shade.ShadeDisplayAware;
+ import com.android.systemui.shade.domain.interactor.ShadeDialogContextInteractor;
+@@ -219,6 +220,7 @@ public class InternetDetailsContentController implements AccessPointController.A
+     private boolean mHasActiveSubIdOnDds;
+     private boolean mIsMobileDataEnabled = false;
+     private UserRepository mUserRepository;
++    private final QSSettingsPackageRepository mQSSettingsPackageRepository;
+     private boolean mHasMultipleFullUsers = false;
+ 
+     @VisibleForTesting
+@@ -307,7 +309,8 @@ public class InternetDetailsContentController implements AccessPointController.A
+             DialogTransitionAnimator dialogTransitionAnimator, WifiStateWorker wifiStateWorker,
+             FeatureFlags featureFlags,
+             ShadeDialogContextInteractor shadeDialogContextInteractor,
+-            UserRepository userRepository
++            UserRepository userRepository,
++            QSSettingsPackageRepository qsSettingsPackageRepository
+         ) {
+         if (DEBUG) {
+             Log.d(TAG, "Init InternetDetailsContentController");
+@@ -345,6 +348,7 @@ public class InternetDetailsContentController implements AccessPointController.A
+         mFeatureFlags = featureFlags;
+         mShadeDialogContextInteractor = shadeDialogContextInteractor;
+         mUserRepository = userRepository;
++        mQSSettingsPackageRepository = qsSettingsPackageRepository;
+     }
+ 
+     void onStart(@NonNull InternetDialogCallback callback,
+@@ -1693,6 +1697,7 @@ public class InternetDetailsContentController implements AccessPointController.A
+         }
+         Intent intent = new Intent();
+         intent.setAction(WifiDppIntentHelper.ACTION_CONFIGURATOR_AUTH_QR_CODE_GENERATOR);
++        intent.setPackage(mQSSettingsPackageRepository.getSettingsPackageName());
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+         WifiDppIntentHelper.setConfiguratorIntentExtra(intent, mWifiManager, wifiConfiguration);
+         return intent;
+diff --git a/packages/SystemUI/tests/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentControllerTest.java b/packages/SystemUI/tests/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentControllerTest.java
+index d33ad36485ca8f20dad1b529282e4573ec756e03..46c96add16ded989ba33f5ee23bd3ac01e0ab97d 100644
+--- a/packages/SystemUI/tests/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentControllerTest.java
++++ b/packages/SystemUI/tests/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentControllerTest.java
+@@ -83,6 +83,7 @@ import com.android.systemui.flags.FakeFeatureFlags;
+ import com.android.systemui.flags.Flags;
+ import com.android.systemui.kosmos.KosmosJavaAdapter;
+ import com.android.systemui.plugins.ActivityStarter;
++import com.android.systemui.qs.shared.QSSettingsPackageRepository;
+ import com.android.systemui.res.R;
+ import com.android.systemui.statusbar.connectivity.AccessPointController;
+ import com.android.systemui.statusbar.policy.KeyguardStateController;
+@@ -220,6 +221,8 @@ public class InternetDetailsContentControllerTest extends SysuiTestCase {
+     private List<WifiEntry> mAccessPoints = new ArrayList<>();
+     private List<WifiEntry> mWifiEntries = new ArrayList<>();
+     private FakeUserRepository mUserRepository = mKosmos.getFakeUserRepository();
++    @Mock
++    private QSSettingsPackageRepository mQSSettingsPackageRepository;
+ 
+     private Configuration mConfig;
+ 
+@@ -258,6 +261,7 @@ public class InternetDetailsContentControllerTest extends SysuiTestCase {
+         when(mSystemUIToast.getGravity()).thenReturn(GRAVITY_FLAGS);
+         when(mSystemUIToast.getInAnimation()).thenReturn(mAnimator);
+         when(mWifiStateWorker.isWifiEnabled()).thenReturn(true);
++        when(mQSSettingsPackageRepository.getSettingsPackageName()).thenReturn("com.android.settings");
+ 
+         mInternetDetailsContentController = new InternetDetailsContentController(mContext,
+                 mock(UiEventLogger.class), mock(ActivityStarter.class), mAccessPointController,
+@@ -266,7 +270,7 @@ public class InternetDetailsContentControllerTest extends SysuiTestCase {
+                 mock(KeyguardUpdateMonitor.class), mGlobalSettings, mKeyguardStateController,
+                 mWindowManager, mToastFactory, mWorkerHandler, mCarrierConfigTracker,
+             mLocationController, mDialogTransitionAnimator, mWifiStateWorker, mFlags,
+-            mKosmos.getShadeDialogContextInteractor(), mUserRepository);
++            mKosmos.getShadeDialogContextInteractor(), mUserRepository, mQSSettingsPackageRepository);
+         mSubscriptionManager.addOnSubscriptionsChangedListener(mExecutor,
+                 mInternetDetailsContentController.mOnSubscriptionsChangedListener);
+         mInternetDetailsContentController.onStart(

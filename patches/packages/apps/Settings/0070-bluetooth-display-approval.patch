@@ -1,0 +1,245 @@
+diff --git a/src/com/android/settings/bluetooth/BluetoothPairingController.java b/src/com/android/settings/bluetooth/BluetoothPairingController.java
+index 27e4f3335e0bc40452bdb759cd607789589557b7..d318af518f85afd8bb7e78527659c2775eb72df4 100644
+--- a/src/com/android/settings/bluetooth/BluetoothPairingController.java
++++ b/src/com/android/settings/bluetooth/BluetoothPairingController.java
+@@ -61,6 +61,7 @@ public class BluetoothPairingController implements OnCheckedChangeListener,
+     private BluetoothDevice mDevice;
+     @VisibleForTesting
+     int mType;
++    private int mPairingAlgorithm;
+     private String mUserInput;
+     private String mPasskeyFormatted;
+     private int mPasskey;
+@@ -92,6 +93,8 @@ public class BluetoothPairingController implements OnCheckedChangeListener,
+         }
+ 
+         mType = intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, BluetoothDevice.ERROR);
++        mPairingAlgorithm = intent.getIntExtra(
++                BluetoothDevice.EXTRA_PAIRING_ALGORITHM, BluetoothDevice.ERROR);
+         mPasskey = intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_KEY, BluetoothDevice.ERROR);
+         mInitiator =
+                 intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_INITIATOR, BluetoothDevice.ERROR);
+@@ -212,6 +215,19 @@ public class BluetoothPairingController implements OnCheckedChangeListener,
+         return mIsLeAudio;
+     }
+ 
++    int getPairingAlgorithm() {
++        return mPairingAlgorithm;
++    }
++
++    boolean isPasskeyDisplayPairing() {
++        return mType == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PASSKEY;
++    }
++
++    /** Whether the pairing of this device is still in progress. */
++    boolean isBonding() {
++        return mDevice.getBondState() == BluetoothDevice.BOND_BONDING;
++    }
++
+     /**
+      * A method whether the device allows to show the contact sharing toggle.
+      *
+diff --git a/src/com/android/settings/bluetooth/BluetoothPairingDialog.java b/src/com/android/settings/bluetooth/BluetoothPairingDialog.java
+index cf78037301675dbf8358f51fe0a977d1cf78ecca..5d32518a78db88fe95b916308e310f40c4d3cf51 100644
+--- a/src/com/android/settings/bluetooth/BluetoothPairingDialog.java
++++ b/src/com/android/settings/bluetooth/BluetoothPairingDialog.java
+@@ -55,10 +55,11 @@ public class BluetoothPairingDialog extends FragmentActivity {
+             if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+                 int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,
+                         BluetoothDevice.ERROR);
+-                if (Flags.addProgressBarToThePositiveButtonInPasskeyOrPingDialog()
+-                        && bondState == BluetoothDevice.BOND_BONDED
+-                        && mBluetoothPairingController.getDialogType()
+-                        == BluetoothPairingController.DISPLAY_PASSKEY_DIALOG) {
++                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
++                if (device == null || !mBluetoothPairingController.deviceEquals(device)) {
++                    return;
++                }
++                if (shouldShowSuccessToast(bondState)) {
+                     Toast.makeText(
+                             context, context.getString(
+                                     R.string.bluetooth_pairing_pin_success_message,
+@@ -84,6 +85,13 @@ public class BluetoothPairingDialog extends FragmentActivity {
+         }
+     };
+ 
++    private boolean shouldShowSuccessToast(int bondState) {
++        return bondState == BluetoothDevice.BOND_BONDED
++                && mBluetoothPairingController.getDialogType()
++                        == BluetoothPairingController.DISPLAY_PASSKEY_DIALOG
++                && mBluetoothPairingController.isPasskeyDisplayPairing();
++    }
++
+     /**
+      * Used in testing to get a BroadcastReceiver in dialog.
+      *
+diff --git a/src/com/android/settings/bluetooth/BluetoothPairingDialogFragment.java b/src/com/android/settings/bluetooth/BluetoothPairingDialogFragment.java
+index 6c0dba36fc2a484aeca7ae87f4dc24d6550e1e6e..2fcc85230f764c9ba9a2f7053e2d3d18652b9842 100644
+--- a/src/com/android/settings/bluetooth/BluetoothPairingDialogFragment.java
++++ b/src/com/android/settings/bluetooth/BluetoothPairingDialogFragment.java
+@@ -17,7 +17,9 @@ package com.android.settings.bluetooth;
+ 
+ import android.app.Dialog;
+ import android.app.settings.SettingsEnums;
++import android.bluetooth.BluetoothDevice;
+ import android.content.Context;
++import android.content.DialogInterface;
+ import android.os.Bundle;
+ import android.text.Editable;
+ import android.text.InputFilter;
+@@ -52,6 +54,7 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+         TextWatcher {
+ 
+     private static final String TAG = "BTPairingDialogFragment";
++    private static final String KEY_PAIRING_LOCALLY_APPROVED = "pairing_locally_approved";
+ 
+     private AlertDialog.Builder mBuilder;
+     private AlertDialog mDialog;
+@@ -59,6 +62,7 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+     private BluetoothPairingDialog mPairingDialogActivity;
+     private EditText mPairingView;
+     private boolean mPositiveClicked = false;
++    private boolean mPairingLocallyApproved = false;
+     /**
+      * The interface we expect a listener to implement. Typically this should be done by
+      * the controller.
+@@ -80,6 +84,13 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+             throw new IllegalStateException(
+                 "Must call setPairingDialogActivity() before showing dialog");
+         }
++        if (savedInstanceState != null) {
++            mPairingLocallyApproved = savedInstanceState.getBoolean(
++                    KEY_PAIRING_LOCALLY_APPROVED, false);
++            if (mPairingLocallyApproved) {
++                mPositiveClicked = true;
++            }
++        }
+         mBuilder = new AlertDialog.Builder(getActivity());
+         mDialog = setupDialog();
+         mDialog.setCanceledOnTouchOutside(false);
+@@ -93,12 +104,36 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+          * orientation change. */
+         boolean shouldCancelPairing =
+                 !mPositiveClicked && !getActivity().isChangingConfigurations();
+-        if (mPairingController.getDialogType() != BluetoothPairingController.DISPLAY_PASSKEY_DIALOG
+-                && shouldCancelPairing) {
++        if (!shouldCancelPairing) {
++            return;
++        }
++        if (mPairingController.getDialogType()
++                != BluetoothPairingController.DISPLAY_PASSKEY_DIALOG) {
+             mPairingController.onCancel();
++        } else if (mPairingController.isPasskeyDisplayPairing()
++                && mPairingController.isBonding()) {
++            // The other device can complete a displayed passkey on its own. Cancel only a
++            // request that is still pending, never a pairing that has already finished.
++            mPairingController.onCancel();
++        }
++    }
++
++    @Override
++    public void onCancel(DialogInterface dialog) {
++        super.onCancel(dialog);
++        if (isPairingControllerSet()
++                && mPairingController.getDialogType()
++                        == BluetoothPairingController.DISPLAY_PASSKEY_DIALOG) {
++            mPositiveClicked = false;
+         }
+     }
+ 
++    @Override
++    public void onSaveInstanceState(Bundle outState) {
++        super.onSaveInstanceState(outState);
++        outState.putBoolean(KEY_PAIRING_LOCALLY_APPROVED, mPairingLocallyApproved);
++    }
++
+     @Override
+     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+     }
+@@ -127,6 +162,16 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+     }
+ 
+     protected void onPassKeyOrPinDialogAcceptButtonClicked(View view) {
++        if (mPairingLocallyApproved) {
++            return;
++        }
++        mPairingLocallyApproved = true;
++        mPositiveClicked = true;
++        updatePositiveButtonToPairing(view);
++        mPairingController.notifyDialogDisplayed();
++    }
++
++    private void updatePositiveButtonToPairing(View view) {
+         CircularProgressIndicator progressBar =
+                 view.findViewById(R.id.positive_button_progress_bar);
+         progressBar.setVisibility(View.VISIBLE);
+@@ -135,8 +180,9 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+         TextView positivePairingText = view.findViewById(R.id.positive_button_pairing_text);
+         positivePairingText.setVisibility(View.VISIBLE);
+ 
+-        // Tell the controller the dialog has been created.
+-        mPairingController.notifyDialogDisplayed();
++        ConstraintLayout positiveContainer = view.findViewById(R.id.positive_button_container);
++        positiveContainer.setEnabled(false);
++        positiveContainer.setClickable(false);
+     }
+ 
+     @Override
+@@ -353,9 +399,12 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+         mBuilder.setView(createView());
+         AlertDialog dialog = mBuilder.create();
+ 
+-        if (!Flags.addProgressBarToThePositiveButtonInPasskeyOrPingDialog()) {
+-            // Tell the controller the dialog has been created.
++        if (!mPairingController.isPasskeyDisplayPairing()) {
+             mPairingController.notifyDialogDisplayed();
++        } else if (mPairingController.getPairingAlgorithm()
++                == BluetoothDevice.PAIRING_ALGORITHM_SC) {
++            mPairingController.notifyDialogDisplayed();
++            mPositiveClicked = true;
+         }
+ 
+         return dialog;
+@@ -414,14 +463,17 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
+             ConstraintLayout positiveContainer = view.findViewById(R.id.positive_button_container);
+             positiveContainer.setVisibility(View.VISIBLE);
+             positiveContainer.setOnClickListener(v -> onAcceptButtonClicked());
+-        } else if (mPairingController.getDialogType()
+-                == BluetoothPairingController.DISPLAY_PASSKEY_DIALOG
+-                && Flags.addProgressBarToThePositiveButtonInPasskeyOrPingDialog()) {
++        } else if (mPairingController.isPasskeyDisplayPairing()
++                && mPairingController.getPairingAlgorithm()
++                        != BluetoothDevice.PAIRING_ALGORITHM_SC) {
+             ConstraintLayout positiveContainer = view.findViewById(R.id.positive_button_container);
+             positiveContainer.setVisibility(View.VISIBLE);
+             positiveContainer.setOnClickListener(
+                     v -> onPassKeyOrPinDialogAcceptButtonClicked(view)
+             );
++            if (mPairingLocallyApproved) {
++                updatePositiveButtonToPairing(view);
++            }
+         }
+ 
+         return view;
+diff --git a/src/com/android/settings/bluetooth/BluetoothPairingService.java b/src/com/android/settings/bluetooth/BluetoothPairingService.java
+index cbef2844be5c48766bbbe653bb3423d078796219..75f4c9946b7a01c4843e6fa1d641d2b5f929b601 100644
+--- a/src/com/android/settings/bluetooth/BluetoothPairingService.java
++++ b/src/com/android/settings/bluetooth/BluetoothPairingService.java
+@@ -72,6 +72,8 @@ public final class BluetoothPairingService extends Service {
+         pairingIntent.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+         pairingIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, type);
+         pairingIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_CONTEXT, pairingContext);
++        pairingIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_ALGORITHM,
++                intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_ALGORITHM, BluetoothDevice.ERROR));
+         if (type == BluetoothDevice.PAIRING_VARIANT_PASSKEY_CONFIRMATION ||
+                 type == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PASSKEY ||
+                 type == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PIN) {
+@@ -178,6 +180,8 @@ public final class BluetoothPairingService extends Service {
+         pairingDialogIntent.setClass(this, BluetoothPairingService.class);
+         pairingDialogIntent.putExtra(BluetoothDevice.EXTRA_DEVICE, mDevice);
+         pairingDialogIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, type);
++        pairingDialogIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_ALGORITHM,
++                intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_ALGORITHM, BluetoothDevice.ERROR));
+ 
+         if (type == BluetoothDevice.PAIRING_VARIANT_PASSKEY_CONFIRMATION
+                 || type == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PASSKEY

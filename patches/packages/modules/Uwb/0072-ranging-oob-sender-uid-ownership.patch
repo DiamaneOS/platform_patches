@@ -1,0 +1,121 @@
+diff --git a/ranging/service/java/com/android/server/ranging/oob/OobController.java b/ranging/service/java/com/android/server/ranging/oob/OobController.java
+index 47c62eb0f504ab6d0a2cc92f1de51c2de307c13f..59a04f556656b33d0614bf397871c5b7c9323033 100644
+--- a/ranging/service/java/com/android/server/ranging/oob/OobController.java
++++ b/ranging/service/java/com/android/server/ranging/oob/OobController.java
+@@ -18,6 +18,8 @@ package com.android.server.ranging.oob;
+ 
+ import android.annotation.IntDef;
+ import android.app.AlarmManager;
++import android.os.Binder;
++import android.os.IBinder;
+ import android.os.RemoteException;
+ import android.os.SystemClock;
+ import android.ranging.oob.IOobSendDataListener;
+@@ -37,6 +39,7 @@ import com.google.common.util.concurrent.SettableFuture;
+ 
+ import java.lang.annotation.ElementType;
+ import java.lang.annotation.Target;
++import java.util.Objects;
+ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ConcurrentLinkedQueue;
+ import java.util.concurrent.ConcurrentMap;
+@@ -51,7 +54,26 @@ public class OobController {
+     private final AlarmManager mAlarmManager;
+     private final ConcurrentMap<OobHandle, OobConnection> mConnections;
+ 
+-    private @Nullable IOobSendDataListener mOobDataSender = null;
++    private final ConcurrentMap<Integer, DataSenderRegistration> mOobDataSenders =
++            new ConcurrentHashMap<>();
++
++    private final class DataSenderRegistration implements IBinder.DeathRecipient {
++        final int mUid;
++        final IOobSendDataListener mListener;
++        final IBinder mBinder;
++
++        DataSenderRegistration(int uid, IOobSendDataListener listener) {
++            mUid = uid;
++            mListener = listener;
++            mBinder = Objects.requireNonNull(listener.asBinder(), "OOB sender binder");
++        }
++
++        @Override
++        public void binderDied() {
++            // An old listener's death must not unregister its replacement.
++            mOobDataSenders.remove(mUid, this);
++        }
++    }
+ 
+     public static class ConnectionClosedException extends Exception {
+         @IntDef(value = {
+@@ -84,6 +106,7 @@ public class OobController {
+      */
+     public class OobConnection implements AutoCloseable {
+         private final OobHandle mHandle;
++        private final int mOwnerUid;
+         private final String mDisconnectTimeoutAlarmTag;
+         private final ConcurrentLinkedQueue<Pair<byte[], SettableFuture<Void>>> mPendingDataSends;
+         private final ConcurrentLinkedQueue<SettableFuture<byte[]>> mPendingReceivers;
+@@ -96,6 +119,10 @@ public class OobController {
+ 
+         OobConnection(OobHandle handle) {
+             mHandle = handle;
++            // Connections are created asynchronously from an authenticated session.
++            // The worker's Binder identity is not the application's identity.
++            mOwnerUid = Objects.requireNonNull(handle.getSessionHandle(),
++                    "OOB session handle").getUid();
+             mDisconnectTimeoutAlarmTag = "RangingOobConnection" + mHandle + "DisconnectTimeout";
+             mPendingDataSends = Queues.newConcurrentLinkedQueue();
+             mPendingReceivers = Queues.newConcurrentLinkedQueue();
+@@ -212,7 +239,8 @@ public class OobController {
+         }
+ 
+         private void setDataSendFuture(byte[] data, SettableFuture<Void> future) {
+-            if (mOobDataSender == null) {
++            IOobSendDataListener sender = getOobDataSender(mOwnerUid);
++            if (sender == null) {
+                 future.setException(new IllegalStateException(
+                         "Attempted to send oob message with no data sender registered"));
+                 return;
+@@ -224,7 +252,7 @@ public class OobController {
+                 }
+                 case CONNECTED: {
+                     try {
+-                        mOobDataSender.sendOobData(mHandle, data);
++                        sender.sendOobData(mHandle, data);
+                         future.setFuture(Futures.immediateVoidFuture());
+                     } catch (RemoteException e) {
+                         future.setException(e);
+@@ -253,11 +281,29 @@ public class OobController {
+         mAlarmManager = mInjector.getContext().getSystemService(AlarmManager.class);
+     }
+ 
+-    public void registerDataSender(IOobSendDataListener oobDataSender) {
+-        if (mOobDataSender != null) {
+-            Log.w(TAG, "Re-registered oob send data listener");
++    public synchronized void registerDataSender(IOobSendDataListener oobDataSender) {
++        int uid = Binder.getCallingUid();
++        DataSenderRegistration replacement = oobDataSender == null ? null
++                : new DataSenderRegistration(uid, oobDataSender);
++        DataSenderRegistration previous = replacement == null
++                ? mOobDataSenders.remove(uid) : mOobDataSenders.put(uid, replacement);
++        if (previous != null) {
++            previous.mBinder.unlinkToDeath(previous, 0);
++        }
++        if (replacement == null) {
++            return;
++        }
++        try {
++            replacement.mBinder.linkToDeath(replacement, 0);
++        } catch (RemoteException e) {
++            mOobDataSenders.remove(uid, replacement);
++            Log.w(TAG, "OOB sender died before registration for uid " + uid, e);
+         }
+-        mOobDataSender = oobDataSender;
++    }
++
++    private @Nullable IOobSendDataListener getOobDataSender(int uid) {
++        DataSenderRegistration registration = mOobDataSenders.get(uid);
++        return registration == null ? null : registration.mListener;
+     }
+ 
+     public OobConnection createConnection(OobHandle handle) {

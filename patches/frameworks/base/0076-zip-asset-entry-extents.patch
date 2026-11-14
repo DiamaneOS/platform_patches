@@ -1,0 +1,33 @@
+diff --git a/libs/androidfw/AssetsProvider.cpp b/libs/androidfw/AssetsProvider.cpp
+index f3a3ada8f1caf9ce01fe022f61cfd027b2cade4b..6e067ab7907067a9412595d45113e9a1df55d0b5 100644
+--- a/libs/androidfw/AssetsProvider.cpp
++++ b/libs/androidfw/AssetsProvider.cpp
+@@ -203,10 +203,14 @@ std::unique_ptr<Asset> ZipAssetsProvider::OpenInternal(const std::string& path,
+   // to extract their data.
+   // To not crash at least we should make sure the offsets are correct before going any further.
+   const auto array_info = GetArchiveInfo(zip_handle_.get());
+-  if (entry.offset + entry.compressed_length > array_info.archive_size) {
++  const off64_t data_length = entry.method == kCompressStored
++      ? entry.uncompressed_length : entry.compressed_length;
++  off64_t entry_end;
++  if (entry.offset < 0 || __builtin_add_overflow(entry.offset, data_length, &entry_end) ||
++      entry_end > array_info.archive_size) {
+     LOG(ERROR) << "Found zip entry outside of zip file?? Offset " << entry.offset << " + length "
+-               << entry.compressed_length << " = " << entry.offset + entry.compressed_length
+-               << " is greater than the archive size " << array_info.archive_size << ", for file '"
++               << data_length << " is outside the archive size " << array_info.archive_size
++               << ", for file '"
+                << path << "' in APK '" << name_.GetDebugName();
+     return {};
+   }
+@@ -215,6 +219,10 @@ std::unique_ptr<Asset> ZipAssetsProvider::OpenInternal(const std::string& path,
+     *file_exists = true;
+   }
+ 
++  if (entry.method != kCompressStored && entry.method != kCompressDeflated) {
++    return {};
++  }
++
+   if (android_content_res_xml_file_size_limit() && max_size >= 0 &&
+       entry.uncompressed_length > max_size) {
+     LOG(ERROR) << "Uncompressed size " << entry.uncompressed_length << " of the file '" << path

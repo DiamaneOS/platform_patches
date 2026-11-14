@@ -1,0 +1,17 @@
+diff --git a/ranging/service/java/com/android/server/ranging/RangingServiceManager.java b/ranging/service/java/com/android/server/ranging/RangingServiceManager.java
+index 21ab51257d35d04d746263e3d0f1eb20cf84e36b..fee4a10d465da6eb72a159e63f41e18d60af599f 100644
+--- a/ranging/service/java/com/android/server/ranging/RangingServiceManager.java
++++ b/ranging/service/java/com/android/server/ranging/RangingServiceManager.java
+@@ -469,6 +469,12 @@ public final class RangingServiceManager implements ActivityManager.OnUidImporta
+         }
+ 
+         public void handleStartRanging(StartRangingArgs args) {
++            // Starts are serialized on this handler. Do not replace an active
++            // session or its logger/listener with another use of the same handle.
++            if (mSessions.containsKey(args.handle)) {
++                Log.e(TAG, "SessionHandle already exists: " + args.handle);
++                return;
++            }
+             SessionConfig sessionConfig = args.preference().getSessionConfig();
+             RangingConfig baseParams = args.preference.getRangingParams();
+             mRangingInjector.getTelemetryManager().registerLogger(

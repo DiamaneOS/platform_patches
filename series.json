@@ -5093,6 +5093,229 @@
      "100644 53e14cdde597d1060fcc424b27861176eab925d0"
     ]
    }
+  },
+  {
+   "id": "0066",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0066-delegated-intent-creator.patch",
+   "sha256": "5e93be22b6cd13470bf49cc9b460dfe5207d15bece0ef629774a5e7f8266b66f",
+   "title": "Add creator tokens for the original app to delegated activity starts",
+   "kind": "fix",
+   "files": {
+    "core/java/android/app/ActivityManagerInternal.java": [
+     "100644 cc9a8b092203e26ae32c3fc2ea16e6cbc30cee14",
+     "100644 6062f7cbeb6f5210b00b1c1d66084fea1973c182"
+    ],
+    "services/core/java/com/android/server/am/ActivityManagerService.java": [
+     "100644 e07dbc3f76a3cbfd1c1edf3f5291b45f872d6a86",
+     "100644 6a62bed623d60f7448c020403ce952bbf35cde44"
+    ],
+    "services/core/java/com/android/server/wm/ActivityTaskManagerService.java": [
+     "100644 e9f1c5d0bd77775e2ce4612c0372894949155a18",
+     "100644 f564a36e7c8bb61c452ca5c8dc47f8e108fb4bfd"
+    ]
+   }
+  },
+  {
+   "id": "0067",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0067-task-input-sink-bounds.patch",
+   "sha256": "79db3a6ebda068403e153c0afef4cfb1ff4c64c891384a24d0ca789b09076017",
+   "title": "Keep the task input sink through surface migration and crop it to the task",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/wm/Task.java": [
+     "100644 4f5e3d72c24cf834fa1d8860b70a45c7d8ed73f9",
+     "100644 3233b9090025dbe31937dc8d70d26710cb7b6631"
+    ],
+    "services/core/java/com/android/server/wm/TaskInputSink.java": [
+     "100644 1fdbb4ecda54e57d189e4e08e5209d334631b8c5",
+     "100644 06c22da986abe2dccd26a45fa9e70bb22138d0d5"
+    ]
+   }
+  },
+  {
+   "id": "0068",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0068-hybrid-v4-rejection.patch",
+   "sha256": "d0112414d584533666ffdf480eefd7ef27af0164a6c822021e764d854e1836b8",
+   "title": "Refuse v4 verification of hybrid v3.2 APK signatures",
+   "kind": "fix",
+   "files": {
+    "core/java/android/util/apk/ApkSignatureVerifier.java": [
+     "100644 b2fac165851a4970a56cc825c757bc51838660d7",
+     "100644 94e6e211637cd8c95a09bec8c36cafbe4ff8e9df"
+    ]
+   }
+  },
+  {
+   "id": "0069",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0069-explicit-wifi-sharing-target.patch",
+   "sha256": "5ece5367f22444d1df0779cdda1030dcee9cc47d039aefe825087f441c5c40db",
+   "title": "Send the Wi-Fi sharing intent to the Settings package only",
+   "kind": "fix",
+   "files": {
+    "packages/SystemUI/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentController.java": [
+     "100644 e8d1cfd137085ebbe06cede3a62d272b9e492c42",
+     "100644 319138ff30a51cf64edf92c112c2c4262f15ac4b"
+    ],
+    "packages/SystemUI/tests/src/com/android/systemui/qs/tiles/dialog/InternetDetailsContentControllerTest.java": [
+     "100644 d33ad36485ca8f20dad1b529282e4573ec756e03",
+     "100644 46c96add16ded989ba33f5ee23bd3ac01e0ab97d"
+    ]
+   }
+  },
+  {
+   "id": "0070",
+   "project": "packages/apps/Settings",
+   "file": "patches/packages/apps/Settings/0070-bluetooth-display-approval.patch",
+   "sha256": "25214757cfd747b2b51f118376608e296b65bf63449e607905b98759ce011e80",
+   "title": "Require approval for displayed Bluetooth passkeys without Secure Connections",
+   "kind": "fix",
+   "files": {
+    "src/com/android/settings/bluetooth/BluetoothPairingController.java": [
+     "100644 27e4f3335e0bc40452bdb759cd607789589557b7",
+     "100644 d318af518f85afd8bb7e78527659c2775eb72df4"
+    ],
+    "src/com/android/settings/bluetooth/BluetoothPairingDialog.java": [
+     "100644 cf78037301675dbf8358f51fe0a977d1cf78ecca",
+     "100644 5d32518a78db88fe95b916308e310f40c4d3cf51"
+    ],
+    "src/com/android/settings/bluetooth/BluetoothPairingDialogFragment.java": [
+     "100644 6c0dba36fc2a484aeca7ae87f4dc24d6550e1e6e",
+     "100644 2fcc85230f764c9ba9a2f7053e2d3d18652b9842"
+    ],
+    "src/com/android/settings/bluetooth/BluetoothPairingService.java": [
+     "100644 cbef2844be5c48766bbbe653bb3423d078796219",
+     "100644 75f4c9946b7a01c4843e6fa1d641d2b5f929b601"
+    ]
+   }
+  },
+  {
+   "id": "0071",
+   "project": "packages/modules/Uwb",
+   "file": "patches/packages/modules/Uwb/0071-ranging-caller-handle-authority.patch",
+   "sha256": "3baf31aa9d775022604ad05fc7c4c55c31918255641914ca2f4b36f3badbb4ba",
+   "title": "Bind ranging session and OOB calls to the calling app",
+   "kind": "fix",
+   "files": {
+    "ranging/service/java/com/android/server/ranging/RangingServiceImpl.java": [
+     "100644 35e9460ae91fc016b92ef8855aa244d48b13a35c",
+     "100644 572103070416c483c9d72307b4634d54542d7598"
+    ]
+   }
+  },
+  {
+   "id": "0072",
+   "project": "packages/modules/Uwb",
+   "file": "patches/packages/modules/Uwb/0072-ranging-oob-sender-uid-ownership.patch",
+   "sha256": "fafba81be7b77842a57b23aae42b44207c4f2dd61e800633ea9b500b1cc70bbe",
+   "title": "Keep one ranging OOB sender per calling UID",
+   "kind": "fix",
+   "files": {
+    "ranging/service/java/com/android/server/ranging/oob/OobController.java": [
+     "100644 47c62eb0f504ab6d0a2cc92f1de51c2de307c13f",
+     "100644 59a04f556656b33d0614bf397871c5b7c9323033"
+    ]
+   }
+  },
+  {
+   "id": "0073",
+   "project": "packages/modules/Uwb",
+   "file": "patches/packages/modules/Uwb/0073-ranging-active-handle-uniqueness.patch",
+   "sha256": "70fdcce14fd6d40adc884fb8f0fb6c4291ee038701d61af3d2b6cbe5c0561cc1",
+   "title": "Refuse a second start on an active ranging session handle",
+   "kind": "fix",
+   "files": {
+    "ranging/service/java/com/android/server/ranging/RangingServiceManager.java": [
+     "100644 21ab51257d35d04d746263e3d0f1eb20cf84e36b",
+     "100644 fee4a10d465da6eb72a159e63f41e18d60af599f"
+    ]
+   }
+  },
+  {
+   "id": "0074",
+   "project": "packages/modules/Bluetooth",
+   "file": "patches/packages/modules/Bluetooth/0074-bluetooth-key-refresh-context.patch",
+   "sha256": "727f9c7c65fb10fc3bc1b3ebd7cbf6eb01230c4e44035e4a68f07da81f7f625b",
+   "title": "Keep the key refresh mark through the deferred key size callback",
+   "kind": "fix",
+   "files": {
+    "system/stack/btm/btm_sec.cc": [
+     "100644 bfaa099e997d5c82fb0207f913139c68fce0618f",
+     "100644 fa8b9a04378c1572d56d0bc35feb0a43e9361e66"
+    ]
+   }
+  },
+  {
+   "id": "0075",
+   "project": "frameworks/av",
+   "file": "patches/frameworks/av/0075-mp4-seek-cache-validity.patch",
+   "sha256": "336ce7f36b057c914ddc0acdb10255961b7f567182b8b8ee729d49eed50b3e9c",
+   "title": "Invalidate the MP4 sample cache after a failed seek",
+   "kind": "fix",
+   "files": {
+    "media/module/extractors/mp4/SampleIterator.cpp": [
+     "100644 85fbf9757d13cc798272a87f5d624cec75a69a09",
+     "100644 bdd4f615ff52efb08b8a56cf64f4db2e2f0eb7a3"
+    ]
+   }
+  },
+  {
+   "id": "0076",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0076-zip-asset-entry-extents.patch",
+   "sha256": "280f37175fb4277788dbfe079c7ccd91129562200d17f5d3e42b727eeed3c32c",
+   "title": "Refuse ZIP asset entries with unknown compression methods",
+   "kind": "fix",
+   "files": {
+    "libs/androidfw/AssetsProvider.cpp": [
+     "100644 f3a3ada8f1caf9ce01fe022f61cfd027b2cade4b",
+     "100644 6e067ab7907067a9412595d45113e9a1df55d0b5"
+    ]
+   }
+  },
+  {
+   "id": "0077",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0077-backup-key-framing.patch",
+   "sha256": "3e9f0f7935e1a5c5f6de64ab8dbd0cf7a672c5119ea09cebe088cc32ee92c48a",
+   "title": "Bound backup keys and refuse unterminated or cut-off keys",
+   "kind": "fix",
+   "files": {
+    "libs/androidfw/BackupData.cpp": [
+     "100644 fec0e772674d590c91abb5c43bafffb3d2d3d9ee",
+     "100644 4836d57601ecf3bd5a2a8b720d2bda7edfda44da"
+    ]
+   }
+  },
+  {
+   "id": "0078",
+   "project": "external/libopenapv",
+   "file": "patches/external/libopenapv/0078-apv-encoder-output-bounds.patch",
+   "sha256": "d693be0ea191034d3ec6cc796a13829603f29aa27f76c53c6f623ffe985466b7",
+   "title": "Bound APV encoder output writes and pass write errors up",
+   "kind": "fix",
+   "files": {
+    "src/oapv.c": [
+     "100644 ba27241067f7999727893906b43459e050d9c75c",
+     "100644 9a9745fe553bebb004248770dbfd954e45eb4db8"
+    ],
+    "src/oapv_bs.c": [
+     "100644 f830fb3bd5737af81327ccd87838026756bf055d",
+     "100644 c75280b06b0a665eb0fc7221b5bddb3402ce8fef"
+    ],
+    "src/oapv_bs.h": [
+     "100644 40f1a901a34ca192bb626067bb1822d8a2052d56",
+     "100644 c88aab8963c3478ef58b1ebe2fcbd9f0493a1f4d"
+    ],
+    "src/oapv_vlc.c": [
+     "100644 d77df1558957233b3759da75d029cd65269414be",
+     "100644 4716973651b61cac40fb807cbd5feec1958f69df"
+    ]
+   },
+   "upstream": "openapv upstream fixes the same encoder holes in fefea948de5e, in another way"
   }
  ]
 }
