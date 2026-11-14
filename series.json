@@ -896,8 +896,8 @@
    "kind": "fix",
    "files": {
     "src/com/android/providers/media/MediaProvider.java": [
-     "100644 c57ed25733a8f06142a75962901d434c2c718958",
-     "100644 8220fa44c1ad3db18b7289abd9a9016aa102844e"
+     "100644 686ab425cf2c49e5050ede5f16b86ff5e53673c1",
+     "100644 3b07ce28afab10ff8112e1856103d7d5f8f4c25d"
     ]
    }
   },
