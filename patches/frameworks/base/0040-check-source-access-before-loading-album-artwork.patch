@@ -1,5 +1,5 @@
 diff --git a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt
-index 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be..c1b09630a55c3eb774c9d30cc1b2707569d82c19 100644
+index 257767622086f5f486326a27bc335e3f4e797a4c..f3a47295f045527e8d33feced00090e65544aa86 100644
 --- a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt
 +++ b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt
 @@ -22,7 +22,6 @@ import android.app.Notification
@@ -10,7 +10,7 @@ index 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be..c1b09630a55c3eb774c9d30cc1b27075
  import android.content.ContentProvider
  import android.content.ContentResolver
  import android.content.Context
-@@ -205,7 +204,9 @@ constructor(
+@@ -206,7 +205,9 @@ constructor(
              coroutineContext.ensureActive()
  
              // Album art
@@ -21,7 +21,7 @@ index 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be..c1b09630a55c3eb774c9d30cc1b27075
              if (artworkBitmap == null) {
                  artworkBitmap = metadata?.getBitmap(MediaMetadata.METADATA_KEY_ART)
              }
-@@ -442,11 +443,13 @@ constructor(
+@@ -453,11 +454,13 @@ constructor(
      }
  
      /** Load a bitmap from the various Art metadata URIs */
@@ -37,7 +37,7 @@ index 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be..c1b09630a55c3eb774c9d30cc1b27075
                  // If we got cancelled during slow album art load, cancel the rest of the process.
                  coroutineContext.ensureActive()
                  if (albumArt != null) {
-@@ -496,14 +499,16 @@ constructor(
+@@ -507,14 +510,16 @@ constructor(
          packageName: String,
      ): Bitmap? {
          try {

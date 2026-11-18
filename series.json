@@ -613,13 +613,13 @@
    "id": "0040",
    "project": "frameworks/base",
    "file": "patches/frameworks/base/0040-check-source-access-before-loading-album-artwork.patch",
-   "sha256": "31ca8f77310466b6313dddde973adf38d895e1dff45ecc7ac7bb81e7ae9e6483",
+   "sha256": "2417e1c876c1619f290f03808678b19b4f46b771870d2422623632b39c60e608",
    "title": "Check source access before loading album artwork",
    "kind": "fix",
    "files": {
     "packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt": [
-     "100644 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be",
-     "100644 c1b09630a55c3eb774c9d30cc1b2707569d82c19"
+     "100644 257767622086f5f486326a27bc335e3f4e797a4c",
+     "100644 f3a47295f045527e8d33feced00090e65544aa86"
     ]
    }
   },
