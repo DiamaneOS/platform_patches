@@ -225,7 +225,7 @@
    "id": "0016",
    "project": "frameworks/base",
    "file": "patches/frameworks/base/0016-sanitize-autofill-presentation-window-parameters.patch",
-   "sha256": "dcc72957c86677ee3b1c44b2b38287231b6f692f33b133cd1e4143967a865feb",
+   "sha256": "7ab385a6e0e250fa609e84b0b96b429433cfc23cfce9506e2a0c5996ca625cdf",
    "title": "Sanitize Autofill presentation window parameters",
    "kind": "fix",
    "files": {
@@ -238,8 +238,8 @@
      "100644 f97d0630843f8fc2a9b0bbbb453a78c5af9be024"
     ],
     "services/autofill/java/com/android/server/autofill/ui/FillUi.java": [
-     "100644 781babab6e36cb9a3a92000619fb049664808092",
-     "100644 8d8fba92e7a81673d1ac8a4c67f1e0ecd6aaca25"
+     "100644 894797c0dabe20f71dc2b9042de96539feca068d",
+     "100644 5dd97b402b5483d947a2cb95c506e41e93d9920e"
     ]
    }
   },
