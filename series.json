@@ -891,13 +891,13 @@
    "id": "0055",
    "project": "packages/providers/MediaProvider",
    "file": "patches/packages/providers/MediaProvider/0055-use-unstable-clients-for-grant-revocation-callbacks.patch",
-   "sha256": "0345f31d87f1c30042a3ebe61c6df5f36a2db1b21b0cd716369fe1ac6e5f761b",
+   "sha256": "b54bd860e925f9590b3f0ffbd778c0cd6cf96eb01f78c1049600042d682ed5f5",
    "title": "Use unstable clients for grant revocation callbacks",
    "kind": "fix",
    "files": {
     "src/com/android/providers/media/MediaProvider.java": [
-     "100644 686ab425cf2c49e5050ede5f16b86ff5e53673c1",
-     "100644 3b07ce28afab10ff8112e1856103d7d5f8f4c25d"
+     "100644 138b43f90021951d81888765e53de1010127a9b4",
+     "100644 f081a1d564789f6d9762dd1a183b8ec92e3fdfac"
     ]
    }
   },
