@@ -1,0 +1,90 @@
+diff --git a/services/core/java/com/android/server/uri/UriGrantsManagerService.java b/services/core/java/com/android/server/uri/UriGrantsManagerService.java
+index 8bbc0d3ac662fc112744cf56d2b17e99a43e1d1b..cee31f4264a2e5e988e86731672d572c4f3c58bd 100644
+--- a/services/core/java/com/android/server/uri/UriGrantsManagerService.java
++++ b/services/core/java/com/android/server/uri/UriGrantsManagerService.java
+@@ -47,8 +47,6 @@ import static com.android.server.uri.UriGrantsManagerService.H.PERSIST_URI_GRANT
+ import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
+ import static org.xmlpull.v1.XmlPullParser.START_TAG;
+ 
+-import static java.nio.charset.StandardCharsets.UTF_8;
+-
+ import android.annotation.NonNull;
+ import android.annotation.Nullable;
+ import android.annotation.RequiresPermission;
+@@ -94,6 +92,7 @@ import com.android.internal.annotations.VisibleForTesting;
+ import com.android.internal.util.ArrayUtils;
+ import com.android.internal.util.FrameworkStatsLog;
+ import com.android.internal.util.Preconditions;
++import com.android.modules.utils.ModifiedUtf8;
+ import com.android.modules.utils.TypedXmlPullParser;
+ import com.android.modules.utils.TypedXmlSerializer;
+ import com.android.server.IoThread;
+@@ -115,6 +114,7 @@ import java.io.FileNotFoundException;
+ import java.io.FileOutputStream;
+ import java.io.IOException;
+ import java.io.PrintWriter;
++import java.io.UTFDataFormatException;
+ import java.util.ArrayList;
+ import java.util.Collections;
+ import java.util.Iterator;
+@@ -1738,25 +1738,20 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+             out.startDocument(null, true);
+             out.startTag(null, TAG_URI_GRANTS);
+             for (UriPermission.Snapshot perm : persist) {
+-                if (android.permission.flags.Flags.uriGrantAttributeSizeCheckEnabled()) {
+-                    // Do pre-validation then serialize
+-                    if (perm.uri == null || perm.sourcePkg == null || perm.targetPkg == null) {
+-                        Slog.w(TAG, "Skipping grant with missing data");
+-                        continue;
+-                    }
+-                    if (!stringSizeWithinBounds(perm.uri.toString(), MAX_XML_STRING_ATTR_SIZE)) {
+-                        Slog.w(TAG, "Skipping grant: URI too long");
+-                        continue;
+-                    }
+-                    if (!stringSizeWithinBounds(
+-                            perm.sourcePkg,
+-                            MAX_PACKAGE_NAME_SIZE)
+-                            || !stringSizeWithinBounds(
+-                            perm.targetPkg,
+-                            MAX_PACKAGE_NAME_SIZE)) {
+-                        Slog.w(TAG, "Skipping grant: Package name too long");
+-                        continue;
+-                    }
++                if (perm.uri == null || perm.uri.uri == null
++                        || perm.sourcePkg == null || perm.targetPkg == null) {
++                    Slog.w(TAG, "Skipping grant with missing data");
++                    continue;
++                }
++                final String uri = perm.uri.uri.toString();
++                if (!stringSizeWithinBounds(uri, MAX_XML_STRING_ATTR_SIZE)) {
++                    Slog.w(TAG, "Skipping grant: URI too long");
++                    continue;
++                }
++                if (!stringSizeWithinBounds(perm.sourcePkg, MAX_PACKAGE_NAME_SIZE)
++                        || !stringSizeWithinBounds(perm.targetPkg, MAX_PACKAGE_NAME_SIZE)) {
++                    Slog.w(TAG, "Skipping grant: Package name too long");
++                    continue;
+                 }
+ 
+                 out.startTag(null, TAG_URI_GRANT);
+@@ -1764,7 +1759,7 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+                 out.attributeInt(null, ATTR_TARGET_USER_ID, perm.targetUserId);
+                 out.attributeInterned(null, ATTR_SOURCE_PKG, perm.sourcePkg);
+                 out.attributeInterned(null, ATTR_TARGET_PKG, perm.targetPkg);
+-                out.attribute(null, ATTR_URI, String.valueOf(perm.uri.uri));
++                out.attribute(null, ATTR_URI, uri);
+                 writeBooleanAttribute(out, ATTR_PREFIX, perm.uri.prefix);
+                 out.attributeInt(null, ATTR_MODE_FLAGS, perm.persistedModeFlags);
+                 out.attributeLong(null, ATTR_CREATED_TIME, perm.persistedCreateTime);
+@@ -1781,8 +1776,9 @@ public class UriGrantsManagerService extends IUriGrantsManager.Stub implements
+         }
+     }
+ 
+-    private static boolean stringSizeWithinBounds(@NonNull String str, int maxByteSize) {
+-        return str.getBytes(UTF_8).length <= maxByteSize;
++    private static boolean stringSizeWithinBounds(@NonNull String str, int maxByteSize)
++            throws UTFDataFormatException {
++        return ModifiedUtf8.countBytes(str, false) <= maxByteSize;
+     }
+ 
+     final class H extends Handler {

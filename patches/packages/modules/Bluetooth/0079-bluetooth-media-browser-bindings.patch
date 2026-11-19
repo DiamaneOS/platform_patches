@@ -1,0 +1,70 @@
+diff --git a/android/app/src/com/android/bluetooth/audio_util/MediaBrowserWrapper.java b/android/app/src/com/android/bluetooth/audio_util/MediaBrowserWrapper.java
+index 571929acce717b22101cc7981643ba7d4388be8f..1b85750bc9a3c140378813c12835265655ca4e11 100644
+--- a/android/app/src/com/android/bluetooth/audio_util/MediaBrowserWrapper.java
++++ b/android/app/src/com/android/bluetooth/audio_util/MediaBrowserWrapper.java
+@@ -18,11 +18,15 @@ package com.android.bluetooth.audio_util;
+ 
+ import android.content.ComponentName;
+ import android.content.Context;
++import android.content.ContextWrapper;
++import android.content.Intent;
++import android.content.ServiceConnection;
+ import android.media.MediaDescription;
+ import android.media.browse.MediaBrowser.MediaItem;
+ import android.os.Bundle;
+ import android.os.Handler;
+ import android.os.Looper;
++import android.os.UserHandle;
+ import android.util.Log;
+ 
+ import com.android.bluetooth.R;
+@@ -34,6 +38,7 @@ import java.util.Collections;
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.Map;
++import java.util.concurrent.Executor;
+ 
+ /**
+  * Handles API calls to a MediaBrowser.
+@@ -93,6 +98,32 @@ class MediaBrowserWrapper {
+ 
+     private final Runnable mDisconnectRunnable = () -> _disconnect();
+ 
++    /** Keeps Bluetooth's capabilities out of media browser service bindings. */
++    private static final class MediaBrowserContext extends ContextWrapper {
++        MediaBrowserContext(Context context) {
++            super(context);
++        }
++
++        @Override
++        public boolean bindService(Intent service, ServiceConnection connection, int flags) {
++            return super.bindService(service, connection, flags & ~BIND_INCLUDE_CAPABILITIES);
++        }
++
++        @Override
++        public boolean bindService(
++                Intent service, int flags, Executor executor, ServiceConnection connection) {
++            return super.bindService(
++                    service, flags & ~BIND_INCLUDE_CAPABILITIES, executor, connection);
++        }
++
++        @Override
++        public boolean bindServiceAsUser(
++                Intent service, ServiceConnection connection, int flags, UserHandle user) {
++            return super.bindServiceAsUser(
++                    service, connection, flags & ~BIND_INCLUDE_CAPABILITIES, user);
++        }
++    }
++
+     public MediaBrowserWrapper(
+             Context context, Looper looper, String packageName, String className) {
+         mContext = context;
+@@ -102,7 +133,7 @@ class MediaBrowserWrapper {
+         mRunHandler = new Handler(mLooper);
+         mWrappedBrowser =
+                 MediaBrowserFactory.make(
+-                        context,
++                        new MediaBrowserContext(context),
+                         new ComponentName(packageName, className),
+                         new MediaConnectionCallback(),
+                         null);

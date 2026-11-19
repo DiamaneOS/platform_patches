@@ -1,0 +1,135 @@
+diff --git a/core/java/android/app/KeyguardManager.java b/core/java/android/app/KeyguardManager.java
+index 8d103f64a3aefe7512907681025c48573f19702d..ae55b376a0de131ba5a5754153f1316291700f1b 100644
+--- a/core/java/android/app/KeyguardManager.java
++++ b/core/java/android/app/KeyguardManager.java
+@@ -213,6 +213,12 @@ public class KeyguardManager {
+      */
+     public static final String LOCK_ON_USER_SWITCH_CALLBACK = "onSwitchCallback";
+ 
++    /**
++     * Identifies the user whose keyguard must be ready before the user-switch callback runs.
++     *
++     * @hide
++     */
++    public static final String LOCK_ON_USER_SWITCH_USER_ID = "onSwitchUserId";
+ 
+     /**
+      *
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java b/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java
+index 4ffc8b47d44c6e3f9a3fee17628338e51959c9ad..f7a638719976fa032e672e8385163bf1a0f720d8 100644
+--- a/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java
+@@ -18,6 +18,7 @@ package com.android.systemui.keyguard;
+ 
+ import static android.app.ActivityManager.LOCK_TASK_MODE_PINNED;
+ import static android.app.KeyguardManager.LOCK_ON_USER_SWITCH_CALLBACK;
++import static android.app.KeyguardManager.LOCK_ON_USER_SWITCH_USER_ID;
+ import static android.app.StatusBarManager.SESSION_KEYGUARD;
+ import static android.provider.Settings.Secure.LOCK_SCREEN_LOCK_AFTER_TIMEOUT;
+ import static android.provider.Settings.System.LOCKSCREEN_SOUNDS_ENABLED;
+@@ -346,6 +347,8 @@ public class KeyguardViewMediator implements CoreStartable,
+ 
+     private static final int NO_KEYGUARD_DONE_PENDING = -10000;
+ 
++    private static final long USER_SWITCH_RETRY_INTERVAL_MS = 50;
++
+     /**
+      * How far down to animate the unoccluding activity, in terms of percent of the activity's
+      * height.
+@@ -2570,6 +2573,20 @@ public class KeyguardViewMediator implements CoreStartable,
+      * Enable the keyguard if the settings are appropriate.
+      */
+     private void doKeyguardLocked(Bundle options, boolean resetState) {
++        if (options != null) {
++            final int targetUserId = options.getInt(
++                    LOCK_ON_USER_SWITCH_USER_ID, UserHandle.USER_NULL);
++            if (targetUserId != UserHandle.USER_NULL
++                    && targetUserId != mSelectedUserInteractor.getSelectedUserId()) {
++                mHandler.postDelayed(() -> {
++                    synchronized (KeyguardViewMediator.this) {
++                        doKeyguardLocked(options, resetState);
++                    }
++                }, USER_SWITCH_RETRY_INTERVAL_MS);
++                return;
++            }
++        }
++
+         // If the power button behavior requests to open the glanceable hub.
+         if (options != null && options.getBoolean(EXTRA_TRIGGER_HUB)) {
+             if (mCommunalSettingsInteractor.get().getAutoOpenEnabled().getValue()) {
+diff --git a/services/core/java/com/android/server/am/UserController.java b/services/core/java/com/android/server/am/UserController.java
+index 612f0ad4064ae101f305425e993c2f656abcd563..cac9bfc2740ef3bd72b476ab9e6f8135485e8f83 100644
+--- a/services/core/java/com/android/server/am/UserController.java
++++ b/services/core/java/com/android/server/am/UserController.java
+@@ -32,6 +32,7 @@ import static android.app.ActivityManagerInternal.ALLOW_NON_FULL;
+ import static android.app.ActivityManagerInternal.ALLOW_NON_FULL_IN_PROFILE;
+ import static android.app.ActivityManagerInternal.ALLOW_PROFILES_OR_NON_FULL;
+ import static android.app.KeyguardManager.LOCK_ON_USER_SWITCH_CALLBACK;
++import static android.app.KeyguardManager.LOCK_ON_USER_SWITCH_USER_ID;
+ import static android.os.PowerWhitelistManager.REASON_BOOT_COMPLETED;
+ import static android.os.PowerWhitelistManager.REASON_LOCKED_BOOT_COMPLETED;
+ import static android.os.PowerWhitelistManager.TEMPORARY_ALLOWLIST_TYPE_FOREGROUND_SERVICE_ALLOWED;
+@@ -2320,7 +2321,7 @@ class UserController implements Handler.Callback {
+                                 + "skipKeyguardWhenSwitchingToUnlockedUsers");
+                     } else {
+                         Slogf.i(TAG, "Locking the device before moving on with the user switch");
+-                        mInjector.lockDeviceNowAndWaitForKeyguardShown();
++                        mInjector.lockDeviceNowAndWaitForKeyguardShown(userId);
+                     }
+                 }
+             }
+@@ -4768,12 +4769,13 @@ class UserController implements Handler.Callback {
+             getUserManagerInternal().onSystemUserVisibilityChanged(visible);
+         }
+ 
+-        void lockDeviceNowAndWaitForKeyguardShown() {
++        void lockDeviceNowAndWaitForKeyguardShown(int userId) {
+             final TimingsTraceAndSlog t = new TimingsTraceAndSlog();
+             t.traceBegin("lockDeviceNowAndWaitForKeyguardShown");
+ 
+             final CountDownLatch latch = new CountDownLatch(1);
+             Bundle bundle = new Bundle();
++            bundle.putInt(LOCK_ON_USER_SWITCH_USER_ID, userId);
+             bundle.putBinder(LOCK_ON_USER_SWITCH_CALLBACK, new IRemoteCallback.Stub() {
+                 public void sendResult(Bundle data) {
+                     latch.countDown();
+diff --git a/services/tests/servicestests/src/com/android/server/am/UserControllerTest.java b/services/tests/servicestests/src/com/android/server/am/UserControllerTest.java
+index e54bb0bad7ac1f5325c96e498123ad44da693087..7ebe96300af091421dfdf2c21409c77fe23ca649 100644
+--- a/services/tests/servicestests/src/com/android/server/am/UserControllerTest.java
++++ b/services/tests/servicestests/src/com/android/server/am/UserControllerTest.java
+@@ -233,7 +233,7 @@ public class UserControllerTest {
+             doNothing().when(mInjector).activityManagerOnUserStopped(anyInt());
+             doNothing().when(mInjector).clearBroadcastQueueForUser(anyInt());
+             doNothing().when(mInjector).taskSupervisorRemoveUser(anyInt());
+-            doNothing().when(mInjector).lockDeviceNowAndWaitForKeyguardShown();
++            doNothing().when(mInjector).lockDeviceNowAndWaitForKeyguardShown(anyInt());
+             mockIsUsersOnSecondaryDisplaysEnabled(false);
+             // All UserController params are set to default.
+ 
+@@ -2453,7 +2453,7 @@ public class UserControllerTest {
+         when(mInjector.mKeyguardManagerMock.isDeviceSecure(anyInt())).thenReturn(true);
+ 
+         // call real lockDeviceNowAndWaitForKeyguardShown method for this test
+-        doCallRealMethod().when(mInjector).lockDeviceNowAndWaitForKeyguardShown();
++        doCallRealMethod().when(mInjector).lockDeviceNowAndWaitForKeyguardShown(TEST_USER_ID);
+ 
+         // call startUser on a thread because we're expecting it to be blocked
+         Thread threadStartUser = new Thread(()-> {
+@@ -2494,7 +2494,7 @@ public class UserControllerTest {
+         mUserController.startUser(TEST_USER_ID, USER_START_MODE_FOREGROUND);
+         waitForHandlerToComplete(mInjector.mHandler, HANDLER_WAIT_TIME_MS);
+ 
+-        verify(mInjector, times(1)).lockDeviceNowAndWaitForKeyguardShown();
++        verify(mInjector, times(1)).lockDeviceNowAndWaitForKeyguardShown(TEST_USER_ID);
+     }
+ 
+     private void assertKeyguardShownOnUserStart(
+@@ -2517,7 +2517,7 @@ public class UserControllerTest {
+         waitForHandlerToComplete(mInjector.mHandler, HANDLER_WAIT_TIME_MS);
+ 
+         verify(mInjector, expectedKeyguardShown ? times(1) : never())
+-                .lockDeviceNowAndWaitForKeyguardShown();
++                .lockDeviceNowAndWaitForKeyguardShown(TEST_USER_ID);
+     }
+ 
+     @Test

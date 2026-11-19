@@ -1,0 +1,14 @@
+diff --git a/core/java/android/view/SurfaceControl.java b/core/java/android/view/SurfaceControl.java
+index c94e6998867525f7b4d910f46cfbf1fe9fa3e0d3..994c881ce695e1b24ec592166043137806272262 100644
+--- a/core/java/android/view/SurfaceControl.java
++++ b/core/java/android/view/SurfaceControl.java
+@@ -4225,6 +4225,9 @@ public final class SurfaceControl implements Parcelable {
+          */
+         public Transaction setBackgroundBlurScale(SurfaceControl sc, float scale) {
+             checkPreconditions(sc);
++            if (scale < 0.0f) {
++                throw new IllegalArgumentException("Negative value passed in for scale");
++            }
+             if (SurfaceControlRegistry.sCallStackDebuggingEnabled) {
+                 SurfaceControlRegistry.getProcessInstance().checkCallStackDebugging(
+                         "setBackgroundBlurScale", this, sc, "scale=" + scale);

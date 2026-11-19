@@ -1,0 +1,50 @@
+diff --git a/libs/gui/LayerState.cpp b/libs/gui/LayerState.cpp
+index 54a42782ea22e57ca47881be565b3761cb010190..c8957872923c9bd2f73b7d4f2c718c6f150e36a7 100644
+--- a/libs/gui/LayerState.cpp
++++ b/libs/gui/LayerState.cpp
+@@ -672,6 +672,16 @@ void layer_state_t::sanitize(int32_t permissions) {
+             ALOGE("Stripped attempt to set eCompositionFilterFlagChanged in sanitize");
+         }
+     }
++    if (what & eBackgroundBlurScaleChanged) {
++        if (!(permissions & Permission::READ_FRAME_BUFFER)) {
++            what &= ~eBackgroundBlurScaleChanged;
++            ALOGE("Stripped attempt to set eBackgroundBlurScaleChanged in sanitize");
++        } else if (backgroundBlurScale < 0.0f) {
++            ALOGW("Clamping negative backgroundBlurScale (%f) to 0.0f in sanitize",
++                  backgroundBlurScale);
++            backgroundBlurScale = 0.0f;
++        }
++    }
+ }
+ 
+ void layer_state_t::merge(const layer_state_t& other) {
+diff --git a/libs/renderengine/skia/filters/BlurFilter.cpp b/libs/renderengine/skia/filters/BlurFilter.cpp
+index b460e0735994cdf6ecb3b9cb9cb9d1173f4834fa..5e3c4f933f7e140b0ee13452d712e142dd98bba5 100644
+--- a/libs/renderengine/skia/filters/BlurFilter.cpp
++++ b/libs/renderengine/skia/filters/BlurFilter.cpp
+@@ -29,6 +29,8 @@
+ #include <common/trace.h>
+ #include <log/log.h>
+ 
++#include <algorithm>
++
+ #include "RuntimeEffectManager.h"
+ 
+ namespace android {
+@@ -78,12 +80,14 @@ float BlurFilter::getMaxCrossFadeRadius() const {
+ }
+ 
+ void BlurFilter::drawBlurRegion(SkCanvas* canvas, const SkRRect& effectRegion,
+-                                const uint32_t blurRadius, const float zoomScale,
++                                const uint32_t blurRadius, float zoomScale,
+                                 const float blurAlpha,
+                                 const SkRect& blurRect, sk_sp<SkImage> blurredImage,
+                                 sk_sp<SkImage> input) {
+     SFTRACE_CALL();
+ 
++    zoomScale = std::max(zoomScale, 0.0f);
++
+     SkPaint paint;
+     paint.setAlphaf(blurAlpha);
+ 

@@ -1,0 +1,13 @@
+diff --git a/pdf/framework/libs/pdfClient/form_filler.cc b/pdf/framework/libs/pdfClient/form_filler.cc
+index cbad64dc9408bc94ac7977cf34a95051c5ec2cd5..e492032c6122ae63a95362556913fd121965c7f3 100644
+--- a/pdf/framework/libs/pdfClient/form_filler.cc
++++ b/pdf/framework/libs/pdfClient/form_filler.cc
+@@ -426,7 +426,7 @@ void FormFiller::SetFieldText(FPDF_PAGE page, std::string_view text) {
+ }
+ 
+ void FormFiller::SelectAllFieldText(FPDF_PAGE page) {
+-    FORM_OnKeyDown(form_handle_.get(), page, kPdfiumACharacterOffset, FWL_EVENTFLAG_ControlKey);
++    FORM_OnKeyDown(form_handle_.get(), page, FWL_VKEY_A, FWL_EVENTFLAG_ControlKey);
+     FORM_OnChar(form_handle_.get(), page, kPdfiumACharacterOffset, FWL_EVENTFLAG_ControlKey);
+     FORM_OnKeyUp(form_handle_.get(), page, kPdfiumACharacterOffset, FWL_EVENTFLAG_ControlKey);
+ }

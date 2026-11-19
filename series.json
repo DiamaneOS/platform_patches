@@ -5316,6 +5316,118 @@
     ]
    },
    "upstream": "openapv upstream fixes the same encoder holes in fefea948de5e, in another way"
+  },
+  {
+   "id": "0079",
+   "project": "packages/modules/Bluetooth",
+   "file": "patches/packages/modules/Bluetooth/0079-bluetooth-media-browser-bindings.patch",
+   "sha256": "bbff7ce5fe5d003c8699875c0d195f58f677b31cab92fd9510dd24a5fa6b4721",
+   "title": "Keep Bluetooth capabilities out of media browser service bindings",
+   "kind": "fix",
+   "files": {
+    "android/app/src/com/android/bluetooth/audio_util/MediaBrowserWrapper.java": [
+     "100644 571929acce717b22101cc7981643ba7d4388be8f",
+     "100644 1b85750bc9a3c140378813c12835265655ca4e11"
+    ]
+   },
+   "test": "Browse a media app over AVRCP from a car kit, and dumpsys activity services shows the binding without INCLUDE_CAPABILITIES",
+   "drop_when": "Bluetooth stops passing its capabilities to media browser services upstream"
+  },
+  {
+   "id": "0080",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0080-surface-control-blur-scale.patch",
+   "sha256": "cd1e1259356cbb00f60aa4a188de4abce66460f11017534216b8db40dceb1afc",
+   "title": "Reject negative background blur scales before submitting transactions",
+   "kind": "fix",
+   "files": {
+    "core/java/android/view/SurfaceControl.java": [
+     "100644 c94e6998867525f7b4d910f46cfbf1fe9fa3e0d3",
+     "100644 994c881ce695e1b24ec592166043137806272262"
+    ]
+   },
+   "test": "The shade blur looks as before, and a negative scale through SurfaceControl throws IllegalArgumentException",
+   "drop_when": "SurfaceControl rejects negative blur scales upstream"
+  },
+  {
+   "id": "0081",
+   "project": "frameworks/native",
+   "file": "patches/frameworks/native/0081-compositor-blur-scale.patch",
+   "sha256": "e29f310fc91c0a81ef7d08ae3acc458c838b041801921f0c937c4107db78f8aa",
+   "title": "Restrict blur scale updates and clamp negative renderer input",
+   "kind": "fix",
+   "files": {
+    "libs/gui/LayerState.cpp": [
+     "100644 54a42782ea22e57ca47881be565b3761cb010190",
+     "100644 c8957872923c9bd2f73b7d4f2c718c6f150e36a7"
+    ],
+    "libs/renderengine/skia/filters/BlurFilter.cpp": [
+     "100644 b460e0735994cdf6ecb3b9cb9cb9d1173f4834fa",
+     "100644 5e3c4f933f7e140b0ee13452d712e142dd98bba5"
+    ]
+   },
+   "test": "The shade blur zoom works as before, and a blur scale from a client without READ_FRAME_BUFFER is dropped with a log line",
+   "drop_when": "SurfaceFlinger checks blur scale updates upstream"
+  },
+  {
+   "id": "0082",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0082-user-switch-keyguard.patch",
+   "sha256": "a307727c08a550262d48280f92e9e50117d895ec51621ab8940760db07d2ac3a",
+   "title": "Wait for the requested user before registering keyguard completion",
+   "kind": "fix",
+   "files": {
+    "core/java/android/app/KeyguardManager.java": [
+     "100644 8d103f64a3aefe7512907681025c48573f19702d",
+     "100644 ae55b376a0de131ba5a5754153f1316291700f1b"
+    ],
+    "packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java": [
+     "100644 4ffc8b47d44c6e3f9a3fee17628338e51959c9ad",
+     "100644 f7a638719976fa032e672e8385163bf1a0f720d8"
+    ],
+    "services/core/java/com/android/server/am/UserController.java": [
+     "100644 612f0ad4064ae101f305425e993c2f656abcd563",
+     "100644 cac9bfc2740ef3bd72b476ab9e6f8135485e8f83"
+    ],
+    "services/tests/servicestests/src/com/android/server/am/UserControllerTest.java": [
+     "100644 e54bb0bad7ac1f5325c96e498123ad44da693087",
+     "100644 7ebe96300af091421dfdf2c21409c77fe23ca649"
+    ]
+   },
+   "test": "Switching to a user with a PIN shows that user's lock screen without a 20 second stall",
+   "drop_when": "Keyguard ties the user switch callback to the target user upstream"
+  },
+  {
+   "id": "0083",
+   "project": "frameworks/base",
+   "file": "patches/frameworks/base/0083-uri-persistence-size.patch",
+   "sha256": "9f57841bbf295da8103fc4127e0ccaec6a53392d5eaad7dad696b89edb9a5e6a",
+   "title": "Bound persisted grant metadata using its serialized byte encoding",
+   "kind": "fix",
+   "files": {
+    "services/core/java/com/android/server/uri/UriGrantsManagerService.java": [
+     "100644 8bbc0d3ac662fc112744cf56d2b17e99a43e1d1b",
+     "100644 cee31f4264a2e5e988e86731672d572c4f3c58bd"
+    ]
+   },
+   "test": "UriGrantsManagerServiceTest#testPersistence_skipsMaliciouslyLongUri passes with the flag off, and persisted grants survive a restart",
+   "drop_when": "Upstream checks grant attribute sizes in Modified UTF-8 without the flag"
+  },
+  {
+   "id": "0084",
+   "project": "packages/providers/MediaProvider",
+   "file": "patches/packages/providers/MediaProvider/0084-pdf-form-select-all.patch",
+   "sha256": "d396d4f8ec2856e7fa7ebc6cbaf36c228ee943c76b21f25eb13bb38953287454",
+   "title": "Use the virtual A key for PDF form select-all",
+   "kind": "fix",
+   "files": {
+    "pdf/framework/libs/pdfClient/form_filler.cc": [
+     "100644 cbad64dc9408bc94ac7977cf34a95051c5ec2cd5",
+     "100644 e492032c6122ae63a95362556913fd121965c7f3"
+    ]
+   },
+   "test": "Select all in a PDF form text field selects the whole text",
+   "drop_when": "MediaProvider sends FWL_VKEY_A for select all upstream"
   }
  ]
 }
