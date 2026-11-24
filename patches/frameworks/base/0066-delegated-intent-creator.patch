@@ -48,7 +48,7 @@ index e07dbc3f76a3cbfd1c1edf3f5291b45f872d6a86..6a62bed623d60f7448c020403ce952bb
                  && intent.getExtras() != null && intent.getExtras().hasIntent()) {
              Slog.wtf(
 diff --git a/services/core/java/com/android/server/wm/ActivityTaskManagerService.java b/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
-index e9f1c5d0bd77775e2ce4612c0372894949155a18..f564a36e7c8bb61c452ca5c8dc47f8e108fb4bfd 100644
+index 7625683d2b6dc207a71a1eb19045c808840d21a8..780f833efae5ff15244364c13ec03e6529b5b934 100644
 --- a/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
 +++ b/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
 @@ -1805,6 +1805,9 @@ public class ActivityTaskManagerService extends IActivityTaskManager.Stub {

@@ -225,7 +225,7 @@
    "id": "0016",
    "project": "frameworks/base",
    "file": "patches/frameworks/base/0016-sanitize-autofill-presentation-window-parameters.patch",
-   "sha256": "dcc72957c86677ee3b1c44b2b38287231b6f692f33b133cd1e4143967a865feb",
+   "sha256": "a1407a492c50c272e637aa380eae24a972e05208bf6982735d9aab140113844d",
    "title": "Sanitize Autofill presentation window parameters",
    "kind": "fix",
    "files": {
@@ -238,8 +238,8 @@
      "100644 f97d0630843f8fc2a9b0bbbb453a78c5af9be024"
     ],
     "services/autofill/java/com/android/server/autofill/ui/FillUi.java": [
-     "100644 781babab6e36cb9a3a92000619fb049664808092",
-     "100644 8d8fba92e7a81673d1ac8a4c67f1e0ecd6aaca25"
+     "100644 4214ee59367c0f1ccbe81f82950e18c52d6bf3a2",
+     "100644 f1409a4e8da4ee571ad041f6e1b4bcfbb4f380ea"
     ]
    }
   },
@@ -613,13 +613,13 @@
    "id": "0040",
    "project": "frameworks/base",
    "file": "patches/frameworks/base/0040-check-source-access-before-loading-album-artwork.patch",
-   "sha256": "31ca8f77310466b6313dddde973adf38d895e1dff45ecc7ac7bb81e7ae9e6483",
+   "sha256": "2417e1c876c1619f290f03808678b19b4f46b771870d2422623632b39c60e608",
    "title": "Check source access before loading album artwork",
    "kind": "fix",
    "files": {
     "packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataLoader.kt": [
-     "100644 18a724ea9e122f91e8f6c1032aaad6e9d8dda9be",
-     "100644 c1b09630a55c3eb774c9d30cc1b2707569d82c19"
+     "100644 257767622086f5f486326a27bc335e3f4e797a4c",
+     "100644 f3a47295f045527e8d33feced00090e65544aa86"
     ]
    }
   },
@@ -713,7 +713,7 @@
    "id": "0046",
    "project": "frameworks/base",
    "file": "patches/frameworks/base/0046-snapshot-caller-uri-access-outside-the-window-manager-lock.patch",
-   "sha256": "14375379ea9c7aa48e83b8fec8ed71bda76e59d5c2dd893a0bd58ee1cdce3c28",
+   "sha256": "5771f23fa0ab07723b199555354e0ad8f2d9ee4cb7db64edf9df3a4d2816eaf7",
    "title": "Snapshot caller URI access outside the window-manager lock",
    "kind": "fix",
    "files": {
@@ -738,8 +738,8 @@
      "100644 853f2f100868203232ebed95866205e846cf9799"
     ],
     "services/core/java/com/android/server/wm/ActivityTaskManagerService.java": [
-     "100644 51f16802c9d980a4a80abf6e23cffcebad4c64b2",
-     "100644 e9f1c5d0bd77775e2ce4612c0372894949155a18"
+     "100644 f959b4100663a9acce813ce11e13f01f8a4d9315",
+     "100644 7625683d2b6dc207a71a1eb19045c808840d21a8"
     ],
     "services/core/java/com/android/server/wm/Task.java": [
      "100644 23c7366cb589fb8b7a935ad48cd2d745f78f93ef",
@@ -891,13 +891,13 @@
    "id": "0055",
    "project": "packages/providers/MediaProvider",
    "file": "patches/packages/providers/MediaProvider/0055-use-unstable-clients-for-grant-revocation-callbacks.patch",
-   "sha256": "0345f31d87f1c30042a3ebe61c6df5f36a2db1b21b0cd716369fe1ac6e5f761b",
+   "sha256": "e483c1db2eb00207885950b941a6ee4ec22ef85a4c5c0826edaf0e876cc3cff0",
    "title": "Use unstable clients for grant revocation callbacks",
    "kind": "fix",
    "files": {
     "src/com/android/providers/media/MediaProvider.java": [
-     "100644 686ab425cf2c49e5050ede5f16b86ff5e53673c1",
-     "100644 3b07ce28afab10ff8112e1856103d7d5f8f4c25d"
+     "100644 0ae9ad7bca96f552f10fda0eddefe4eb85ab8acf",
+     "100644 fd93567f3daa9273e1b89dbe1145ccafc6d81794"
     ]
    }
   },
@@ -5098,7 +5098,7 @@
    "id": "0066",
    "project": "frameworks/base",
    "file": "patches/frameworks/base/0066-delegated-intent-creator.patch",
-   "sha256": "5e93be22b6cd13470bf49cc9b460dfe5207d15bece0ef629774a5e7f8266b66f",
+   "sha256": "f8a667a936c0ff68b2e881ef3fd79d5ab2568ff69f75bbc2cc8a6bf30c1a0869",
    "title": "Add creator tokens for the original app to delegated activity starts",
    "kind": "fix",
    "files": {
@@ -5111,8 +5111,8 @@
      "100644 6a62bed623d60f7448c020403ce952bbf35cde44"
     ],
     "services/core/java/com/android/server/wm/ActivityTaskManagerService.java": [
-     "100644 e9f1c5d0bd77775e2ce4612c0372894949155a18",
-     "100644 f564a36e7c8bb61c452ca5c8dc47f8e108fb4bfd"
+     "100644 7625683d2b6dc207a71a1eb19045c808840d21a8",
+     "100644 780f833efae5ff15244364c13ec03e6529b5b934"
     ]
    }
   },

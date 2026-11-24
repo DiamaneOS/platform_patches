@@ -354,7 +354,7 @@ index eb065bfe1502c26a61225e546c04246695b3b88e..853f2f100868203232ebed95866205e8
          mRequest.intentGrants = intentGrants;
          return this;
 diff --git a/services/core/java/com/android/server/wm/ActivityTaskManagerService.java b/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
-index e0709212f93b11894cd2e6ac9eee816d820f4f60..d5e72dea2eb2adfc1a5cc3df07cdb43164ce4e31 100644
+index f959b4100663a9acce813ce11e13f01f8a4d9315..7625683d2b6dc207a71a1eb19045c808840d21a8 100644
 --- a/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
 +++ b/services/core/java/com/android/server/wm/ActivityTaskManagerService.java
 @@ -7273,10 +7273,14 @@ public class ActivityTaskManagerService extends IActivityTaskManager.Stub {
